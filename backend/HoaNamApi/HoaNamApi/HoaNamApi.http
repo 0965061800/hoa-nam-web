@@ -1,0 +1,6 @@
+@HoaNamApi_HostAddress = http://localhost:5020
+
+GET {{HoaNamApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

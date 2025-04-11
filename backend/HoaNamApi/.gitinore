@@ -1,0 +1,22 @@
+# Build results
+bin/
+obj/
+
+# User-specific files
+*.user
+*.suo
+
+# Visual Studio & VS Code settings
+.vscode/
+.vs/
+
+# Environment and secrets
+.env
+appsettings.Development.json
+
+# Logs and database files
+*.log
+*.db
+
+# macOS or Linux system files
+.DS_Store
