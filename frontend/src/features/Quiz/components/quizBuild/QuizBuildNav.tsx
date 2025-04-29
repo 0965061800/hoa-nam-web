@@ -13,7 +13,7 @@ export interface validQuizQuestionsReturn {
   message: string,
 }
 
-const apiUrl = process.env.REACT_APP_API_URL;
+const apiUrl = "";
 
 function validateQuizQuestions(quizQuestions: QuizQuestion[]) : validQuizQuestionsReturn {
   for (const question of quizQuestions) {

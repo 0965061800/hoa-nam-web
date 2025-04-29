@@ -122,7 +122,7 @@ export function ContextProvider({ children }: ProviderProps) {
   // }, []);
 
   // ===== FETCH USER =====
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = "";
   useEffect(() => {
     const fetchUser = async () => {
       try {

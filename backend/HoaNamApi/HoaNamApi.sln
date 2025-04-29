@@ -3,7 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HoaNamApi", "HoaNamApi\HoaNamApi.csproj", "{4849BF1D-AE6E-42E3-9636-305AAF77038D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaNamApi", "HoaNamApi\HoaNamApi.csproj", "{4849BF1D-AE6E-42E3-9636-305AAF77038D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaNam.Domain", "HoaNam.Domain\HoaNam.Domain.csproj", "{1C3259AF-4C8E-40EF-922F-19C671F8E5DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaNam.Framework", "HoaNam.Framework\HoaNam.Framework.csproj", "{F3AC942A-36FC-48D2-A098-258D3DCC52ED}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaNam.Infrastructure", "HoaNam.Infrastructure\HoaNam.Infrastructure.csproj", "{ACDCE96E-CF07-4E4D-BC62-02D66002AD6A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HoaNam.Application", "HoaNam.Application\HoaNam.Application.csproj", "{C690CF48-F075-4DA7-A0ED-10DA3F28EEF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +23,22 @@ Global
 		{4849BF1D-AE6E-42E3-9636-305AAF77038D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4849BF1D-AE6E-42E3-9636-305AAF77038D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4849BF1D-AE6E-42E3-9636-305AAF77038D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C3259AF-4C8E-40EF-922F-19C671F8E5DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C3259AF-4C8E-40EF-922F-19C671F8E5DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C3259AF-4C8E-40EF-922F-19C671F8E5DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C3259AF-4C8E-40EF-922F-19C671F8E5DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3AC942A-36FC-48D2-A098-258D3DCC52ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3AC942A-36FC-48D2-A098-258D3DCC52ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3AC942A-36FC-48D2-A098-258D3DCC52ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3AC942A-36FC-48D2-A098-258D3DCC52ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDCE96E-CF07-4E4D-BC62-02D66002AD6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDCE96E-CF07-4E4D-BC62-02D66002AD6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDCE96E-CF07-4E4D-BC62-02D66002AD6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDCE96E-CF07-4E4D-BC62-02D66002AD6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C690CF48-F075-4DA7-A0ED-10DA3F28EEF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C690CF48-F075-4DA7-A0ED-10DA3F28EEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C690CF48-F075-4DA7-A0ED-10DA3F28EEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C690CF48-F075-4DA7-A0ED-10DA3F28EEF5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
