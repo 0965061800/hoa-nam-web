@@ -7,7 +7,7 @@ using MediatR;
 
 namespace HoaNam.Application.Features.QuizService.Commands
 {
-	public class AddQuizHandler : IRequestHandler<AddNewQuizCommand, HandlerResult>
+	public class AddQuizHandler : IRequestHandler<AddNewQuiz, ApiResponse<Unit>>
 	{
 		private readonly IUserRepository _userRepo;
 		private readonly IQuizRepository _quizRepo;
@@ -16,20 +16,31 @@ namespace HoaNam.Application.Features.QuizService.Commands
 			_userRepo = userRepo;
 			_quizRepo = quizRepo;
 		}
-		public async Task<HandlerResult> Handle(AddNewQuizCommand request, CancellationToken cancellationToken)
+		public async Task<ApiResponse<Unit>> Handle(AddNewQuiz request, CancellationToken cancellationToken)
 		{
 			bool checkUser = await _userRepo.CheckUserExist(request.UserId);
 			if (checkUser == false) throw new Exception("User does not exist");
 			QuizTitle newQuizTitle = QuizTitle.FromString(request.Title);
-			Quiz newQuiz = new Domain.Quiz.Entities.Quiz(request.Id, newQuizTitle, request.UserId);
+			Quiz newQuiz = new Quiz(Guid.NewGuid(), newQuizTitle, request.UserId);
+			foreach (var questionDto in request.Questions)
+			{
+				Guid newId = Guid.NewGuid();
+				newQuiz.AddQuestion(newId, questionDto.Content, questionDto.QuestionType);
+				List<Choice> choices = new List<Choice>();
+				foreach (var choice in questionDto.Choices)
+				{
+					Choice newChoice = new Choice(choice.Content, choice.IsCorrect);
+					choices.Add(newChoice);
+				}
+				newQuiz.AddChoicesForQuestion(newId, choices);
+			}
 
 			await _quizRepo.AddNewQuiz(newQuiz);
 
-			await _userRepo.SaveChanges();
-			return new HandlerResult
-			{
-				Succeeded = true,
-			};
+			await _quizRepo.Save();
+
+			return ApiResponse<Unit>.Success(Unit.Value);
+
 		}
 	}
 }

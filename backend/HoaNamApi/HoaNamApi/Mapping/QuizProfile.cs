@@ -8,7 +8,7 @@ namespace HoaNamApi.Mapping
 	{
 		public QuizProfile()
 		{
-			CreateMap<AddQuizDto, AddNewQuizCommand>().ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title));
+			CreateMap<AddQuizDto, AddNewQuiz>().ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions));
 		}
 	}
 }

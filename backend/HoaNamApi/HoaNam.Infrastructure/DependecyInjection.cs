@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 namespace HoaNam.Infrastructure
@@ -31,6 +32,8 @@ namespace HoaNam.Infrastructure
 			services.AddIdentity<AppIdentityUser, IdentityRole<Guid>>()
 					.AddEntityFrameworkStores<AppDbContext>()
 					.AddDefaultTokenProviders();
+
+			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
 			services.AddAuthentication(options =>
 			{

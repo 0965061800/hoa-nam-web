@@ -17,5 +17,9 @@ namespace HoaNam.Infrastructure.Repositories.QuizRepository
 			await _context.Quizzes.AddAsync(newQuiz);
 		}
 
+		public async Task Save()
+		{
+			await _context.SaveChangesAsync();
+		}
 	}
 }

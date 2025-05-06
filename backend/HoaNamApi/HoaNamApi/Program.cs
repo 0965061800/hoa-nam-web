@@ -1,3 +1,4 @@
+using HoaNam.Application;
 using HoaNam.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,7 @@ builder.Services.AddSwaggerGen();
 //builder.Services.AddApplication();      
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(Program), typeof(AssemblyReference));
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -32,6 +33,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

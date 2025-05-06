@@ -15,11 +15,25 @@ namespace HoaNam.Domain.Quiz.Entities
 
 		public Guid QuizId { get; }
 		public IReadOnlyCollection<Choice> Choices => _choices.AsReadOnly();
-		public Question(string content, QuestionType questionType)
+		public Question(Guid id, string content, QuestionType questionType)
 		{
-			Id = Guid.NewGuid();
+			Id = id;
 			Content = content;
 			QuestionType = questionType;
+		}
+
+		public void AddListOfChoice(List<Choice> choices)
+		{
+			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
+			rule.ValidateCanAddListOfChoice(this, choices);
+
+			List<(string, bool)> questionAddedEvent = new List<(string, bool)>();
+			foreach (Choice choice in choices) questionAddedEvent.Add((choice.Content, choice.IsCorrect));
+
+			Apply(new QuestionEvent.ChoicesAddedToQuestion
+			{
+				choices = questionAddedEvent
+			});
 		}
 		public void AddChoice(string content, bool isCorrect)
 		{
@@ -55,6 +69,13 @@ namespace HoaNam.Domain.Quiz.Entities
 		{
 			switch (@event)
 			{
+				case QuestionEvent.ChoicesAddedToQuestion e:
+					foreach (var choice in e.choices)
+					{
+						Choice choiceAdded = new Choice(choice.content, choice.isCorrect);
+						_choices.Add(choiceAdded);
+					}
+					break;
 				case QuestionEvent.ChoiceAddedToQuestion e:
 					Choice newChoice = new Choice(e.Content, e.IsCorrect);
 					_choices.Add(newChoice);

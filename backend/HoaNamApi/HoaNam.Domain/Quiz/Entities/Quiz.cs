@@ -16,20 +16,37 @@ namespace HoaNam.Domain.Quiz.Entities
 
 		private readonly List<Question> _questions = new();
 		public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
-		public Quiz(Guid id, QuizTitle title, Guid createdUserId) => Apply(new QuizEvent.QuizCreated
+		public Quiz(Guid id, QuizTitle title, Guid createdUserId)
 		{
-			Id = id,
-			Title = title,
-			CreatedUserId = createdUserId
-		});
+			Apply(new QuizEvent.QuizCreated
+			{
+				Id = id,
+				Title = title,
+				CreatedUserId = createdUserId
+			});
+		}
 
 
 
-		public void AddQuestion(string content, QuestionType typeQuestion) => Apply(new QuizEvent.QuestionAddedToQuizEvent
+		public void AddQuestion(Guid questionId, string content, QuestionType typeQuestion) => Apply(new QuizEvent.QuestionAddedToQuizEvent
 		{
+			QuestionId = questionId,
 			Content = content,
 			QuestionType = typeQuestion
 		});
+
+		public void AddChoicesForQuestion(Guid questionId, List<Choice> choices)
+		{
+			var question = _questions.FirstOrDefault(x => x.Id == questionId);
+			if (question == null) throw new QuizException("The question is not in the quiz");
+			question.AddListOfChoice(choices);
+		}
+		public void AddChoiceForQuestion(Guid questionId, string content, bool isCorrect)
+		{
+			var question = _questions.FirstOrDefault(x => x.Id == questionId);
+			if (question == null) throw new QuizException("The question is not in the quiz");
+			question.AddChoice(content, isCorrect);
+		}
 
 		public void RemoveQuestion(Guid questionId)
 		{
@@ -59,7 +76,7 @@ namespace HoaNam.Domain.Quiz.Entities
 					CreatedUserId = e.CreatedUserId;
 					break;
 				case QuizEvent.QuestionAddedToQuizEvent e:
-					Question newQuestion = new Question(e.Content, e.QuestionType);
+					Question newQuestion = new Question(e.QuestionId, e.Content, e.QuestionType);
 					_questions.Add(newQuestion);
 					break;
 				case QuizEvent.QuestionRemovedFromQuizEvent e:
@@ -74,7 +91,7 @@ namespace HoaNam.Domain.Quiz.Entities
 
 		protected override void EnsureValidState()
 		{
-			var valid = Id != null && Title != null && CreatedAt != null;
+			var valid = Title.Value != null;
 			if (!valid) throw new InvalidEntityStateException(this, $"Post-checks failed in some field");
 		}
 	}

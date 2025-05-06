@@ -3,7 +3,9 @@ using HoaNam.Application.Features.QuizService.Commands;
 using HoaNam.Application.Features.QuizService.Queries;
 using HoaNamApi.Dtos.Quiz;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace HoaNamApi.Controllers
 {
@@ -21,24 +23,32 @@ namespace HoaNamApi.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetAllQuizByAdmin(string Id)
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> GetAllQuizByAdmin()
 		{
-			Guid userId = new Guid("11111111-1111-1111-1111-111111111111");
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
 			GetQuizzesByAdmin newRequest = new GetQuizzesByAdmin
 			{
-				adminId = userId,
+				adminId = new Guid(accountId),
 			};
 			var result = await _mediator.Send(newRequest);
-			return Ok(result);
+			if (!result.IsSuccess) return BadRequest(result.Error);
+			return Ok(result.Data);
 		}
 
 
 		[HttpPost("add")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> AddNewQuiz(AddQuizDto requestDto)
 		{
-			AddNewQuizCommand addCommand = _mapper.Map<AddNewQuizCommand>(requestDto);
-			addCommand.Id = Guid.NewGuid();
-			addCommand.UserId = new Guid("11111111-1111-1111-1111-111111111111");
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
+			Guid userId = new Guid(accountId);
+
+			AddNewQuiz addCommand = _mapper.Map<AddNewQuiz>(requestDto);
+
+			addCommand.UserId = userId;
 			await _mediator.Send(addCommand);
 			return Ok();
 		}

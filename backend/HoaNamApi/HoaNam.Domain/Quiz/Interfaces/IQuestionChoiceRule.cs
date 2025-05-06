@@ -6,5 +6,6 @@ namespace HoaNam.Domain.Quiz.Interfaces
 	{
 		void ValidateCanAddChoice(Question question, Choice choice);
 		void ValidateCanRemoveChoice(Question question, Guid choiceId);
+		void ValidateCanAddListOfChoice(Question question, List<Choice> choices);
 	}
 }

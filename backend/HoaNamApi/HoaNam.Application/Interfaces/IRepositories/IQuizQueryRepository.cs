@@ -1,9 +1,10 @@
-﻿using HoaNam.Domain.Quiz.Entities;
+﻿using HoaNam.Application.Common.Models;
+using HoaNam.Domain.Quiz.Entities;
 
 namespace HoaNam.Application.Interfaces.IRepositories
 {
 	public interface IQuizQueryRepository
 	{
-		Task<List<Quiz>> GetQuizzesByAdminId(Guid adminId);
+		Task<Result<List<Quiz>>> GetQuizzesByAdminId(Guid adminId);
 	}
 }

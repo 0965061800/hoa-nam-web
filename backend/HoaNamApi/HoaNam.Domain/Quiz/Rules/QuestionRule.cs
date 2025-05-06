@@ -14,6 +14,11 @@ namespace HoaNam.Domain.Quiz.Rules
 				if (choice.IsCorrect == false) throw new QuestionChoiceException("Text question required an right choice");
 			}
 
+			public void ValidateCanAddListOfChoice(Question question, List<Choice> choices)
+			{
+				throw new NotImplementedException();
+			}
+
 			public void ValidateCanRemoveChoice(Question question, Guid choiceId)
 			{
 				throw new QuestionChoiceException("You just can adjust for this type of question");
@@ -25,6 +30,13 @@ namespace HoaNam.Domain.Quiz.Rules
 			public void ValidateCanAddChoice(Question question, Choice choice)
 			{
 				if (question.Choices.Any(c => c.IsCorrect == true) && choice.IsCorrect == true) throw new QuestionChoiceException("Single Choice Question just need one answer");
+			}
+
+			public void ValidateCanAddListOfChoice(Question question, List<Choice> choices)
+			{
+				int answerCount = choices.Count(x => x.IsCorrect == true);
+				if (answerCount == 0) throw new QuestionChoiceException("This question need one right answer");
+				if (answerCount >= 2) throw new QuestionChoiceException("This question just need one right answer");
 			}
 
 			public void ValidateCanRemoveChoice(Question question, Guid choiceId)
@@ -41,6 +53,12 @@ namespace HoaNam.Domain.Quiz.Rules
 				//do nothing
 			}
 
+			public void ValidateCanAddListOfChoice(Question question, List<Choice> choices)
+			{
+				int answerCount = choices.Count(x => x.IsCorrect == true);
+				if (answerCount == 0) throw new QuestionChoiceException("This question need some right answer");
+			}
+
 			public void ValidateCanRemoveChoice(Question question, Guid choiceId)
 			{
 				Choice targetChoice = GetChoice(question, choiceId);
@@ -52,6 +70,13 @@ namespace HoaNam.Domain.Quiz.Rules
 			public void ValidateCanAddChoice(Question question, Choice choice)
 			{
 				if (question.Choices.Count >= 0) throw new QuestionChoiceException("Text question just have one answer");
+			}
+
+			public void ValidateCanAddListOfChoice(Question question, List<Choice> choices)
+			{
+				int answerCount = choices.Count(x => x.IsCorrect == true);
+				if (answerCount >= 0) throw new QuestionChoiceException("This question need one right answer");
+				if (answerCount >= 2) throw new QuestionChoiceException("This question just need one choice");
 			}
 
 			public void ValidateCanRemoveChoice(Question question, Guid choiceId)

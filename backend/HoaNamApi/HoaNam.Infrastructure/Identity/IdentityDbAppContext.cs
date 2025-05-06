@@ -34,10 +34,12 @@ namespace HoaNam.Infrastructure.Identity
 			builder.Entity<Quiz>(entity =>
 			{
 				entity.HasKey(e => e.Id);
-				entity.Ignore(e => e.Questions);
-				entity.HasMany<Question>("_questions")
+				entity.HasMany(e => e.Questions)
 					.WithOne()
 					.HasForeignKey("QuizId");
+
+				entity.Navigation(e => e.Questions)
+					.UsePropertyAccessMode(PropertyAccessMode.Field);
 				entity.Property(e => e.Title)
 				.HasConversion(
 					title => title.Value,
@@ -49,10 +51,12 @@ namespace HoaNam.Infrastructure.Identity
 			builder.Entity<Question>(entity =>
 			{
 				entity.HasKey(e => e.Id);
-				entity.Ignore(e => e.Choices);
-				entity.HasMany<Choice>("_choices")
-				.WithOne()
-				.HasForeignKey("QuestionId");
+				entity.HasMany(e => e.Choices)
+					.WithOne()
+					.HasForeignKey("QuestionId");
+
+				entity.Navigation(e => e.Choices)
+					.UsePropertyAccessMode(PropertyAccessMode.Field);
 			});
 
 			var adminRoleId = new Guid("11111111-1111-1111-1111-111111111110");
