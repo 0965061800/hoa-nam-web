@@ -29,7 +29,7 @@ namespace HoaNam.Application.Features.QuizService.Commands
 				List<Choice> choices = new List<Choice>();
 				foreach (var choice in questionDto.Choices)
 				{
-					Choice newChoice = new Choice(choice.Content, choice.IsCorrect);
+					Choice newChoice = new Choice(Guid.NewGuid(), choice.Content, choice.IsCorrect, newId);
 					choices.Add(newChoice);
 				}
 				newQuiz.AddChoicesForQuestion(newId, choices);

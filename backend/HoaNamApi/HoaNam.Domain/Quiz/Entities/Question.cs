@@ -1,5 +1,6 @@
 ﻿using HoaNam.Domain.Quiz.Events;
 using HoaNam.Domain.Quiz.Exceptions;
+using HoaNam.Domain.Quiz.InputModels;
 using HoaNam.Domain.Quiz.Rules;
 using HoaNam.Framework;
 
@@ -22,6 +23,28 @@ namespace HoaNam.Domain.Quiz.Entities
 			QuestionType = questionType;
 		}
 
+		public void SyncChoices(List<ChoiceData> choices)
+		{
+			//Add
+			foreach (var choiceDto in choices)
+			{
+				if (!_choices.Any(x => x.Id == choiceDto.Id)) AddChoice(choiceDto.Id, choiceDto.Content, choiceDto.IsCorrect, Id);
+			}
+
+			//Update
+			foreach (var choiceDto in choices)
+			{
+				var incoming = _choices.FirstOrDefault(x => x.Id == choiceDto.Id);
+				if (incoming != null) incoming.UpdateContent(choiceDto.Content);
+			}
+
+			//Remove
+			foreach (var choiceDb in _choices)
+			{
+				if (!choices.Any(x => x.Id == choiceDb.Id)) RemoveChoice(choiceDb.Id);
+			}
+		}
+
 		public void AddListOfChoice(List<Choice> choices)
 		{
 			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
@@ -35,14 +58,16 @@ namespace HoaNam.Domain.Quiz.Entities
 				choices = questionAddedEvent
 			});
 		}
-		public void AddChoice(string content, bool isCorrect)
+		public void AddChoice(Guid ChoiceId, string content, bool isCorrect, Guid questionId)
 		{
 			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
-			rule.ValidateCanAddChoice(this, new Choice(content, isCorrect));
+			rule.ValidateCanAddChoice(this, new Choice(ChoiceId, content, isCorrect, questionId));
 			Apply(new QuestionEvent.ChoiceAddedToQuestion
 			{
+				Id = ChoiceId,
 				Content = content,
-				IsCorrect = isCorrect
+				IsCorrect = isCorrect,
+				QuestionId = questionId
 			});
 		}
 		public void RemoveChoice(Guid choiceId)
@@ -59,10 +84,11 @@ namespace HoaNam.Domain.Quiz.Entities
 
 		public void ChangeContent(string content)
 		{
-			Apply(new QuestionEvent.ContentChanged
-			{
-				Content = content
-			});
+			if (Content != content)
+				Apply(new QuestionEvent.ContentChanged
+				{
+					Content = content
+				});
 		}
 
 		protected override void When(object @event)
@@ -72,12 +98,12 @@ namespace HoaNam.Domain.Quiz.Entities
 				case QuestionEvent.ChoicesAddedToQuestion e:
 					foreach (var choice in e.choices)
 					{
-						Choice choiceAdded = new Choice(choice.content, choice.isCorrect);
+						Choice choiceAdded = new Choice(Guid.NewGuid(), choice.content, choice.isCorrect, Id);
 						_choices.Add(choiceAdded);
 					}
 					break;
 				case QuestionEvent.ChoiceAddedToQuestion e:
-					Choice newChoice = new Choice(e.Content, e.IsCorrect);
+					Choice newChoice = new Choice(e.Id, e.Content, e.IsCorrect, e.QuestionId);
 					_choices.Add(newChoice);
 					break;
 				case QuestionEvent.ChoiceRemovedFromQuestion e:

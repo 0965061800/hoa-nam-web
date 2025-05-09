@@ -24,5 +24,10 @@
 		{
 			public bool IsShuffled { get; set; }
 		}
+
+		public class TitleChanged
+		{
+			public string Value { get; set; }
+		}
 	}
 }

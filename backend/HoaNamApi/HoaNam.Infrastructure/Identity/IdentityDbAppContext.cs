@@ -59,6 +59,12 @@ namespace HoaNam.Infrastructure.Identity
 					.UsePropertyAccessMode(PropertyAccessMode.Field);
 			});
 
+			builder.Entity<Choice>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+				entity.Property(c => c.Id).ValueGeneratedNever();
+			});
+
 			var adminRoleId = new Guid("11111111-1111-1111-1111-111111111110");
 			var adminUserId = new Guid("11111111-1111-1111-1111-111111111111");
 

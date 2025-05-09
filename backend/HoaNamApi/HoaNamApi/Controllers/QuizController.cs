@@ -52,5 +52,20 @@ namespace HoaNamApi.Controllers
 			await _mediator.Send(addCommand);
 			return Ok();
 		}
+
+		[HttpPost("update")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> UpdateQuiz(UpdateQuizDto dto)
+		{
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
+			Guid userId = new Guid(accountId);
+
+			UpdateQuizCommand addCommand = _mapper.Map<UpdateQuizCommand>(dto);
+
+			addCommand.UserId = userId;
+			await _mediator.Send(addCommand);
+			return Ok();
+		}
 	}
 }

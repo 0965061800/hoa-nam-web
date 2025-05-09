@@ -1,5 +1,6 @@
 ﻿using HoaNam.Domain.Quiz.Events;
 using HoaNam.Domain.Quiz.Exceptions;
+using HoaNam.Domain.Quiz.InputModels;
 using HoaNam.Domain.Quiz.ValueObjects;
 using HoaNam.Framework;
 
@@ -26,8 +27,6 @@ namespace HoaNam.Domain.Quiz.Entities
 			});
 		}
 
-
-
 		public void AddQuestion(Guid questionId, string content, QuestionType typeQuestion) => Apply(new QuizEvent.QuestionAddedToQuizEvent
 		{
 			QuestionId = questionId,
@@ -45,7 +44,7 @@ namespace HoaNam.Domain.Quiz.Entities
 		{
 			var question = _questions.FirstOrDefault(x => x.Id == questionId);
 			if (question == null) throw new QuizException("The question is not in the quiz");
-			question.AddChoice(content, isCorrect);
+			question.AddChoice(Guid.NewGuid(), content, isCorrect, question.Id);
 		}
 
 		public void RemoveQuestion(Guid questionId)
@@ -58,11 +57,24 @@ namespace HoaNam.Domain.Quiz.Entities
 			});
 		}
 
+		public void UpdateQuestion(Guid questionId, string requestContent, List<ChoiceData> choices)
+		{
+			var question = _questions.FirstOrDefault(x => x.Id == questionId);
+			if (question == null) throw new QuizException("The question is not in the quiz");
+			question.ChangeContent(requestContent);
+			question.SyncChoices(choices);
+		}
+
+		public void ChangeTitle(string title) => Apply(new QuizEvent.TitleChanged
+		{
+			Value = title,
+		});
 		public void ChangeSuffled(bool value) =>
 			Apply(new QuizEvent.IsShuffledChangeEvent
 			{
 				IsShuffled = value
 			});
+
 
 		protected override void When(object @event)
 		{
@@ -78,13 +90,20 @@ namespace HoaNam.Domain.Quiz.Entities
 				case QuizEvent.QuestionAddedToQuizEvent e:
 					Question newQuestion = new Question(e.QuestionId, e.Content, e.QuestionType);
 					_questions.Add(newQuestion);
+					UpdateAt = DateTime.UtcNow;
 					break;
 				case QuizEvent.QuestionRemovedFromQuizEvent e:
 					var questionRemove = _questions.Find(q => q.Id == e.questionId);
 					_questions.Remove(questionRemove!);
+					UpdateAt = DateTime.UtcNow;
 					break;
 				case QuizEvent.IsShuffledChangeEvent e:
 					IsShuffled = e.IsShuffled;
+					UpdateAt = DateTime.UtcNow;
+					break;
+				case QuizEvent.TitleChanged e:
+					Title = QuizTitle.FromString(e.Value);
+					UpdateAt = DateTime.UtcNow;
 					break;
 			}
 		}

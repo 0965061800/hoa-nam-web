@@ -9,14 +9,21 @@ namespace HoaNam.Domain.Quiz.Entities
 		public Guid Id { get; private set; }
 		public string Content { get; private set; } = "";
 		public bool IsCorrect { get; private set; }
-		public Guid QuestionId { get; }
-		public Choice(string content, bool isCorrect) => Apply(new ChoiceEvent.ChoiceCreated
+		public Guid QuestionId { get; private set; }
+		public Choice(Guid Id, string content, bool isCorrect, Guid questionId) => Apply(new ChoiceEvent.ChoiceCreated
 		{
-			ChoiceId = new Guid(),
+			ChoiceId = Id,
 			Content = content,
-			IsCorrect = isCorrect
+			IsCorrect = isCorrect,
+			QuestionId = questionId
 		});
-
+		public void UpdateContent(string newContent)
+		{
+			if (Content != newContent) Apply(new ChoiceEvent.ChoiceContentUpdated
+			{
+				Content = newContent
+			});
+		}
 		protected override void When(object @event)
 		{
 			switch (@event)
@@ -25,6 +32,10 @@ namespace HoaNam.Domain.Quiz.Entities
 					Id = e.ChoiceId;
 					Content = e.Content;
 					IsCorrect = e.IsCorrect;
+					QuestionId = e.QuestionId;
+					break;
+				case ChoiceEvent.ChoiceContentUpdated e:
+					Content = e.Content;
 					break;
 			}
 		}
