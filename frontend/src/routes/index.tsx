@@ -6,69 +6,91 @@ import Courses from "../pages/Courses";
 import CoursesDetail from "../pages/CoursesDetail";
 import RegisterCourse from "../pages/RegisterCourse";
 import { ContextProvider } from "@/context/ContextApi";
-import QuizBuildPage from "@/features/Quiz/pages/QuizBuildPage";
 import QuizPlayPage from "@/features/Quiz/pages/QuizPlayPage";
 import QuizPage from "@/features/Quiz/pages/QuizPage";
+import QuizCreatePage from "@/features/Quiz/pages/QuizCreatePage";
+import SignInPage from "@/features/Auth/pages/SignInPage";
+import { AuthProvider } from "@/hooks/useAuth";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <PublicRoute>
-            <Home />
-          </PublicRoute>
-        }
-      />
-      <Route path="/courses">
+    <AuthProvider>
+      <Routes>
         <Route
-          index
+          path="/"
           element={
             <PublicRoute>
-              <Courses />
+              <Home />
+            </PublicRoute>
+          }
+        />
+        <Route path="/courses">
+          <Route
+            index
+            element={
+              <PublicRoute>
+                <Courses />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="detail"
+            element={
+              <PublicRoute>
+                <CoursesDetail />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="register"
+            element={
+              <PublicRoute>
+                <RegisterCourse />
+              </PublicRoute>
+            }
+          />
+        </Route>
+        <Route
+          path="/quiz"
+          element={
+            <PublicRoute>
+              <ContextProvider>
+                <QuizPage />
+              </ContextProvider>
             </PublicRoute>
           }
         />
         <Route
-          path="detail"
+          path="/quiz-play"
           element={
             <PublicRoute>
-              <CoursesDetail />
+              <ContextProvider>
+                <QuizPlayPage />
+              </ContextProvider>
             </PublicRoute>
           }
         />
         <Route
-          path="register"
+          path="/quiz-create"
+          element={
+            <ContextProvider>
+              <PrivateRoute>
+                <QuizCreatePage />
+              </PrivateRoute>
+            </ContextProvider>
+          }
+        />
+        <Route
+          path="/signin"
           element={
             <PublicRoute>
-              <RegisterCourse />
+              <SignInPage />
             </PublicRoute>
           }
         />
-      </Route>
-      <Route path="/quiz" element={
-        <PublicRoute>
-          <ContextProvider>
-            <QuizPage/>
-          </ContextProvider>
-        </PublicRoute>
-      } />
-      <Route path="/quiz-play" element={
-        <PublicRoute>
-          <ContextProvider>
-            <QuizPlayPage />
-          </ContextProvider>
-        </PublicRoute>
-      } />
-      <Route path="/quiz-build" element={
-        <PublicRoute>
-          <ContextProvider>
-            <QuizBuildPage />
-          </ContextProvider>
-        </PublicRoute>
-      } />
-    </Routes>
+      </Routes>
+    </AuthProvider>
   );
 };
 

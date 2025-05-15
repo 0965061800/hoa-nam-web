@@ -93,7 +93,6 @@ export function ContextProvider({ children }: ProviderProps) {
   const [dropDownToggle, setDropDownToggle] = useState<boolean>(false);
   const [threeDotsPositions, setThreeDotsPositions] = useState<Position>({ x: 0, y: 0 });
   const [isLoading, setLoading] = useState<boolean>(true);
-  const [userXP, setUserXP] = useState<number>(0);
 
   // ===== FETCH QUIZZES =====
   // useEffect(() => {
@@ -121,52 +120,6 @@ export function ContextProvider({ children }: ProviderProps) {
   //   fetchAllQuizzes();
   // }, []);
 
-  // ===== FETCH USER =====
-  const apiUrl = "";
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await fetch(`${apiUrl}`, {
-          method: 'POST',
-          headers: {
-            'Content-type': 'application/json',
-          },
-          body: JSON.stringify({
-            name: 'quizUser',
-            isLogged: false,
-            experience: 0,
-          }),
-        });
-
-        if (!response.ok) {
-          toast.error('Something went wrong...');
-          throw new Error('fetching failed...');
-        }
-
-        const userData = await response.json();
-        setUser(userData.user);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchUser();
-  }, []);
-
-  useEffect(() => {
-    setUser((prevUser) => ({
-      ...prevUser,
-      experience: userXP,
-    }));
-  }, [userXP]);
-
-  useEffect(() => {
-    if (selectedQuiz) {
-      setSelectedIcon({ faIcon: selectedQuiz.icon });
-    } else {
-      setSelectedIcon({ faIcon: faQuestion });
-    }
-  }, [selectedQuiz]);
-
   return (
     <GlobalContextValue.Provider
       value={{
@@ -179,7 +132,6 @@ export function ContextProvider({ children }: ProviderProps) {
         dropDownToggleObject: { dropDownToggle, setDropDownToggle },
         threeDotsPositionsObject: { threeDotsPositions, setThreeDotsPositions },
         selectedQuizObject: { selectedQuiz, setSelectedQuiz },
-        userXpObject: { userXP, setUserXP },
         isLoadingObject: { isLoading, setLoading },
       }}
     >

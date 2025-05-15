@@ -17,8 +17,32 @@ export interface QuizQuestion {
 }
 
 export interface QuizData {
-id: string,
+    id: string,
     icon: IconDefinition,
     quizTitle: string,
     quizQuestions: Array<QuizQuestion>
+}
+
+
+export interface AddQuizDto {
+    title: string
+    questions: Array<AddQuizQuestionDto>
+}
+
+export interface AddQuizQuestionDto {
+    content: string,
+    questionType: QuestionType,
+    choices: Array<AddQuizChoiceDto>
+}
+
+export interface AddQuizChoiceDto {
+    content: string,
+    isCorrect: boolean,
+}
+
+export enum QuestionType {
+    SingleChoice,
+    MultipleChoice,
+    FillInBlank,
+    Text
 }

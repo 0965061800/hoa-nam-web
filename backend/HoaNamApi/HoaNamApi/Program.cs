@@ -21,6 +21,33 @@ builder.Services.AddMediatR(cfg =>
 	cfg.RegisterServicesFromAssembly(typeof(HoaNam.Application.AssemblyReference).Assembly);
 });
 
+builder.Services.AddCors(options =>
+{
+	options.AddPolicy("AllowSpecificOrigin", policy =>
+	{
+		policy.WithOrigins("http://example.com")
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.WithExposedHeaders("WWW-Authenticate");
+	});
+
+	options.AddPolicy("AllowAll", policy =>
+	{
+		policy.AllowAnyOrigin()
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.WithExposedHeaders("WWW-Authenticate");
+	});
+	options.AddPolicy("AllowFrontend", policy =>
+	{
+		policy.WithOrigins("http://localhost:5173")
+			.AllowAnyHeader()
+			.AllowAnyMethod()
+			.AllowCredentials()
+			.WithExposedHeaders("WWW-Authenticate");
+	});
+});
+
 var app = builder.Build();
 
 
@@ -34,10 +61,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
