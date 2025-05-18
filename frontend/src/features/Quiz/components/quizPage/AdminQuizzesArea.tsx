@@ -1,31 +1,27 @@
 'use client';
 import React from 'react';
-import QuizCard from './QuizCard';
 import PlaceHolder from './PlaceHolder';
-import useGlobalContextProvider from '../../../../context/ContextApi';
-// import Image from 'next/image';
-//import { useRouter } from 'next/navigation';
-// import DropDown from './DropDown';
-import { QuizData } from '@/features/Quiz/interface';
+import AdminQuizCard from './AdminQuizCard';
+import { QuizDataDto } from '../../interface';
 
-function QuizzesArea() {
-  const { allQuizzes, } =
-    useGlobalContextProvider();
-//   const router = useRouter();
-console.log(allQuizzes);
+interface Props {
+  quizzes: QuizDataDto[];
+}
+
+function AdminQuizzesArea({quizzes}: Props) {
   return (
     <div className="poppins mt-5">
       <div>
-            {allQuizzes.length === 0 ? (
+            {quizzes.length === 0 ? (
               <PlaceHolder />
             ) : (
               <div>
                 {/* <DropDown /> */}
                 <h2 className="text-xl font-bold">My Quizzes</h2>
                 <div className="w-full mt-6 flex gap-6 flex-wrap ">
-                    {allQuizzes.map((singleQuiz: QuizData, quizIndex:number) => (
+                    {quizzes.map((singleQuiz: QuizDataDto, quizIndex:number) => (
                         <div key={quizIndex}>
-                        <QuizCard singleQuiz={singleQuiz} />
+                        <AdminQuizCard singleQuiz={singleQuiz} />
                         </div>
                     ))}
                   <div
@@ -70,4 +66,4 @@ console.log(allQuizzes);
   );
 }
 
-export default QuizzesArea;
+export default AdminQuizzesArea;

@@ -12,6 +12,8 @@ import QuizCreatePage from "@/features/Quiz/pages/QuizCreatePage";
 import SignInPage from "@/features/Auth/pages/SignInPage";
 import { AuthProvider } from "@/hooks/useAuth";
 import PrivateRoute from "./PrivateRoute";
+import QuizViewPage from "@/features/Quiz/pages/QuizViewPage";
+import QuizDetailPage from "@/features/Quiz/pages/QuizDetailPage";
 
 const AppRoutes = () => {
   return (
@@ -51,7 +53,7 @@ const AppRoutes = () => {
             }
           />
         </Route>
-        <Route
+        {/* <Route
           path="/quiz"
           element={
             <PublicRoute>
@@ -60,7 +62,7 @@ const AppRoutes = () => {
               </ContextProvider>
             </PublicRoute>
           }
-        />
+        /> */}
         <Route
           path="/quiz-play"
           element={
@@ -77,6 +79,36 @@ const AppRoutes = () => {
             <ContextProvider>
               <PrivateRoute>
                 <QuizCreatePage />
+              </PrivateRoute>
+            </ContextProvider>
+          }
+        />
+        <Route
+          path="/quiz-admin-view"
+          element={
+            <ContextProvider>
+              <PrivateRoute>
+                <QuizViewPage />
+              </PrivateRoute>
+            </ContextProvider>
+          }
+        />
+        <Route
+          path="/quiz-admin/:quizId"
+          element={
+            <ContextProvider>
+              <PrivateRoute>
+                <QuizDetailPage />
+              </PrivateRoute>
+            </ContextProvider>
+          }
+        />
+        <Route
+          path="/quiz"
+          element={
+            <ContextProvider>
+              <PrivateRoute>
+                <QuizViewPage />
               </PrivateRoute>
             </ContextProvider>
           }

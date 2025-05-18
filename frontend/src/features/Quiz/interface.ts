@@ -46,3 +46,25 @@ export enum QuestionType {
     FillInBlank,
     Text
 }
+
+
+
+export interface QuizDataDto {
+    id: string,
+    title: string,
+    isShuffled: boolean,
+    questions: QuestionDataDto[]
+}
+
+export interface QuestionDataDto {
+    id: string,
+    content: string,
+    questionType: QuestionType
+    choices: ChoiceDataDto[]
+}
+
+export interface ChoiceDataDto {
+    id: string,
+    content: string,
+    isCorrect: boolean
+}
