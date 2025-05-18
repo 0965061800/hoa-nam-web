@@ -6,5 +6,6 @@ namespace HoaNam.Application.Interfaces.IRepositories
 	public interface IQuizQueryRepository
 	{
 		Task<Result<List<Quiz>>> GetQuizzesByAdminId(Guid adminId);
+		Task<Result<Quiz>> GetQuizzByIdByAdmin(Guid quizzId, Guid adminId);
 	}
 }

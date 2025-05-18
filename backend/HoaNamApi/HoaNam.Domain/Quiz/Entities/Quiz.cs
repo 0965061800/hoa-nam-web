@@ -40,12 +40,7 @@ namespace HoaNam.Domain.Quiz.Entities
 			if (question == null) throw new QuizException("The question is not in the quiz");
 			question.AddListOfChoice(choices);
 		}
-		public void AddChoiceForQuestion(Guid questionId, string content, bool isCorrect)
-		{
-			var question = _questions.FirstOrDefault(x => x.Id == questionId);
-			if (question == null) throw new QuizException("The question is not in the quiz");
-			question.AddChoice(Guid.NewGuid(), content, isCorrect, question.Id);
-		}
+
 
 		public void RemoveQuestion(Guid questionId)
 		{

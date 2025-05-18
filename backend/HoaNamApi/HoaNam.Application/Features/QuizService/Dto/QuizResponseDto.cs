@@ -12,6 +12,7 @@
 	{
 		public Guid Id { get; set; }
 		public string Content { get; set; } = string.Empty;
+		public QuestionType QuestionType { get; set; }
 		public List<ChoiceResponseDto> Choices { get; set; } = new List<ChoiceResponseDto> { };
 	}
 

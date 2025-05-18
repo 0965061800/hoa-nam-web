@@ -32,17 +32,25 @@ namespace HoaNam.Domain.Quiz.Entities
 			}
 
 			//Update
+
 			foreach (var choiceDto in choices)
 			{
 				var incoming = _choices.FirstOrDefault(x => x.Id == choiceDto.Id);
-				if (incoming != null) incoming.UpdateContent(choiceDto.Content);
+				if (incoming != null)
+				{
+					incoming.UpdateContent(choiceDto.Content);
+					incoming.ChangeCorrect(choiceDto.IsCorrect);
+				};
 			}
 
 			//Remove
-			foreach (var choiceDb in _choices)
+			foreach (var choiceDb in _choices.ToList())
 			{
 				if (!choices.Any(x => x.Id == choiceDb.Id)) RemoveChoice(choiceDb.Id);
 			}
+
+			Apply(new QuestionEvent.ChoicesSynced { });
+
 		}
 
 		public void AddListOfChoice(List<Choice> choices)
@@ -60,24 +68,14 @@ namespace HoaNam.Domain.Quiz.Entities
 		}
 		public void AddChoice(Guid ChoiceId, string content, bool isCorrect, Guid questionId)
 		{
-			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
-			rule.ValidateCanAddChoice(this, new Choice(ChoiceId, content, isCorrect, questionId));
-			Apply(new QuestionEvent.ChoiceAddedToQuestion
-			{
-				Id = ChoiceId,
-				Content = content,
-				IsCorrect = isCorrect,
-				QuestionId = questionId
-			});
+			Choice newChoice = new Choice(ChoiceId, content, isCorrect, questionId);
+			_choices.Add(newChoice);
 		}
+
 		public void RemoveChoice(Guid choiceId)
 		{
-			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
-			rule.ValidateCanRemoveChoice(this, choiceId);
-			Apply(new QuestionEvent.ChoiceRemovedFromQuestion
-			{
-				ChoiceId = choiceId,
-			});
+			var choiceNeedRemove = _choices.FirstOrDefault(c => c.Id == choiceId);
+			if (choiceNeedRemove != null) _choices.Remove(choiceNeedRemove);
 		}
 
 		//Do not need the function of Change_Question_Type
@@ -101,14 +99,6 @@ namespace HoaNam.Domain.Quiz.Entities
 						Choice choiceAdded = new Choice(Guid.NewGuid(), choice.content, choice.isCorrect, Id);
 						_choices.Add(choiceAdded);
 					}
-					break;
-				case QuestionEvent.ChoiceAddedToQuestion e:
-					Choice newChoice = new Choice(e.Id, e.Content, e.IsCorrect, e.QuestionId);
-					_choices.Add(newChoice);
-					break;
-				case QuestionEvent.ChoiceRemovedFromQuestion e:
-					var choiceNeedRemove = _choices.FirstOrDefault(c => c.Id == e.ChoiceId);
-					if (choiceNeedRemove != null) _choices.Remove(choiceNeedRemove);
 					break;
 				case QuestionEvent.ContentChanged e:
 					Content = e.Content;
@@ -134,6 +124,8 @@ namespace HoaNam.Domain.Quiz.Entities
 					_ => true
 				});
 			if (!valid) throw new InvalidEntityStateException(this, $"Post-checks failed in some field");
+			var rule = QuestionChoiceRuleFactory.GetRuleFor(QuestionType);
+			rule.CheckValidListChoice(_choices);
 		}
 	}
 }

@@ -14,14 +14,15 @@
 			public Guid QuestionId { get; set; }
 		}
 
-		public class ChoiceRemovedFromQuestion
-		{
-			public Guid ChoiceId { get; set; }
-		}
 
 		public class ContentChanged
 		{
 			public string Content { get; set; }
+		}
+
+		public class ChoicesSynced
+		{
+			//?????
 		}
 	}
 }

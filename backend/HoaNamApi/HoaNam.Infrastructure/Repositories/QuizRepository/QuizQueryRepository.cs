@@ -13,6 +13,15 @@ namespace HoaNam.Infrastructure.Repositories.QuizRepository
 		{
 			_dbContext = dbContext;
 		}
+
+		public async Task<Result<Quiz>> GetQuizzByIdByAdmin(Guid quizzId, Guid adminId)
+		{
+			var quizzes = await _dbContext.Quizzes.Include(q => q.Questions).ThenInclude(qu => qu.Choices).Where(q => q.CreatedUserId == adminId).FirstOrDefaultAsync(x => x.Id == quizzId);
+			if (quizzes == null) return Result<Quiz>.Fail($"There is not quiz with this id: {quizzId}");
+			Result<Quiz> result = Result<Quiz>.Success(quizzes);
+			return result;
+		}
+
 		public async Task<Result<List<Quiz>>> GetQuizzesByAdminId(Guid adminId)
 		{
 			var quizzes = await _dbContext.Quizzes.Include(q => q.Questions).ThenInclude(qu => qu.Choices).Where(q => q.CreatedUserId == adminId).ToListAsync();

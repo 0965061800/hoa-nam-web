@@ -24,6 +24,14 @@ namespace HoaNam.Domain.Quiz.Entities
 				Content = newContent
 			});
 		}
+
+		public void ChangeCorrect(bool isCorrect)
+		{
+			if (isCorrect != IsCorrect) Apply(new ChoiceEvent.ChoiceIsCorrectUpdated
+			{
+				IsCorrect = isCorrect
+			});
+		}
 		protected override void When(object @event)
 		{
 			switch (@event)
@@ -36,6 +44,9 @@ namespace HoaNam.Domain.Quiz.Entities
 					break;
 				case ChoiceEvent.ChoiceContentUpdated e:
 					Content = e.Content;
+					break;
+				case ChoiceEvent.ChoiceIsCorrectUpdated e:
+					IsCorrect = e.IsCorrect;
 					break;
 			}
 		}

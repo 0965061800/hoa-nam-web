@@ -13,5 +13,9 @@
 		{
 			public string Content { get; set; }
 		}
+		public class ChoiceIsCorrectUpdated
+		{
+			public bool IsCorrect { get; set; }
+		}
 	}
 }
