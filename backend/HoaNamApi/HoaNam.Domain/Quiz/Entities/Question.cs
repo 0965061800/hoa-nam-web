@@ -22,6 +22,13 @@ namespace HoaNam.Domain.Quiz.Entities
 			Content = content;
 			QuestionType = questionType;
 		}
+		public Question(Guid id, string content, QuestionType questionType, Guid quizId)
+		{
+			Id = id;
+			Content = content;
+			QuestionType = questionType;
+			QuizId = quizId;
+		}
 
 		public void SyncChoices(List<ChoiceData> choices)
 		{

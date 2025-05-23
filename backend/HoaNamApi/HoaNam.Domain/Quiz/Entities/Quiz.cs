@@ -83,7 +83,7 @@ namespace HoaNam.Domain.Quiz.Entities
 					CreatedUserId = e.CreatedUserId;
 					break;
 				case QuizEvent.QuestionAddedToQuizEvent e:
-					Question newQuestion = new Question(e.QuestionId, e.Content, e.QuestionType);
+					Question newQuestion = new Question(e.QuestionId, e.Content, e.QuestionType, Id);
 					_questions.Add(newQuestion);
 					UpdateAt = DateTime.UtcNow;
 					break;

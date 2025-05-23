@@ -11,6 +11,7 @@ namespace HoaNamApi.Mapping
 		{
 			CreateMap<ChoiceRequestDto, NewQuizChoiceDto>();
 			CreateMap<UpdateChoiceDto, ChoiceUpdateDto>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => string.IsNullOrWhiteSpace(src.Id) ? Guid.NewGuid() : new Guid(src.Id)));
+			CreateMap<NewChoiceDto, ChoiceCreateDto>().ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()));
 		}
 	}
 }

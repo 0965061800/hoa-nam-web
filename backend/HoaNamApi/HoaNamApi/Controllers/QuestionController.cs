@@ -33,5 +33,20 @@ namespace HoaNamApi.Controllers
 			await _mediator.Send(updateCommand);
 			return Ok();
 		}
+
+		[HttpPost("add")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> AddNewQuestion(NewQuestionDto dto)
+		{
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
+			Guid userId = new Guid(accountId);
+
+			QuestionCreateCommand updateCommand = _mapper.Map<QuestionCreateCommand>(dto);
+
+			updateCommand.UserId = userId;
+			await _mediator.Send(updateCommand);
+			return Ok();
+		}
 	}
 }

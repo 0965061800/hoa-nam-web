@@ -15,12 +15,12 @@ namespace HoaNam.Infrastructure.Identity
 		}
 
 
-		public async Task<Result<UnitValue>> SignUp(string username, string password)
+		public async Task<Result<UnitValue>> SignUp(string username, string password, string role)
 		{
 			var user = new AppIdentityUser { Id = Guid.NewGuid(), UserName = username, Email = "" };
 			var result = await _userManager.CreateAsync(user, password);
 			var createdUser = await _userManager.FindByNameAsync(username);
-			if (result.Succeeded) await _userManager.AddToRoleAsync(createdUser, "Admin");
+			if (result.Succeeded) await _userManager.AddToRoleAsync(createdUser, role);
 			return Result<UnitValue>.Success(UnitValue.Value);
 		}
 

@@ -1,5 +1,6 @@
 ﻿using HoaNam.Domain.Quiz.Entities;
 using HoaNam.Domain.Quiz.ValueObjects;
+using HoaNam.Domain.QuizAttempts.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +16,8 @@ namespace HoaNam.Infrastructure.Identity
 		public DbSet<Question> Questions { get; set; }
 		public DbSet<Quiz> Quizzes { get; set; }
 		public DbSet<Choice> Choices { get; set; }
+		public DbSet<QuizAttempt> QuizAttempts { get; set; }
+		public DbSet<QuestionAttempt> QuestionAttempts { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
@@ -51,6 +54,7 @@ namespace HoaNam.Infrastructure.Identity
 			builder.Entity<Question>(entity =>
 			{
 				entity.HasKey(e => e.Id);
+				entity.Property(c => c.Id).ValueGeneratedNever();
 				entity.HasMany(e => e.Choices)
 					.WithOne()
 					.HasForeignKey("QuestionId");
@@ -64,6 +68,24 @@ namespace HoaNam.Infrastructure.Identity
 				entity.HasKey(e => e.Id);
 				entity.Property(c => c.Id).ValueGeneratedNever();
 			});
+
+			builder.Entity<QuizAttempt>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+				entity.Property(p => p.Id).ValueGeneratedNever();
+				entity.HasMany(e => e.QuestionAttempts)
+					.WithOne()
+					.HasForeignKey("AttemptId");
+				entity.Navigation(e => e.QuestionAttempts)
+					.UsePropertyAccessMode(PropertyAccessMode.Field);
+			});
+
+			builder.Entity<QuestionAttempt>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+				entity.Property(p => p.Id).ValueGeneratedNever();
+			});
+
 
 			var adminRoleId = new Guid("11111111-1111-1111-1111-111111111110");
 			var adminUserId = new Guid("11111111-1111-1111-1111-111111111111");

@@ -14,7 +14,7 @@ namespace HoaNam.Application.Features.AuthService.SignUp
 
 		public async Task<UnitValue> Handle(SignUpRequest request, CancellationToken cancellationToken)
 		{
-			await _identityService.SignUp(request.Username, request.Password);
+			await _identityService.SignUp(request.Username, request.Password, request.Role);
 			return UnitValue.Value;
 		}
 	}
