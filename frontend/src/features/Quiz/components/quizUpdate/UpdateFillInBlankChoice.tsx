@@ -4,7 +4,6 @@ import {
 } from "@/features/Quiz/interface";
 
 interface ChoicesProps {
-  questionIndex: number;
   singleQuestion: QuestionDataDto;
   handleQuestionUpdate: (
     updatedQuestion: QuestionDataDto

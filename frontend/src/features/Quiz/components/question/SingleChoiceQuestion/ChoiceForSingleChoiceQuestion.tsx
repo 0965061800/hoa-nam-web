@@ -9,7 +9,6 @@ interface ChoicesProps {
   singleQuestion: AddQuizQuestionDto,
   handleQuestionUpdate: (updatedQuestion: AddQuizQuestionDto, qIndex: number) => void
   value: AddQuizChoiceDto[],
-  prefixes: string[]
 }
 
 function ChoiceForSingleChoiceQuestion({

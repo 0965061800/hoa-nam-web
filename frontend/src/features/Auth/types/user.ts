@@ -7,5 +7,5 @@ export interface ISuccesUser {
   token: string;
   username: string;
   userId: string;
-  role: string[];
+  roles: string[];
 }

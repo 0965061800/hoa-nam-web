@@ -27,7 +27,6 @@ function QuizCreateNav({ newQuiz }: Props) {
       toast.error(isValid.message);
       return;
     }
-    console.log(newQuiz);
     setIsLoading(true);
     handleCreateQuiz(newQuiz, token);
     setIsLoading(false);

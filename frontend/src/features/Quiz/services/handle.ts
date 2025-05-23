@@ -76,3 +76,26 @@ export async function handleUpdatedQuestion(
     toast.error(`Failed to update question!: ${error.message}`);
   }
 }
+
+export async function handleCreatedQuestion(
+  token: string | null,
+  question: QuestionDataDto,
+  quizId: string
+): Promise<void> {
+  console.log(1);
+  try {
+    await axios.post(
+      `${apiUrl}/Question/add`,
+      { ...question, quizId },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("The question has been created successfully!");
+  } catch (error:any) {
+    toast.error(`Failed to update question!: ${error.message}`);
+  }
+}

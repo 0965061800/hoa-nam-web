@@ -1,16 +1,19 @@
 import { useAuth } from "@/hooks/useAuth";
-import Layout from "@/layout/Layout";
-import {Navigate } from "react-router-dom";
+import {Navigate, Outlet } from "react-router-dom";
 
 
 interface Props {
-    children: React.ReactNode;
+    role: string
 }
 
-const PrivateRoute : React.FC<Props> = ({children}) => {
+const PrivateRoute : React.FC<Props> = ({role}: Props) => {
     const { userName } = useAuth();
 
-    return userName ? <Layout>{children}</Layout> : <Navigate to="/signin" />;
+    if (userName !== null) {
+        if (role === "User")  return <Navigate to="/signin" />;
+        if (role === "Admin") return <Navigate to="/admin/signin" />;
+    }
+    return <Outlet></Outlet>
 };
 
 export default PrivateRoute;

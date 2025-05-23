@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';;
 import useGlobalContextProvider from '../../../../context/ContextApi';
 import convertToFaIcons from '../../utils/converToFaIcon';
+import useDebounce from '@/hooks/useDebounce';
 
 export interface quizTitleProps {
   onChangeQuizTitle: (text: string) => void;
@@ -16,9 +17,12 @@ function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
   const { setOpenIconBox } = openBoxToggle;
   const { selectedIcon, setSelectedIcon } = selectedIconObject;
 
-  function handleTextInputChange(text: string) {
-    onChangeQuizTitle(text);
-  }
+  const [title, setTitle] = useState('');
+  const debouncedInputValue = useDebounce(title, 500);
+
+  useEffect(() => {
+    onChangeQuizTitle(debouncedInputValue);
+  }, [debouncedInputValue]);
 
   useEffect(() => {
     if (typeof selectedIcon.faIcon === 'string') {
@@ -38,8 +42,9 @@ function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
         </div>
         <input
           onChange={(e) => {
-            handleTextInputChange(e.target.value);
+            setTitle(e.target.value);
           }}
+          value={title}
           ref={quizTitleRef}
           className="outline-none border-b-2 pt-1 w-[300px] text-[13px]"
           placeholder="Enter the Name Of The Quiz..."

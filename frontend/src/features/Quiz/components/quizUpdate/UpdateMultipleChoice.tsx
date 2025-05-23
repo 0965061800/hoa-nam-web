@@ -5,14 +5,12 @@ import toast from 'react-hot-toast';
 import { ChoiceDataDto, QuestionDataDto } from '@/features/Quiz/interface';
 
 interface ChoicesProps {
-  questionIndex: number,
   singleQuestion: QuestionDataDto,
   handleQuestionUpdate: (updatedQuestion: QuestionDataDto) => void
 }
 
 function UpdateMultipleChoice({
   singleQuestion,
-  questionIndex,
   handleQuestionUpdate
 }: ChoicesProps) {
   const { choices } = singleQuestion;
@@ -71,7 +69,7 @@ function UpdateMultipleChoice({
           >
             <input
             type="checkbox"
-            name={`correctAnswer-${questionIndex}`}
+            name={`correctAnswer-${singleQuestion.id}`}
             checked={singleChoice.isCorrect}
             onChange={() => onCorrectAnswerChange(choiceIndex)}
             className="mr-2 accent-red-500"

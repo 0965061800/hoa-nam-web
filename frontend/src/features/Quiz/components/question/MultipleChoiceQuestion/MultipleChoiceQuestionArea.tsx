@@ -24,7 +24,6 @@ const MultipleChoiceQuestionArea = ({
   setQuizQuestions,
   deleteQuestion,
 }: SCQProps) => {
-  const prefixes = ["A", "B", "C", "D", "E", "F", "G"];
 
   function handleInputChange(questionIndex: number, text: string) {
     const updatedQuestions = quizQuestions.map((question, i) => {
@@ -73,10 +72,9 @@ useEffect(() => {
       >
         <MultipleChoiceQuestion
           questionIndex={questionIndex}
-          value={question.content}
           ref={textAreaRefs.current[questionIndex]}
-          onChange={(e) => {
-            handleInputChange(questionIndex, e.target.value);
+          onChangeContent={(value:string) => {
+            handleInputChange(questionIndex, value);
           }}
         />
         <ChoiceForMultipleChoiceQuestion
@@ -84,7 +82,6 @@ useEffect(() => {
           singleQuestion={question}
           handleQuestionUpdate = {handleQuestionUpdate}
           value={question.choices}
-          prefixes={prefixes}
         />
         <FontAwesomeIcon
           icon={faXmark}

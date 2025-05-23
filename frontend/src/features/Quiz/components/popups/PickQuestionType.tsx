@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  handlePickQuestionType: (value: string) => void;
+  handlePickQuestionType: (questionTypeNumber: string) => void;
   handleCancelCreateNewQuestion: () => void;
 }
 

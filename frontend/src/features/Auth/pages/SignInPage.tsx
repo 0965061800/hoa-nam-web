@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { SignInFormType, signInSchema } from "../signInSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,28 +8,46 @@ import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useAuth } from "@/hooks/useAuth";
 import { ISuccesUser } from "../types/user";
+import { useNavigate } from "react-router-dom";
 
 const apiUrl = import.meta.env.VITE_APP_BASE_URL;
 
-const SignInPage = () => {
+interface Props {
+  role: string;
+}
+
+const SignInPage = ({ role }: Props) => {
+  const navigate = useNavigate();
+
   const form = useForm<SignInFormType>({
     resolver: zodResolver(signInSchema),
   });
 
-  const { login } = useAuth();
+  const { userName, login, roles} = useAuth();
+  useEffect(() => {
+    if (userName !== undefined && userName !== null && roles?.includes(role)) {
+      navigate("/");
+    }
+  }, [userName, navigate, roles]);
   function onSubmit(values: SignInFormType) {
     axios
-      .post(`${apiUrl}/Account/signin`, values, {
-        withCredentials: true,
-      })
+      .post(
+        role == "User"
+          ? `${apiUrl}/Account/signin`
+          : `${apiUrl}/Account/admin/signin`,
+        values,
+        {
+          withCredentials: true,
+        }
+      )
       .then((response) => {
         const data = response.data;
 
         const user: ISuccesUser = {
           token: data.token,
           username: data.username,
-          role: data.role,
-          userId: data.userId
+          roles: data.roles,
+          userId: data.userId,
         };
 
         login(user); // now correctly passing required info
@@ -38,7 +56,7 @@ const SignInPage = () => {
 
   return (
     <div className="mx-auto container max-w-[1240px] font-primative mb-10">
-      <p className="mt-16 text-center text-3xl font-bold text-primative ">
+      <p className="pt-10 text-center text-3xl font-bold text-primative">
         Đăng nhập
       </p>
       <Form {...form}>

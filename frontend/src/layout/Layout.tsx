@@ -1,18 +1,26 @@
-import React from 'react';
-import Header from './Header';
-
-interface Props {
-    children: React.ReactNode
-}
+import React from "react";
+import Header from "./Header";
+import { Toaster } from "react-hot-toast";
+import { Outlet } from "react-router-dom";
 
 
-const Layout:React.FC<Props> = ({children}) => {
-    return (
-        <div>
-            <Header></Header>
-            {children}
-        </div>
-    );
+
+const Layout: React.FC = () => {
+  return (
+    <div>
+      <Toaster
+        toastOptions={{
+          style: {
+            fontSize: "13px",
+          },
+        }}
+      />
+      <Header></Header>
+      <div className="mt-32">
+       <Outlet></Outlet>
+      </div>
+    </div>
+  );
 };
 
-export default Layout
+export default Layout;

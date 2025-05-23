@@ -22,9 +22,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
 
     const navigate = useNavigate();
     const login = async (user: ISuccesUser) => {
+        console.log(user);
         setToken(user.token);
         setUserName(user.username)
-        setUserRoles(user.role);
+        setUserRoles(user.roles);
         navigate("/");
     }
 

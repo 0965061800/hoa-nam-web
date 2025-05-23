@@ -1,14 +1,12 @@
 import React from 'react';
-import Layout from '../layout/Layout';
+import { Outlet } from 'react-router-dom';
 
 
-interface Props {
-    children: React.ReactNode;
-}
 
-const PublicRoute:React.FC<Props> = ({children}) => {
+
+const PublicRoute:React.FC = () => {
     return (
-        <Layout>{children}</Layout>
+        <Outlet></Outlet>
     );
 };
 

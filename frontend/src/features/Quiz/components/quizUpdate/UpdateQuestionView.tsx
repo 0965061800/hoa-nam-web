@@ -8,14 +8,16 @@ import UpdateFillInBlankChoice from "./UpdateFillInBlankChoice";
 import toast from "react-hot-toast";
 
 interface Props {
+  mode: "update" | "create";
   question: QuestionDataDto;
   handleCancelUpdateQuestion: () => void;
-  handleUpdateQuestion: (updatedQuestion: QuestionDataDto) => void;
+  handleSaveChangeQuestion: (updatedQuestion: QuestionDataDto) => void;
 }
 const UpdateQuestionView = ({
+  mode,
   question,
   handleCancelUpdateQuestion,
-  handleUpdateQuestion,
+  handleSaveChangeQuestion,
 }: Props) => {
   const [updatedQuestion, setUpdatedQuestion] = useState<QuestionDataDto>({
     ...question,
@@ -40,7 +42,7 @@ const UpdateQuestionView = ({
         `Please ensure that all previous choices are filled out!`
       );
     } else {
-      handleUpdateQuestion(updatedQuestion);
+      handleSaveChangeQuestion(updatedQuestion);
     }
   }
 
@@ -49,7 +51,7 @@ const UpdateQuestionView = ({
     <div className="slate bg-slate-100 bg-opacity-70 fixed top-0 bottom-0 left-0 right-0 z-10">
       <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="min-w-[800px] bg-white px-7 pt-5 pb-16 rounded-xl border border-red-300 flex flex-col justify-between">
-          <p className="text-xl font-semibold text-center">Update Question</p>
+          <p className="text-xl font-semibold text-center">{`${mode == "create" ? "Create New Question" : "Update Question"}`}</p>
           <div className="mt-5 flex flex-col gap-3">
             <div className="flex items-center gap-3 w-full">
               <div className="flex gap-2 text-[15px] border-gray-200">
@@ -67,19 +69,16 @@ const UpdateQuestionView = ({
             <div>
               {question.questionType == QuestionType.MultipleChoice ? (
                 <UpdateMultipleChoice
-                  questionIndex={0}
                   singleQuestion={updatedQuestion}
                   handleQuestionUpdate={handleQuestionUpdateFromChoice}
                 ></UpdateMultipleChoice>
               ) : question.questionType == QuestionType.SingleChoice ? (
                 <UpdateSingleChoice
-                  questionIndex={0}
                   singleQuestion={updatedQuestion}
                   handleQuestionUpdate={handleQuestionUpdateFromChoice}
                 ></UpdateSingleChoice>
               ) : (
                 <UpdateFillInBlankChoice
-                  questionIndex={0}
                   singleQuestion={updatedQuestion}
                   handleQuestionUpdate={handleQuestionUpdateFromChoice}
                 ></UpdateFillInBlankChoice>
@@ -97,7 +96,7 @@ const UpdateQuestionView = ({
             onClick={() => handleSaveChange()}
             className="text-sm bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-900 absolute bottom-4 right-4 cursor-pointer"
           >
-            Update
+            Save
           </button>
         </div>
       </div>

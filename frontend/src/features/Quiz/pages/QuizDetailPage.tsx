@@ -4,9 +4,11 @@ import UpdateQuestionView from "../components/quizUpdate/UpdateQuestionView";
 import { QuestionDataDto, QuestionType, QuizDataDto } from "../interface";
 import { useAuth } from "@/hooks/useAuth";
 import {
+  handleCreatedQuestion,
   handleGetAdminQuizDetail,
   handleUpdatedQuestion,
 } from "../services/handle";
+import PickQuestionType from "../components/popups/PickQuestionType";
 
 const QuizDetailPage = () => {
   const { quizId } = useParams();
@@ -26,19 +28,40 @@ const QuizDetailPage = () => {
     fetchQuizzes();
   }, []);
 
-  const [popUpQuestionUpdate, setPopUpQuestionUpdate] =
-    useState<boolean>(false);
-  const [questionUpdate, setQuestionUpdate] = useState<QuestionDataDto>();
 
+//Handle Update Question
+  const [mode, setMode] = useState<"update"|"create">("update");
+
+  
+  const [popUpChooseType, setPopUpChooseType] = useState<boolean>(false);
+  
+  const [questionUpdate, setQuestionUpdate] = useState<QuestionDataDto>();
+  
   function handleEditQuestion(question: QuestionDataDto) {
     setPopUpQuestionUpdate(true);
     setQuestionUpdate(question);
+    setMode("update");
   }
-
   function handleCancelUpdateQuestion() {
     setPopUpQuestionUpdate(false);
     setQuestionUpdate(undefined);
   }
+  
+  const [popUpQuestionUpdate, setPopUpQuestionUpdate] =
+    useState<boolean>(false);
+  function handleCreateQuestion(questionType: string) {
+    setPopUpChooseType(false);
+    setPopUpQuestionUpdate(true);
+    setMode("create");
+    const newQuestion : QuestionDataDto = {
+      id : "",
+      content : "",
+      questionType: parseInt(questionType, 10),
+      choices : []
+    }
+    setQuestionUpdate(newQuestion);
+  }
+
 
   async function handleUpdateQuestion(updatedQuestion: QuestionDataDto) {
     await handleUpdatedQuestion(token, updatedQuestion, quizId!);
@@ -47,16 +70,33 @@ const QuizDetailPage = () => {
     await fetchQuizzes();
   }
 
+  async function CreateQuestion(updatedQuestion: QuestionDataDto) {
+     await handleCreatedQuestion(token, updatedQuestion, quizId!);
+      setPopUpQuestionUpdate(false);
+      setQuestionUpdate(undefined);
+      await fetchQuizzes();
+  }
+
+
   return quiz == undefined ? (
     <div></div>
   ) : (
     <div className="max-w-5xl mx-auto px-6 py-10">
       {popUpQuestionUpdate ? (
         <UpdateQuestionView
+          mode = {mode}
           question={questionUpdate!}
           handleCancelUpdateQuestion={handleCancelUpdateQuestion}
-          handleUpdateQuestion={(value) => handleUpdateQuestion(value)}
+          handleSaveChangeQuestion={(value) => mode == "update" ? handleUpdateQuestion(value) : CreateQuestion(value)}
         ></UpdateQuestionView>
+      ) : (
+        ""
+      )}
+      {popUpChooseType ? (
+        <PickQuestionType
+          handlePickQuestionType={handleCreateQuestion}
+          handleCancelCreateNewQuestion={() => setPopUpChooseType(false)}
+        ></PickQuestionType>
       ) : (
         ""
       )}
@@ -132,6 +172,12 @@ const QuizDetailPage = () => {
             )}
           </div>
         ))}
+       <button
+        onClick={() => setPopUpChooseType(true)}
+        className="text-sm bg-rose-500 text-white px-3 py-1 rounded-lg hover:bg-rose-600"
+      >
+        New question
+      </button>
       </div>
     </div>
   );

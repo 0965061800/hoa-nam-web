@@ -1,15 +1,22 @@
-import { forwardRef, Ref } from "react";
+import useDebounce from "@/hooks/useDebounce";
+import { forwardRef, Ref, useEffect, useState } from "react";
 
 interface SingleQuestionProps {
   questionIndex: number;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  onChangeContent: (value: string) => void;
 }
 
 const MultipleChoiceQuestion = forwardRef(function SingleQuestion(
-  { questionIndex, value, onChange } : SingleQuestionProps,
+  { questionIndex, onChangeContent } : SingleQuestionProps,
   ref:Ref<HTMLTextAreaElement>,
 ) {
+  const [content, setContent] = useState('')
+  const debounceContent = useDebounce(content, 600);
+
+  useEffect(() => {
+    onChangeContent(debounceContent);
+  }, [debounceContent])
+
   return (
     <div className="w-full  mr-5 mt-3">
       <div className="flex items-center gap-3">
@@ -21,8 +28,8 @@ const MultipleChoiceQuestion = forwardRef(function SingleQuestion(
           className="border border-gray-200 rounded-md p-3 ml-3 w-full h-[50px] resize-none 
             text-[13px] outline-none"
           placeholder="Your Question Here..."
-          value={value}
-          onChange={onChange}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
           ref={ref}
         />
       </div>

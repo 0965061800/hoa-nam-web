@@ -13,8 +13,6 @@ function QuizCreatePage() {
         title: '',
         questions: quizQuestions,
       });
-
-
   useEffect(() => {
     setNewQuiz((prevQuiz) => ({
       ...prevQuiz,

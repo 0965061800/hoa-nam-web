@@ -14,44 +14,46 @@ import { AuthProvider } from "@/hooks/useAuth";
 import PrivateRoute from "./PrivateRoute";
 import QuizViewPage from "@/features/Quiz/pages/QuizViewPage";
 import QuizDetailPage from "@/features/Quiz/pages/QuizDetailPage";
+import SignUpPage from "@/features/Auth/pages/SignUpPage";
+import RoleBasedRoute from "./RoleBaseRoute";
+import Layout from "@/layout/Layout";
 
 const AppRoutes = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <PublicRoute>
-              <Home />
-            </PublicRoute>
-          }
-        />
-        <Route path="/courses">
-          <Route
-            index
-            element={
-              <PublicRoute>
-                <Courses />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="detail"
-            element={
-              <PublicRoute>
-                <CoursesDetail />
-              </PublicRoute>
-            }
-          />
-          <Route
-            path="register"
-            element={
-              <PublicRoute>
-                <RegisterCourse />
-              </PublicRoute>
-            }
-          />
+        {/* Public Route*/}
+        <Route element={<PublicRoute />}>
+          <Route element={<Layout></Layout>}>
+            <Route path="/" element={<Home />} />
+            <Route path="/courses" element={<Courses></Courses>} />
+            <Route path="/signin" element={<SignInPage role = "User" />} />
+            <Route path = "/signup" element = {<SignUpPage role = "User" />} />
+            <Route path = "/admin/signin" element={<SignInPage role = "Admin" />} />
+            <Route path = "/admin/signup" element={<SignUpPage role = "Admin" />} />
+          </Route>
+        </Route>
+        {/* User Route */}
+        <Route element={<PrivateRoute role="User" />}>
+          <Route element={<RoleBasedRoute allowedRole ="User" />}>
+            <Route path="/user" element={<Layout></Layout>}>
+              <Route path="home" element={<Home></Home>}/>
+            </Route>
+          </Route>
+        </Route>
+        <Route element={<Layout />}>
+        </Route>
+        {/* Admin Route */}
+        <Route element={<PrivateRoute role="Admin"/>}>
+          <Route element={<RoleBasedRoute allowedRole="Admin" />}>
+            <Route path="/admin" element={<Layout></Layout>}>
+              <Route path="quizzes" element={<QuizViewPage></QuizViewPage>}/>
+              <Route path="quiz">
+                <Route path=":quizId" element={<QuizDetailPage></QuizDetailPage>}></Route>
+                <Route path="create" element={<QuizCreatePage></QuizCreatePage>}></Route>
+              </Route>
+            </Route>
+          </Route>
         </Route>
         {/* <Route
           path="/quiz"
@@ -63,7 +65,7 @@ const AppRoutes = () => {
             </PublicRoute>
           }
         /> */}
-        <Route
+        {/* <Route
           path="/quiz-play"
           element={
             <PublicRoute>
@@ -72,55 +74,7 @@ const AppRoutes = () => {
               </ContextProvider>
             </PublicRoute>
           }
-        />
-        <Route
-          path="/quiz-create"
-          element={
-            <ContextProvider>
-              <PrivateRoute>
-                <QuizCreatePage />
-              </PrivateRoute>
-            </ContextProvider>
-          }
-        />
-        <Route
-          path="/quiz-admin-view"
-          element={
-            <ContextProvider>
-              <PrivateRoute>
-                <QuizViewPage />
-              </PrivateRoute>
-            </ContextProvider>
-          }
-        />
-        <Route
-          path="/quiz-admin/:quizId"
-          element={
-            <ContextProvider>
-              <PrivateRoute>
-                <QuizDetailPage />
-              </PrivateRoute>
-            </ContextProvider>
-          }
-        />
-        <Route
-          path="/quiz"
-          element={
-            <ContextProvider>
-              <PrivateRoute>
-                <QuizViewPage />
-              </PrivateRoute>
-            </ContextProvider>
-          }
-        />
-        <Route
-          path="/signin"
-          element={
-            <PublicRoute>
-              <SignInPage />
-            </PublicRoute>
-          }
-        />
+        /> */}
       </Routes>
     </AuthProvider>
   );

@@ -24,7 +24,6 @@ const SingleChoiceQuestionArea = ({
   setQuizQuestions,
   deleteQuestion,
 }: SCQProps) => {
-  const prefixes = ["A", "B", "C", "D", "E", "F", "G"];
 
   function handleInputChange(questionIndex: number, text: string) {
     const updatedQuestions = quizQuestions.map((question, i) => {
@@ -96,7 +95,6 @@ useEffect(() => {
           singleQuestion={question}
           handleQuestionUpdate = {handleQuestionUpdate}
           value={question.choices}
-          prefixes={prefixes}
         />
         <FontAwesomeIcon
           icon={faXmark}
