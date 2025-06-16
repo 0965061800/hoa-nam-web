@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import PlaceHolder from './PlaceHolder';
 import { QuizDataDto, UserQuizData } from '../../interface';
 import UserQuizCard from './UserQuizCard';
+import PlaceHolder from '@/features/Admin/Quiz/components/ViewQuiz/PlaceHolder';
 
 interface Props {
   quizzes: UserQuizData[];

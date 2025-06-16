@@ -5,9 +5,9 @@ import {
   faPenToSquare,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-// import convertToFaIcons from '../convertToFaIcons';
-import {QuizDataDto } from '@/features/Quiz/interface';
-import { Link, useNavigate } from 'react-router-dom';
+
+import { useNavigate } from 'react-router-dom';
+import { QuizDataDto } from '../../types/interfaces';
 
 
 interface Props {

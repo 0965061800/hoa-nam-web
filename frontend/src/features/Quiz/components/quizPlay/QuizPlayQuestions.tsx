@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import useGlobalContextProvider from "../../../../context/ContextApi";
 import toast, { Toaster } from "react-hot-toast";
 import {
   QuestionType,
-  QuizQuestion,
   UserAnswer,
   UserChoice,
 } from "@/features/Quiz/interface";

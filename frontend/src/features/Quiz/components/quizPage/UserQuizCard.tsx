@@ -8,13 +8,11 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { UserQuizData } from "@/features/Quiz/interface";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuGroup,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";

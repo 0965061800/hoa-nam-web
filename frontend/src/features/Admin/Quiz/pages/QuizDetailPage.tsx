@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import UpdateQuestionView from "../components/quizUpdate/UpdateQuestionView";
-import { QuestionDataDto, QuestionType, QuizDataDto } from "../interface";
 import { useAuth } from "@/hooks/useAuth";
-import {
-  handleCreatedQuestion,
-  handleGetAdminQuizDetail,
-  handleUpdatedQuestion,
-} from "../services/handle";
-import PickQuestionType from "../components/popups/PickQuestionType";
+
+import { QuestionDataDto, QuestionType, QuizDataDto } from "../types/interfaces";
+import UpdateQuestionView from "../components/ViewQuiz/UpdateQuestionView";
+import PickQuestionType from "../components/PickQuestionType";
+import { handleCreatedQuestion, handleGetAdminQuizDetail, handleUpdatedQuestion } from "../services/apis/handle";
 
 const QuizDetailPage = () => {
   const { quizId } = useParams();

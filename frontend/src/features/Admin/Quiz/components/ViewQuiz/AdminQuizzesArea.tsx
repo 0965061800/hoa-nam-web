@@ -1,8 +1,9 @@
 'use client';
 import React from 'react';
+import { QuizDataDto } from '../../types/interfaces';
 import PlaceHolder from './PlaceHolder';
 import AdminQuizCard from './AdminQuizCard';
-import { QuizDataDto } from '../../interface';
+
 
 interface Props {
   quizzes: QuizDataDto[];

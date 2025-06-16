@@ -1,21 +1,17 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';;
-import useGlobalContextProvider from '../../../../context/ContextApi';
-import convertToFaIcons from '../../utils/converToFaIcon';
 import useDebounce from '@/hooks/useDebounce';
-
 export interface quizTitleProps {
   onChangeQuizTitle: (text: string) => void;
 }
 
 function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
-  const { openBoxToggle, selectedIconObject } =
-    useGlobalContextProvider();
+  // const { openBoxToggle, selectedIconObject } =
+  //   useGlobalContextProvider();
   const quizTitleRef = useRef(null);
 
-  const { setOpenIconBox } = openBoxToggle;
-  const { selectedIcon, setSelectedIcon } = selectedIconObject;
+  // const { setOpenIconBox } = openBoxToggle;
+  // const { selectedIcon, setSelectedIcon } = selectedIconObject;
 
   const [title, setTitle] = useState('');
   const debouncedInputValue = useDebounce(title, 500);
@@ -24,14 +20,14 @@ function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
     onChangeQuizTitle(debouncedInputValue);
   }, [debouncedInputValue]);
 
-  useEffect(() => {
-    if (typeof selectedIcon.faIcon === 'string') {
-      const newFaIcon = convertToFaIcons(selectedIcon.faIcon);
-      const copySelectedIcon = { ...selectedIcon };
-      copySelectedIcon.faIcon = newFaIcon;
-      setSelectedIcon(copySelectedIcon);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (typeof selectedIcon.faIcon === 'string') {
+  //     const newFaIcon = convertToFaIcons(selectedIcon.faIcon);
+  //     const copySelectedIcon = { ...selectedIcon };
+  //     copySelectedIcon.faIcon = newFaIcon;
+  //     setSelectedIcon(copySelectedIcon);
+  //   }
+  // }, []);
 
   return (
     <div className="p-3 flex justify-between border border-rose-700 rounded-md">
@@ -50,7 +46,7 @@ function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
           placeholder="Enter the Name Of The Quiz..."
         />
       </div>
-      <FontAwesomeIcon
+      {/* <FontAwesomeIcon
         onClick={() => {
           setOpenIconBox(true);
         }}
@@ -58,7 +54,7 @@ function QuizCreateTitle({onChangeQuizTitle }:quizTitleProps) {
         height={40}
         width={40}
         className="text-white p-2 rounded-md bg-rose-700 cursor-pointer"
-      />
+      /> */}
     </div>
   );
 }

@@ -4,12 +4,9 @@ import Home from "../pages/Home";
 import PublicRoute from "./PublicRoute";
 import Courses from "../pages/Courses";
 import CoursesDetail from "../pages/CoursesDetail";
-import QuizCreatePage from "@/features/Quiz/pages/QuizCreatePage";
 import SignInPage from "@/features/Auth/pages/SignInPage";
 import { AuthProvider } from "@/hooks/useAuth";
 import PrivateRoute from "./PrivateRoute";
-import QuizViewPage from "@/features/Quiz/pages/QuizViewPage";
-import QuizDetailPage from "@/features/Quiz/pages/QuizDetailPage";
 import SignUpPage from "@/features/Auth/pages/SignUpPage";
 import RoleBasedRoute from "./RoleBaseRoute";
 import Layout from "@/layout/Layout";
@@ -17,6 +14,9 @@ import QuizPage from "@/features/Quiz/pages/QuizPage";
 import QuizPlayPage from "@/features/Quiz/pages/QuizPlayPage";
 import { QuizPlayContextProvider } from "@/features/Quiz/context/QuizPlayContext";
 import QuizResultPage from "@/features/Quiz/pages/QuizResultPage";
+import QuizViewPage from "@/features/Admin/Quiz/pages/QuizViewPage";
+import QuizDetailPage from "@/features/Admin/Quiz/pages/QuizDetailPage";
+import QuizCreatePage from "@/features/Admin/Quiz/pages/QuizCreatePage";
 
 const AppRoutes = () => {
   return (

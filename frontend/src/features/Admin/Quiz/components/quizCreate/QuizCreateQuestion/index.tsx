@@ -9,9 +9,9 @@ import React, {
 } from "react";
 import toast from "react-hot-toast";
 import { AddQuizQuestionDto } from "@/features/Quiz/interface";
-import PickQuestionType from "../../popups/PickQuestionType";
 import QuestionList from "./QuestionList";
 import AddQuestionButton from "./AddQuestionButton";
+import PickQuestionType from "../../PickQuestionType";
 
 export interface quizQuestionsProps {
   quizQuestions: AddQuizQuestionDto[];

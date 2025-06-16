@@ -2,8 +2,8 @@
 import { useState, useEffect } from 'react';
 import QuizCreateNav from '../components/quizCreate/QuizCreateNav';
 import QuizCreateTitle from '../components/quizCreate/QuizCreateTitle';
-import { AddQuizDto, AddQuizQuestionDto } from '../interface';
 import QuizCreateQuestions from '../components/quizCreate/QuizCreateQuestion';
+import { AddQuizDto, AddQuizQuestionDto } from '../types/interfaces';
 
 function QuizCreatePage() {
   const [quizQuestions, setQuizQuestions] = useState<AddQuizQuestionDto[]>([

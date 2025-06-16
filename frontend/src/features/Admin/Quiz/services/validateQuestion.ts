@@ -1,4 +1,4 @@
-import { AddQuizQuestionDto } from "../interface";
+import { AddQuizQuestionDto } from "../types/interfaces";
 
 export interface validQuizQuestionsReturn {
   valid:boolean,

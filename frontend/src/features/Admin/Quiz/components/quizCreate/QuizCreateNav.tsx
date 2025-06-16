@@ -1,12 +1,12 @@
 'use client';
 import toast from 'react-hot-toast';
 import { AddQuizDto} from '@/features/Quiz/interface';
-import QuizBuildIcon from '../../../../assets/quiz-builder-icon.png'
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { validateSingleQuestion } from '../../services/validateQuestion';
-import { handleCreateQuiz } from '../../services/handle';
+import QuizBuildIcon from '../../../../../assets/quiz-builder-icon.png'
 import { useAuth } from '@/hooks/useAuth';
+import { handleCreateQuiz } from '../../services/apis/handle';
+import { validateSingleQuestion } from '../../services/validateQuestion';
 
 
 interface Props {

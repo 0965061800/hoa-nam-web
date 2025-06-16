@@ -6,9 +6,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import React from "react";
-import { QuestionType } from "../../interface";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { QuestionType } from "../types/interfaces";
 
 interface Props {
   handlePickQuestionType: (questionTypeNumber: string) => void;

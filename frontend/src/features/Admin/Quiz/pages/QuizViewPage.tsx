@@ -1,9 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { handleGetAdminQuizzes } from '../services/handle';
-import { QuizDataDto } from '../interface';
-import { useAuth } from '@/hooks/useAuth';
-import AdminQuizzesArea from '../components/quizPage/AdminQuizzesArea';
+
+import { useAuth } from "@/hooks/useAuth";
+import { useEffect, useState } from "react";
+import AdminQuizzesArea from "../components/ViewQuiz/AdminQuizzesArea";
+import { QuizDataDto } from "../types/interfaces";
+import { handleGetAdminQuizzes } from "../services/apis/handle";
 
 export default function QuizViewPage() {
     const [quizzes, setQuizzes] = useState<QuizDataDto[]|undefined>(undefined)
