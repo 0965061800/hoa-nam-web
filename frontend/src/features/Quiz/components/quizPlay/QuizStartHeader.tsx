@@ -1,19 +1,41 @@
-'use client';
-
-import React from 'react';
-import { faCode, faStopwatch } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import useGlobalContextProvider from '@/context/ContextApi';
+"use client";
+import { faCode } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import useQuizPlayContext from "../../context/QuizPlayContext";
+import { useEffect, useState } from "react";
 
 interface Props {
-    parentTimer: number;
+  initialTime: number;
+  onComplete?: () => void;
+  quizEnded: boolean;
 }
 
+function QuizPlayHeader({ initialTime, onComplete, quizEnded }: Props) {
+  const { quizInfo } = useQuizPlayContext();
 
-function QuizPlayHeader({ parentTimer } : Props) {
-  const { quizToStartObject } = useGlobalContextProvider();
-  const { selectQuizToStart } = quizToStartObject;
-  // Extracting info from the selectQuizStart
+  const [timeLeft, setTimeLeft] = useState(initialTime);
+
+    
+  useEffect(() => {
+    if (timeLeft <= 0) {
+      onComplete?.();
+      return;
+    }
+
+    const timerId = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+    if (quizEnded) clearInterval(timerId);
+    return () => clearInterval(timerId);
+  }, [timeLeft, onComplete, quizEnded]);
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60)
+      .toString()
+      .padStart(2, "0");
+    const seconds = (time % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  };
 
   return (
     <div className="flex justify-between">
@@ -28,23 +50,18 @@ function QuizPlayHeader({ parentTimer } : Props) {
           />
         </div>
         <div className="flex flex-col gap-1">
-          <h2 className="font-bold text-xl">{selectQuizToStart ?selectQuizToStart.quizTitle : ""}</h2>
+          <h2 className="font-bold text-xl">
+            {quizInfo ? quizInfo.title : ""}
+          </h2>
           <span className="font-light text-sm">
-            {selectQuizToStart ? selectQuizToStart.quizQuestions.length : 0} Questions
+            {quizInfo ? quizInfo.questions.length : 0} Questions
           </span>
         </div>
       </div>
       {/*  */}
       {/* Timer */}
       <div className="flex gap-2 items-center">
-        <FontAwesomeIcon
-          className="text-rose-700"
-          width={20}
-          height={20}
-          icon={faStopwatch}
-        />
-
-        <span>00:00:{parentTimer}</span>
+        <span>⏳ {formatTime(timeLeft)}</span>
       </div>
     </div>
   );

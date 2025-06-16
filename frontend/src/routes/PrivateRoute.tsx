@@ -8,8 +8,7 @@ interface Props {
 
 const PrivateRoute : React.FC<Props> = ({role}: Props) => {
     const { userName } = useAuth();
-
-    if (userName !== null) {
+    if (userName == null) {
         if (role === "User")  return <Navigate to="/signin" />;
         if (role === "Admin") return <Navigate to="/admin/signin" />;
     }

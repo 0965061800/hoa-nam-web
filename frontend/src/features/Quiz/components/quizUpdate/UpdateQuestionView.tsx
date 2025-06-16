@@ -6,6 +6,7 @@ import UpdateMultipleChoice from "./UpdateMultipleChoice";
 import UpdateSingleChoice from "./UpdateSingleChoice";
 import UpdateFillInBlankChoice from "./UpdateFillInBlankChoice";
 import toast from "react-hot-toast";
+import { handleUpdatedQuestion } from "../../services/handle";
 
 interface Props {
   mode: "update" | "create";
@@ -23,8 +24,9 @@ const UpdateQuestionView = ({
     ...question,
   });
 
+  console.log(updatedQuestion)
   function ChangeQuestionContent(text: string) {
-    setUpdatedQuestion({ ...updatedQuestion, content: text });
+    setUpdatedQuestion({ ...updatedQuestion, questionContent: text });
   }
 
   function handleQuestionUpdateFromChoice(
@@ -34,9 +36,13 @@ const UpdateQuestionView = ({
   }
 
   function handleSaveChange () {
+    if (question.questionType == QuestionType.FillInBlank) {
+      handleSaveChangeQuestion(updatedQuestion);
+      return;
+    };
     const lastChoicesPosition = updatedQuestion.choices.length;
     const eachInput =
-      updatedQuestion.choices[lastChoicesPosition - 1].content;
+      updatedQuestion.choices[lastChoicesPosition - 1].choiceContent;
     if (eachInput.trim().length === 0) {
       toast.error(
         `Please ensure that all previous choices are filled out!`
@@ -45,7 +51,6 @@ const UpdateQuestionView = ({
       handleSaveChangeQuestion(updatedQuestion);
     }
   }
-
 
   return (
     <div className="slate bg-slate-100 bg-opacity-70 fixed top-0 bottom-0 left-0 right-0 z-10">
@@ -62,7 +67,7 @@ const UpdateQuestionView = ({
                 className="border border-gray-200 rounded-md p-3 ml-3 w-full h-[50px] resize-none 
                     text-[13px] outline-none"
                 placeholder="Your Question Here..."
-                value={updatedQuestion.content}
+                value={updatedQuestion.questionContent}
                 onChange={(e) => ChangeQuestionContent(e.target.value)}
               />
             </div>
@@ -79,6 +84,7 @@ const UpdateQuestionView = ({
                 ></UpdateSingleChoice>
               ) : (
                 <UpdateFillInBlankChoice
+                  mode={mode}
                   singleQuestion={updatedQuestion}
                   handleQuestionUpdate={handleQuestionUpdateFromChoice}
                 ></UpdateFillInBlankChoice>

@@ -52,14 +52,14 @@ namespace HoaNam.Domain.Quiz.Rules
 		{
 			public void CheckValidListChoice(List<Choice> choices)
 			{
-				if (choices.Count > 0) throw new QuestionChoiceException("Fill In Blank question just have one answer");
+				if (choices.Count > 1) throw new QuestionChoiceException("Fill In Blank question just have one answer");
 				if (!choices.Any(x => x.IsCorrect == true)) throw new QuestionChoiceException("This question need one right answer");
 			}
 
 			public void ValidateCanAddListOfChoice(Question question, List<Choice> choices)
 			{
 				int answerCount = choices.Count(x => x.IsCorrect == true);
-				if (answerCount >= 0) throw new QuestionChoiceException("This question need one right answer");
+				if (answerCount == 0) throw new QuestionChoiceException("This question need one right answer");
 				if (answerCount >= 2) throw new QuestionChoiceException("This question just need one choice");
 			}
 		}

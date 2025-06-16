@@ -1,41 +1,20 @@
-import useGlobalContextProvider from "@/context/ContextApi";
-import { Dispatch, SetStateAction } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import confusedEmoji from "../../../../assets/confused-emoji.png";
 import happyEmoji from "../../../../assets/happy-emoji.png";
 import veryHappyEmoji from "../../../../assets/very-happy-emoji.png";
+import useQuizPlayContext from "../../context/QuizPlayContext";
 
-interface ScoreComponentProps {
-  setIsQuizEnded: React.Dispatch<React.SetStateAction<boolean>>;
-  setIndexOfQuizSelected: Dispatch<SetStateAction<number>>;
-  setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>;
-  setSelectedChoice: React.Dispatch<React.SetStateAction<number>>;
-  score: number;
-  setScore: React.Dispatch<React.SetStateAction<number>>;
-}
 
-function ScoreComponent(props: ScoreComponentProps) {
+function ScoreComponent() {
   const navigate = useNavigate();
-  const { quizToStartObject, allQuizzes } = useGlobalContextProvider();
-  const { selectQuizToStart } = quizToStartObject;
-  const numberOfQuestions = selectQuizToStart?.quizQuestions.length;
-  // const router = useRouter();
-  //
-  const {
-    setIsQuizEnded,
-    setIndexOfQuizSelected,
-    setCurrentQuestionIndex,
-    setSelectedChoice,
-    setScore,
-    score,
-  } = props;
-
-
+  const { quizId } = useParams();
+  const {score} = useQuizPlayContext();
+  const {totalQuestion, totalRightAnswer} = score
   function emojiIconScore() : string {
     const result =
-      (score /
-        (selectQuizToStart ? selectQuizToStart.quizQuestions.length : -1)) *
+      (totalRightAnswer /
+        totalQuestion ) *
       100;
 
     if (result < 25) {
@@ -50,16 +29,9 @@ function ScoreComponent(props: ScoreComponentProps) {
 
   console.log("emoji", emojiIconScore());
 
-  function tryAgainFunction() {
-    setIsQuizEnded(false);
-    const newQuizIndex = allQuizzes.findIndex(
-      (quiz) => quiz.id === selectQuizToStart?.id
-    );
-    console.log(newQuizIndex);
-    setIndexOfQuizSelected(newQuizIndex);
-    setCurrentQuestionIndex(0);
-    setSelectedChoice(-1);
-    setScore(0);
+  function watchResult() {
+    navigate(`/user/quizzes/${quizId}/view-result`);
+    
   }
 
   return (
@@ -70,35 +42,41 @@ function ScoreComponent(props: ScoreComponentProps) {
         <div className="flex gap-1 flex-col">
           <span className="font-bold text-2xl">Your Score</span>
           <div className="text-[22px] text-center">
-            {score}/{numberOfQuestions}
+            {totalRightAnswer}/{totalQuestion}
           </div>
         </div>
-        <button
-          onClick={() => tryAgainFunction()}
-          className="p-2 bg-rose-700 rounded-md text-white px-6"
-        >
-          Try Again
-        </button>
+        <div className="flex gap-5">
+          <button
+            onClick={() => tryAgainFunction()}
+            className="p-2 bg-rose-700 rounded-md text-white px-6"
+          >
+            Try Again
+          </button>
+          <button
+            onClick={() => watchResult()}
+            className="p-2 bg-rose-700 rounded-md text-white px-6"
+          >
+            Wath result
+          </button>
+        </div>
         {/* statistics */}
         <div className="  w-full flex gap-2 flex-col mt-3">
           <div className="flex gap-1 items-center justify-center">
             {/* <Image src="/correct-answer.png" alt="" width={20} height={20} /> */}
-            <span className="text-[14px]">Correct Answers: {score}</span>
+            <span className="text-[14px]">Correct Answers: {totalRightAnswer}</span>
           </div>
           <div className="flex gap-1 items-center justify-center">
             {/* <Image src="/incorrect-answer.png" alt="" width={20} height={20} /> */}
             <span className="text-[14px]">
               Incorrect Answers:
-              {selectQuizToStart
-                ? selectQuizToStart.quizQuestions.length - score
-                : 0}
+              {totalQuestion - totalRightAnswer}
             </span>
           </div>
         </div>
         {/* <span>Or</span> */}
         <span
           onClick={() => {
-            navigate("/quiz");
+            navigate("/user/quizzes");
           }}
           className="text-rose-700 select-none cursor-pointer text-sm mt-8 "
         >

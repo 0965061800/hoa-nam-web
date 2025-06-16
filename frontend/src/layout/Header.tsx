@@ -33,7 +33,7 @@ const Header = () => {
 
 
   return (
-    <div className={`header fixed top-0 w-full z-20 flex items-center justify-between bg-white ${scrolled ? "border-rose-100 border-b-2 border-solid shadow-md" :"" }`}>
+    <div className={`header fixed top-0 w-full z-50 flex items-center justify-between bg-white ${scrolled ? "border-rose-100 border-b-2 border-solid shadow-md" :"" }`}>
       <div className={`${scrolled ? `mx-auto container max-w-[1440px] px-28 py-2 flex items-center justify-between bg-white `:'mx-auto container max-w-[1440px] px-28 py-7 flex items-center justify-between bg-white-300'} transition-all`}>
         <div
           className="webName flex w-fit items-center cursor-pointer"

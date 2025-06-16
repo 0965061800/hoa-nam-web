@@ -14,7 +14,7 @@ const QuizDetailPage = () => {
   const { quizId } = useParams();
 
   const [quiz, setQuiz] = useState<QuizDataDto | undefined>(undefined);
-
+  console.log(quiz)
   const { token } = useAuth();
 
   async function fetchQuizzes() {
@@ -55,7 +55,7 @@ const QuizDetailPage = () => {
     setMode("create");
     const newQuestion : QuestionDataDto = {
       id : "",
-      content : "",
+      questionContent : "",
       questionType: parseInt(questionType, 10),
       choices : []
     }
@@ -64,6 +64,7 @@ const QuizDetailPage = () => {
 
 
   async function handleUpdateQuestion(updatedQuestion: QuestionDataDto) {
+    console.log(updatedQuestion)
     await handleUpdatedQuestion(token, updatedQuestion, quizId!);
     setPopUpQuestionUpdate(false);
     setQuestionUpdate(undefined);
@@ -113,7 +114,7 @@ const QuizDetailPage = () => {
           >
             <div className="flex justify-between items-start mb-1">
               <h2 className="text-lg font-semibold text-gray-800">
-                Question {index + 1}: {question.content}
+                Question {index + 1}: {question.questionContent}
               </h2>
               <button
                 onClick={() => handleEditQuestion(question)}
@@ -145,7 +146,7 @@ const QuizDetailPage = () => {
                         : "bg-white border-gray-300"
                     }`}
                   >
-                    <span className="text-gray-700">{choice.content}</span>
+                    <span className="text-gray-700">{choice.choiceContent}</span>
                     {choice.isCorrect && (
                       <span className="text-green-600 text-xs font-bold">
                         (Correct)
@@ -160,7 +161,7 @@ const QuizDetailPage = () => {
               <div className="text-gray-700">
                 Correct Answer:{" "}
                 <span className="font-semibold">
-                  {question.choices[0]?.content}
+                  {question.choices[0]?.choiceContent}
                 </span>
               </div>
             )}

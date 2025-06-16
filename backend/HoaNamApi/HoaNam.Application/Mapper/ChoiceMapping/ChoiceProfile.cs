@@ -8,7 +8,8 @@ namespace HoaNam.Application.Mapper.ChoiceMapping
 	{
 		public ChoiceProfile()
 		{
-			CreateMap<Choice, ChoiceResponseDto>();
+			CreateMap<Choice, ChoiceResponseDto>()
+				.ForMember(dest => dest.ChoiceContent, opt => opt.MapFrom(src => src.Content));
 		}
 	}
 }

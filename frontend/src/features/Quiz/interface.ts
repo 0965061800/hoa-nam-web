@@ -58,13 +58,64 @@ export interface QuizDataDto {
 
 export interface QuestionDataDto {
     id: string,
-    content: string,
+    questionContent: string,
     questionType: QuestionType
     choices: ChoiceDataDto[]
 }
 
 export interface ChoiceDataDto {
     id: string,
-    content: string,
+    choiceContent: string,
     isCorrect: boolean
+}
+
+export interface UserQuizData {
+    quizId: string,
+    title: string,
+    numberOfQuestion: number,
+    numberOfAttempt: number,
+    avarageSuccessRate: number,
+}
+
+
+
+//Quiz Info
+export interface QuizInfoDto
+{
+    quizId: string,
+    title: string,
+    isShuffled: boolean,
+    questions: QuestionInfoDto[]
+}
+
+export interface QuestionInfoDto
+{
+    questionId: string,
+    questionContent: string,
+    questionType: QuestionType,
+    choices: ChoiceInfoDto[]
+}
+
+export interface ChoiceInfoDto
+{
+    choiceId: string,
+    choiceContent: string,
+    isCorrect: boolean
+}
+
+export interface AttemptRequestDto
+{
+    quizId: string,
+    totalQuestion: number,
+    totalRightAnswer: number
+}
+
+export interface UserAnswer {
+    questionId: string,
+    userAnswer: UserChoice[]
+}
+
+export interface UserChoice {
+    choiceId: string
+    choiceAnswer: string
 }

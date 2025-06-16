@@ -1,18 +1,23 @@
 'use client';
-import useGlobalContextProvider from '@/context/ContextApi';
 import { useEffect, useState } from 'react';
-import QuizzesArea from '../components/quizPage/QuizzesArea';
+import { UserQuizData } from '../interface';
+import { useAuth } from '@/hooks/useAuth';
+import UserQuizzesArea from '../components/quizPage/UserQuizzesArea';
+import { handleGetQuizzes } from '../services/handle';
 
 export default function QuizPage() {
-  const { quizToStartObject, selectedQuizObject } = useGlobalContextProvider();
-  const { setSelectQuizToStart } = quizToStartObject;
-  const { selectedQuiz, setSelectedQuiz } = selectedQuizObject;
+    const [quizzes, setQuizzes] = useState<UserQuizData[]|undefined>(undefined)
+    const {token} = useAuth();
+    useEffect(() => {
+      async function fetchQuizzes() {
+        const data = await handleGetQuizzes(token);
+        if (data) {
+          setQuizzes(data); // quizzes: AdminQuiz[]
+        }
+      }
+      fetchQuizzes();
+    }, []);
 
-  useEffect(() => {
-    setSelectQuizToStart(null);
-    // set the selectedQuiz back to null
-    setSelectedQuiz(null);
-  }, []);
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -32,12 +37,13 @@ export default function QuizPage() {
 
   return (
     <div className="mx-auto container max-w-[1440px] font-primative">
-      {/* sidebar */}
-      {/* <Sidebar /> */}
-      {/* Dashboard */}
-      {/* <Dashboard /> */}
-    <Dashboard></Dashboard>
-      {/* Box */}
+        <div className="bg-white-300 h-full p-4">
+        {
+            quizzes == undefined
+            ? ""
+            : <UserQuizzesArea quizzes={quizzes} ></UserQuizzesArea>
+        }
+        </div>
     </div>
   );
 }
@@ -86,8 +92,6 @@ function Sidebar() {
 
 function Dashboard() {
   return (
-    <div className="bg-white-300 h-full p-4">
-      <QuizzesArea></QuizzesArea>
-    </div>
+    <></>
   );
 }

@@ -133,6 +133,12 @@ namespace HoaNam.Infrastructure.Migrations
                     b.Property<Guid>("QuizId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("TotalQuestion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalRightAnswer")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.ToTable("QuizAttempts");
@@ -219,7 +225,7 @@ namespace HoaNam.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AccessFailedCount = 0,
                             AvatarUrl = "https://i.pravatar.cc/150?img=1",
-                            ConcurrencyStamp = "22379d32-0841-4db5-95b4-1bacd62be9dc",
+                            ConcurrencyStamp = "d09ff985-e9c6-4921-bb64-1471a156e77f",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",

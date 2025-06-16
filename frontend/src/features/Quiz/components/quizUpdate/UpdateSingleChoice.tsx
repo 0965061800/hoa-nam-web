@@ -23,7 +23,7 @@ function UpdateSingleChoice({
 
     for (let i = lastChoicesPosition - 1; i >= 0; i--) {
       const eachInput =
-        singleQuestion.choices[i].content;
+        singleQuestion.choices[i].choiceContent;
       if (eachInput.trim().length === 0) {
         return toast.error(
           `Please ensure that all previous choices are filled out!`,
@@ -34,7 +34,7 @@ function UpdateSingleChoice({
     if (lastChoicesPosition < 6) {
       const newChoice:ChoiceDataDto = {
         id :"",
-        content : "",
+        choiceContent : "",
         isCorrect : false,
       };
       singleQuestion.choices.push(newChoice);
@@ -48,7 +48,7 @@ function UpdateSingleChoice({
   }
 
   function updateTheChoicesContent(text:string, choiceIndex:number) {
-   singleQuestion.choices[choiceIndex].content = text;
+   singleQuestion.choices[choiceIndex].choiceContent = text;
    handleQuestionUpdate(singleQuestion);
   }
 
@@ -78,7 +78,7 @@ function UpdateSingleChoice({
           />
             <span>{alphabets[choiceIndex]}:</span>
             <input
-              value={singleChoice.content}
+              value={singleChoice.choiceContent}
               name = {`choice-${choiceIndex}`}
               onChange={(e) => {
                 updateTheChoicesContent(

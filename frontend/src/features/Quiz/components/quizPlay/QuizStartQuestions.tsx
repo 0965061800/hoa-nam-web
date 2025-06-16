@@ -5,20 +5,24 @@ import useGlobalContextProvider from '../../../../context/ContextApi';
 import toast, { Toaster } from 'react-hot-toast';
 import { QuizQuestion } from '@/features/Quiz/interface';
 import ScoreComponent from './ScoreComponent';
+import useQuizPlayContext from '../../context/QuizPlayContext';
 
 
 
-function QuizPlayQuestions({ onUpdateTime }) {
+function QuizStartQuestions({ onUpdateTime }) {
   const time = 30;
   const { quizToStartObject, allQuizzes, setAllQuizzes, userObject } =
     useGlobalContextProvider();
   const { selectQuizToStart } = quizToStartObject;
   const { quizQuestions } = selectQuizToStart;
 
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState<number>(-1);
   const [indexOfQuizSelected, setIndexOfQuizSelected] = useState<number>(-1);
+  
   const [isQuizEnded, setIsQuizEnded] = useState(false);
+  
   const [score, setScore] = useState(0);
 
   const [timer, setTimer] = useState(time);
@@ -222,33 +226,6 @@ function QuizPlayQuestions({ onUpdateTime }) {
     }, 2000);
   }
 
-  // async function addExperience() {
-  //   const userCopy = user;
-  //   userCopy.experience += 1;
-
-  //   try {
-  //     const response = await fetch(
-  //       `${apiUrl}/users`,
-  //       {
-  //         method: 'PUT',
-  //         headers: {
-  //           'Content-type': 'application/json',
-  //         },
-  //         body: JSON.stringify({ updateUser: userCopy }),
-  //       },
-  //     );
-
-  //     if (!response.ok) {
-  //       toast.error('Something went wrong...');
-  //       throw new Error('fetching failed...');
-  //     }
-
-  //     setUser(userCopy);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
   return (
     <div className="relative poppins rounded-sm m-9 w-9/12  ">
       <Toaster
@@ -262,7 +239,7 @@ function QuizPlayQuestions({ onUpdateTime }) {
         }}
       />
       {/* The Question Part */}
-      <div className="flex   items-center gap-2">
+      <div className="flex items-center gap-2">
         <div className="bg-rose flex  justify-center items-center rounded-md w-11 h-11 text-white p-3">
           {currentQuestionIndex + 1}
         </div>
@@ -317,5 +294,5 @@ function QuizPlayQuestions({ onUpdateTime }) {
   );
 }
 
-export default QuizPlayQuestions;
+export default QuizStartQuestions;
 

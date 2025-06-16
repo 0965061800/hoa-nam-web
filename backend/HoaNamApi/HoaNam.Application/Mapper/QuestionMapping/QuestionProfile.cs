@@ -9,6 +9,7 @@ namespace HoaNam.Application.Mapper.QuestionMapping
 		public QuestionProfile()
 		{
 			CreateMap<Question, QuestionResponseDto>()
+				.ForMember(dest => dest.QuestionContent, opt => opt.MapFrom(src => src.Content))
 				.ForMember(dest => dest.Choices, opt => opt.MapFrom(src => src.Choices));
 		}
 	}

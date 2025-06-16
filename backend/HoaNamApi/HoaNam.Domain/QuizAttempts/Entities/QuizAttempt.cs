@@ -10,14 +10,21 @@ namespace HoaNam.Domain.QuizAttempts.Entities
 		public Guid PlayerId { get; private set; }
 		public Guid QuizId { get; private set; }
 		public DateTime AttemptTime { get; private set; }
+
+		public int TotalQuestion { get; private set; }
+		public int TotalRightAnswer { get; private set; }
+
+
 		private readonly List<QuestionAttempt> _questionAttempts = new();
 		public IReadOnlyCollection<QuestionAttempt> QuestionAttempts => _questionAttempts.AsReadOnly();
 
-		public QuizAttempt(Guid id, Guid playerId, Guid quizId) => Apply(new QuizAttemptEvent.AttemptMaked
+		public QuizAttempt(Guid id, Guid playerId, Guid quizId, int totalQuestion, int totalRightAnswer) => Apply(new QuizAttemptEvent.AttemptMaked
 		{
 			Id = id,
 			PlayerId = playerId,
-			QuizId = quizId
+			QuizId = quizId,
+			TotalQuestion = totalQuestion,
+			TotalRightAnswer = totalRightAnswer
 		});
 
 		public void AddQuestionAttempts(List<QuestionAttemptData> questionAttempts) => Apply(new QuizAttemptEvent.ListQuestionAttemptAdded
@@ -33,6 +40,8 @@ namespace HoaNam.Domain.QuizAttempts.Entities
 					Id = e.Id;
 					PlayerId = e.PlayerId;
 					QuizId = e.QuizId;
+					TotalQuestion = e.TotalQuestion;
+					TotalRightAnswer = e.TotalRightAnswer;
 					AttemptTime = DateTime.UtcNow;
 					break;
 				case QuizAttemptEvent.ListQuestionAttemptAdded e:

@@ -12,6 +12,5 @@ export default function RoleBasedRoute({ allowedRole }: Props) {
     if (allowedRole === "User") return <Navigate to="/signin" />
     else return <Navigate to ="/admin/signin"/>
   }
-
   return <Outlet />;
 }

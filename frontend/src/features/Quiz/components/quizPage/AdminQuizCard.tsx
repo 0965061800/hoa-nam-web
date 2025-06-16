@@ -22,7 +22,7 @@ function AdminQuizCard({singleQuiz} : Props) {
   const totalQuestions = questions.length;
 
   function viewQuiz(quiz: QuizDataDto) {
-    navigate(`/quiz-admin/${quiz.id}`)
+    navigate(`/admin/quiz/${quiz.id}`)
   }
 
   function deleteQuiz(quiz: QuizDataDto) {

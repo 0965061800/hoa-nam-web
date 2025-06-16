@@ -11,7 +11,7 @@
 	public class QuestionResponseDto
 	{
 		public Guid Id { get; set; }
-		public string Content { get; set; } = string.Empty;
+		public string QuestionContent { get; set; } = string.Empty;
 		public QuestionType QuestionType { get; set; }
 		public List<ChoiceResponseDto> Choices { get; set; } = new List<ChoiceResponseDto> { };
 	}
@@ -19,7 +19,7 @@
 	public class ChoiceResponseDto
 	{
 		public Guid Id { get; set; }
-		public string Content { get; set; } = string.Empty;
+		public string ChoiceContent { get; set; } = string.Empty;
 		public bool IsCorrect { get; set; }
 	}
 }
