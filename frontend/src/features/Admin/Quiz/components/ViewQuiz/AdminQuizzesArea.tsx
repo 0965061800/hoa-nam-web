@@ -3,6 +3,7 @@ import React from 'react';
 import { QuizDataDto } from '../../types/interfaces';
 import PlaceHolder from './PlaceHolder';
 import AdminQuizCard from './AdminQuizCard';
+import { useNavigate } from 'react-router-dom';
 
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
 }
 
 function AdminQuizzesArea({quizzes}: Props) {
+  const navigate = useNavigate();
   return (
     <div className="poppins mt-5">
       <div>
@@ -26,7 +28,7 @@ function AdminQuizzesArea({quizzes}: Props) {
                         </div>
                     ))}
                   <div
-                    // onClick={() => router.push('/quiz-build')}
+                    onClick={() => navigate('/admin/quiz/create')}
                     className=" cursor-pointer justify-center items-center rounded-[10px]
                    w-[230px] flex flex-col gap-2 border border-gray-100 bg-white p-4"
                   >
@@ -44,25 +46,6 @@ function AdminQuizzesArea({quizzes}: Props) {
               </div>
             )}
           </div>
-        
-        {/* (
-          <div className="  h-96 flex flex-col gap-4 justify-center items-center">
-            <h2 className="font-bold text-5xl">
-              Learn 10x <span className="text-primative">Faster!</span>
-            </h2>
-            <span className="text-xl font-light">
-              Unlock Your Potential with Personalized Quizzes
-            </span>
-            <button
-              onClick={() => {
-                setUser((prevUser) => ({ ...prevUser, isLogged: true }));
-              }}
-              className="p-4 bg-primative text-white rounded-md"
-            >
-              Get Started Now!
-            </button>
-          </div>
-        )} */}
       </div>
   );
 }

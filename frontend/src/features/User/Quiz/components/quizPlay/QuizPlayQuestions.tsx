@@ -2,13 +2,10 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import {
-  QuestionType,
-  UserAnswer,
-  UserChoice,
-} from "@/features/Quiz/interface";
+
 import ScoreComponent from "./ScoreComponent";
 import useQuizPlayContext from "../../context/QuizPlayContext";
+import { QuestionType, UserAnswer, UserChoice } from "../../types/interfaces";
 
 interface Props {
   timeUp: boolean;

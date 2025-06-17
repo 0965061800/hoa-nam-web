@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
-import { QuizDataDto, UserQuizData } from '../../interface';
+import PlaceHolder from './PlaceHolder';
+import { QuizDataDto, UserQuizData } from '../../types/interfaces';
 import UserQuizCard from './UserQuizCard';
-import PlaceHolder from '@/features/Admin/Quiz/components/ViewQuiz/PlaceHolder';
 
 interface Props {
   quizzes: UserQuizData[];
@@ -19,7 +19,7 @@ function UserQuizzesArea({quizzes}: Props) {
                 {/* <DropDown /> */}
                 <h2 className="text-xl font-bold">My Quizzes</h2>
                 <div className="w-full mt-6 flex gap-6 flex-wrap ">
-                    {quizzes.map((singleQuiz: QuizDataDto, quizIndex:number) => (
+                    {quizzes.map((singleQuiz: UserQuizData, quizIndex:number) => (
                         <div key={quizIndex}>
                         <UserQuizCard singleQuiz={singleQuiz} />
                         </div>

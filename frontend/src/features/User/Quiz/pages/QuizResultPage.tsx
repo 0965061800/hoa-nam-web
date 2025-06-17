@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
 import useQuizPlayContext from "../context/QuizPlayContext";
-import { ChoiceInfoDto, QuestionType } from "../interface";
+import { ChoiceInfoDto, QuestionType } from "../types/interfaces";
+
 
 const QuizResultPage = () => {
   const { quizInfo, answerOfUser, score } = useQuizPlayContext();

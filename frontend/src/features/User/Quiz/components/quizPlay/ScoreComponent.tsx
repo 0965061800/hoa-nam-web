@@ -1,8 +1,8 @@
 import { useNavigate, useParams } from "react-router-dom";
 
-import confusedEmoji from "../../../../assets/confused-emoji.png";
-import happyEmoji from "../../../../assets/happy-emoji.png";
-import veryHappyEmoji from "../../../../assets/very-happy-emoji.png";
+import confusedEmoji from "../../../../../assets/confused-emoji.png";
+import happyEmoji from "../../../../../assets/happy-emoji.png";
+import veryHappyEmoji from "../../../../../assets/very-happy-emoji.png";
 import useQuizPlayContext from "../../context/QuizPlayContext";
 
 

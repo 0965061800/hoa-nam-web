@@ -1,8 +1,8 @@
 import React, { RefObject } from "react";
-import { AddQuizQuestionDto, QuestionType } from "@/features/Quiz/interface";
 import SingleChoiceQuestionArea from "../../question/SingleChoiceQuestion/SingleChoiceQuestionArea";
 import MultipleChoiceQuestionArea from "../../question/MultipleChoiceQuestion/MultipleChoiceQuestionArea";
 import FillInBlankQuestionArea from "../../question/FillInBlankQuestion/FillInBlankQuestionArea";
+import { AddQuizQuestionDto, QuestionType } from "../../../types/interfaces";
 
 
 interface Props {

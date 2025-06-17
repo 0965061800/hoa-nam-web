@@ -1,9 +1,9 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { UserQuizData } from '../interface';
 import { useAuth } from '@/hooks/useAuth';
-import UserQuizzesArea from '../components/quizPage/UserQuizzesArea';
 import { handleGetQuizzes } from '../services/handle';
+import { UserQuizData } from '../types/interfaces';
+import UserQuizzesArea from '../components/quizPage/UserQuizzesArea';
 
 export default function QuizPage() {
     const [quizzes, setQuizzes] = useState<UserQuizData[]|undefined>(undefined)

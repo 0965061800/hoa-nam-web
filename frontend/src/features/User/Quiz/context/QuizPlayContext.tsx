@@ -1,9 +1,11 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from "react";
-import { AttemptRequestDto, QuizInfoDto, UserAnswer, UserChoice } from "../interface";
+
 import { handleGetQuizInfo, handleSendResultToServer } from "../services/handle";
-import caculateScore, { ScoreType } from "../services/calculateScore";
+
 import { Outlet } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { AttemptRequestDto, QuizInfoDto, UserAnswer } from "../types/interfaces";
+import caculateScore, { ScoreType } from "../services/calculateScore";
 
 interface QuizPlayContextType {
     quizInfo: QuizInfoDto

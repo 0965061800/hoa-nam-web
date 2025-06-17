@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import QuizStartHeader from "@/features/Quiz/components/quizPlay/QuizStartHeader";
-import ErrorIcon from "../../../assets/errorIcon.png";
+import ErrorIcon from "../../../../assets/errorIcon.png";
 import { useNavigate, useParams } from "react-router-dom";
-import useQuizPlayContext from "../context/QuizPlayContext";
 import { useAuth } from "@/hooks/useAuth";
 import QuizPlayQuestions from "../components/quizPlay/QuizPlayQuestions";
+import useQuizPlayContext from "../context/QuizPlayContext";
+import QuizPlayHeader from "../components/quizPlay/QuizPlayHeader";
 
 function QuizPlayPage() {
   const { quizInfo, getQuizData } = useQuizPlayContext();
@@ -37,7 +37,7 @@ function QuizPlayPage() {
         </div>
       ) : (
         <div className="mx-auto container max-w-[1440px] font-primative">
-          <QuizStartHeader initialTime={30} onComplete={handleTimeUp} quizEnded={quizEnded} />
+          <QuizPlayHeader initialTime={30} onComplete={handleTimeUp} quizEnded={quizEnded} />
           <div className="mt-10 flex items-center justify-center">
             <QuizPlayQuestions timeUp={timeUp} onQuizEnded={() => setQuizEnded(true)}/>
           </div>

@@ -6,7 +6,6 @@ import {
   faPenToSquare,
   faPlay,
 } from "@fortawesome/free-solid-svg-icons";
-import { UserQuizData } from "@/features/Quiz/interface";
 import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
@@ -16,6 +15,7 @@ import {
   DropdownMenuTrigger,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
+import { UserQuizData } from "../../types/interfaces";
 
 interface Props {
   singleQuiz: UserQuizData;

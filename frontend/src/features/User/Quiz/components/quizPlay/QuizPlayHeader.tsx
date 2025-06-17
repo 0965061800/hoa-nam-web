@@ -1,8 +1,9 @@
 "use client";
 import { faCode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import useQuizPlayContext from "../../context/QuizPlayContext";
+
 import { useEffect, useState } from "react";
+import useQuizPlayContext from "../../context/QuizPlayContext";
 
 interface Props {
   initialTime: number;

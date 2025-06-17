@@ -10,13 +10,13 @@ import PrivateRoute from "./PrivateRoute";
 import SignUpPage from "@/features/Auth/pages/SignUpPage";
 import RoleBasedRoute from "./RoleBaseRoute";
 import Layout from "@/layout/Layout";
-import QuizPage from "@/features/Quiz/pages/QuizPage";
-import QuizPlayPage from "@/features/Quiz/pages/QuizPlayPage";
-import { QuizPlayContextProvider } from "@/features/Quiz/context/QuizPlayContext";
-import QuizResultPage from "@/features/Quiz/pages/QuizResultPage";
 import QuizViewPage from "@/features/Admin/Quiz/pages/QuizViewPage";
 import QuizDetailPage from "@/features/Admin/Quiz/pages/QuizDetailPage";
 import QuizCreatePage from "@/features/Admin/Quiz/pages/QuizCreatePage";
+import QuizPage from "@/features/User/Quiz/pages/QuizPage";
+import { QuizPlayContextProvider } from "@/features/User/Quiz/context/QuizPlayContext";
+import QuizPlayPage from "@/features/User/Quiz/pages/QuizPlayPage";
+import QuizResultPage from "@/features/User/Quiz/pages/QuizResultPage";
 
 const AppRoutes = () => {
   return (
