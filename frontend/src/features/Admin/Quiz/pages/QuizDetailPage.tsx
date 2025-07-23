@@ -6,12 +6,17 @@ import { QuestionDataDto, QuestionType, QuizDataDto } from "../types/interfaces"
 import UpdateQuestionView from "../components/ViewQuiz/UpdateQuestionView";
 import PickQuestionType from "../components/PickQuestionType";
 import { handleCreatedQuestion, handleGetAdminQuizDetail, handleUpdatedQuestion } from "../services/apis/handle";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import UpdateQuizInfo from "../components/quizUpdate/UpdateQuizInfo";
 
 const QuizDetailPage = () => {
   const { quizId } = useParams();
 
   const [quiz, setQuiz] = useState<QuizDataDto | undefined>(undefined);
-  console.log(quiz)
+
   const { token } = useAuth();
 
   async function fetchQuizzes() {
@@ -21,6 +26,7 @@ const QuizDetailPage = () => {
     }
   }
 
+
   useEffect(() => {
     fetchQuizzes();
   }, []);
@@ -29,6 +35,7 @@ const QuizDetailPage = () => {
 //Handle Update Question
   const [mode, setMode] = useState<"update"|"create">("update");
 
+  const [changeQuizPopUp, setChangeQuizPopUp] = useState<boolean>(false);
   
   const [popUpChooseType, setPopUpChooseType] = useState<boolean>(false);
   
@@ -61,7 +68,6 @@ const QuizDetailPage = () => {
 
 
   async function handleUpdateQuestion(updatedQuestion: QuestionDataDto) {
-    console.log(updatedQuestion)
     await handleUpdatedQuestion(token, updatedQuestion, quizId!);
     setPopUpQuestionUpdate(false);
     setQuestionUpdate(undefined);
@@ -90,6 +96,7 @@ const QuizDetailPage = () => {
       ) : (
         ""
       )}
+
       {popUpChooseType ? (
         <PickQuestionType
           handlePickQuestionType={handleCreateQuestion}
@@ -98,12 +105,32 @@ const QuizDetailPage = () => {
       ) : (
         ""
       )}
+
+
+      {changeQuizPopUp ? (
+        <UpdateQuizInfo quiz={quiz} 
+        handleCancelUpdateQuestion={() => setChangeQuizPopUp(false)} 
+        closePopUp={() => {
+          setChangeQuizPopUp(false);
+          fetchQuizzes();
+        }}/>
+      ) : (
+        ""
+      )}
+
       <div className="bg-white p-6 rounded-2xl shadow-md">
-        <h1 className="text-3xl font-bold text-blue-700 mb-2">{quiz.title}</h1>
+        <div className='flex items-center gap-3'>
+          <h1 className="text-3xl font-bold text-blue-700 mb-2">{quiz.title}</h1>
+          <div onClick={() => setChangeQuizPopUp(true)}>
+            <FontAwesomeIcon
+              className="text-red-500"
+              icon={faPenToSquare}
+            />
+          </div>
+        </div>
         <p className="text-sm text-gray-500 mb-6">
           Shuffled: {quiz.isShuffled ? "Yes" : "No"}
         </p>
-
         {quiz.questions.map((question, index) => (
           <div
             key={question.id}

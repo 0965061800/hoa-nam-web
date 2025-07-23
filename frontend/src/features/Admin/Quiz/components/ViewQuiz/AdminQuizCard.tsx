@@ -7,26 +7,29 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import { useNavigate } from 'react-router-dom';
-import { QuizDataDto } from '../../types/interfaces';
+import { AdminQuizDto } from '../../types/interfaces';
+import { Button } from '@/components/ui/button';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { handleDeleteQuiz } from '../../services/apis/handle';
+import { useAuth } from '@/hooks/useAuth';
 
 
 interface Props {
-    singleQuiz: QuizDataDto
+    singleQuiz: AdminQuizDto
 }
 
 function AdminQuizCard({singleQuiz} : Props) {
   const navigate = useNavigate()
+  const {token} = useAuth();
+  const { quizId, title, numberOfQuestion } = singleQuiz;
 
-  const { title, questions } = singleQuiz;
-
-  const totalQuestions = questions.length;
-
-  function viewQuiz(quiz: QuizDataDto) {
-    navigate(`/admin/quiz/${quiz.id}`)
+  function viewQuiz(quizId: string) {
+    navigate(`/admin/quiz/${quizId}`)
   }
 
-  function deleteQuiz(quiz: QuizDataDto) {
-    console.log(quiz);
+  async function deleteQuiz(quizId: string) {
+    await handleDeleteQuiz(token, quizId);
+    navigate(0);
   }
 
   //
@@ -64,15 +67,12 @@ function AdminQuizCard({singleQuiz} : Props) {
             icon={convertToFaIcons(icon)}
         /> */}
       </div>
-      {/* Title Area */}
       <h3 className="font-bold ">{title}</h3>
-      {/* Questions */}
-      <p className="text-sm font-light">{totalQuestions} question(s)</p>
-      {/* Footer Area */}
+      <p className="text-sm font-light">{numberOfQuestion} question(s)</p>
       <div className="flex gap-3 justify-end">
          <div
           onClick={() => {
-            viewQuiz(singleQuiz);
+            viewQuiz(quizId);
           }}
           className="rounded-lg w-10 h-7 bg-rose-500 flex items-center justify-center cursor-pointer"
         >
@@ -83,10 +83,9 @@ function AdminQuizCard({singleQuiz} : Props) {
               icon={faPenToSquare}
             />
         </div>
-        <div
-          onClick={() => {
-            deleteQuiz(singleQuiz);
-          }}
+         <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button
           className="rounded-lg w-10 h-7 bg-rose-500 flex items-center justify-center cursor-pointer"
         >
             <FontAwesomeIcon
@@ -95,7 +94,23 @@ function AdminQuizCard({singleQuiz} : Props) {
               height={15}
               icon={faTrashCan}
             />
-        </div>
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={() => deleteQuiz(quizId)}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+        
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ const UpdateQuestionView = ({
     ...question,
   });
 
-  console.log(updatedQuestion)
   function ChangeQuestionContent(text: string) {
     setUpdatedQuestion({ ...updatedQuestion, questionContent: text });
   }

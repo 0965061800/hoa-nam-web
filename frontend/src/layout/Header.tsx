@@ -34,36 +34,39 @@ const Header = () => {
 
   return (
     <div className={`header fixed top-0 w-full z-50 flex items-center justify-between bg-white ${scrolled ? "border-rose-100 border-b-2 border-solid shadow-md" :"" }`}>
-      <div className={`${scrolled ? `mx-auto container max-w-[1440px] px-28 py-2 flex items-center justify-between bg-white `:'mx-auto container max-w-[1440px] px-28 py-7 flex items-center justify-between bg-white-300'} transition-all`}>
+      <div className={`${scrolled ? `mx-auto container max-w-[1440px] px-16 py-2 flex items-center justify-between bg-white `:'mx-auto container max-w-[1440px] px-20 py-7 flex items-center justify-between bg-white-300'} transition-all`}>
         <div
           className="webName flex w-fit items-center cursor-pointer"
           onClick={() => navigate("/")}
         >
-          <div className="logo w-20 h-20">
+          <div className="logo w-16 h-16">
             <img src={Logo} className="w-full h-full object-cover"></img>
           </div>
-          <div className="name text-3xl font-bold font-logo font-thin text-red-600">
+          <div className="name text-2xl font-bold font-logo font-thin text-red-600">
             Hoa Nam
           </div>
         </div>
         <div className="navigation flex gap-20">
           <NavLink
-            to="/courses"
+            to="/user/quizzes"
             className="font-primative px-3 py-1 font-semibold text-lg cursor-pointer hover:bg-primative hover:text-white rounded-lg transition-all"
           >
-            Các khóa học
+            Quizzes
           </NavLink>
+          {/* <div className="relative flex items-center rounded-md border pl-2 focus-within:border-red-500">
+            <FontAwesomeIcon
+              className="text-black h-5 w-5 text-muted-foreground"
+              width={15}
+              height={15}
+              icon={faMagnifyingGlass}
+            />
+            <Input type="text" placeholder="Tìm kiếm quiz..." onChange={(e) => handleSearching(e.target.value)} className="bg-transparent border-0 focus-visible:ring-offset-0 focus-visible:ring-0" />
+          </div> */}
           <NavLink
             to="/courses"
             className="font-primative px-3 py-1 font-semibold text-lg cursor-pointer hover:bg-primative hover:text-white rounded-lg transition-all"
           >
-            Về chúng tôi
-          </NavLink>
-          <NavLink
-            to="/courses"
-            className="font-primative px-3 py-1 font-semibold text-lg cursor-pointer hover:bg-primative hover:text-white rounded-lg transition-all"
-          >
-            Kiến thức
+            Lớp Học
           </NavLink>
         </div>
         {userName == undefined ? (

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using HoaNam.Application.Features.QuizService.Dto;
 using HoaNam.Application.Features.QuizService.Queries;
 using HoaNam.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authorization;
@@ -24,7 +25,7 @@ namespace HoaNamApi.Controllers
 		}
 		[Authorize(Roles = "User")]
 		[HttpGet]
-		public async Task<IActionResult> GetListQuizzesAndAttempts()
+		public async Task<IActionResult> GetListQuizzesAndAttempts([FromQuery] FilterSortPagingRequest require)
 		{
 			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (accountId == null) return Unauthorized();
@@ -34,8 +35,7 @@ namespace HoaNamApi.Controllers
 			GetListQuizzesAndAttemptsByUser request = new();
 			request.UserId = userId;
 
-			var result = await _connection.GetQuizzesWithUserAttempt(request);
-
+			var result = await _connection.GetQuizzesWithUserAttemptWithFSP(request, require);
 			return Ok(result);
 		}
 
@@ -46,5 +46,7 @@ namespace HoaNamApi.Controllers
 			var result = await _connection.GetQuizInfo(new Guid(quizId));
 			return Ok(result);
 		}
+
+
 	}
 }

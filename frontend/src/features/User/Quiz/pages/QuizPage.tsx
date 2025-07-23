@@ -2,22 +2,33 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { handleGetQuizzes } from '../services/handle';
-import { UserQuizData } from '../types/interfaces';
+import { PageListData, PageRequestParam } from '../types/interfaces';
 import UserQuizzesArea from '../components/quizPage/UserQuizzesArea';
+import CustomPagination from '@/features/Admin/Quiz/components/ViewQuiz/CustomPagination';
 
 export default function QuizPage() {
-    const [quizzes, setQuizzes] = useState<UserQuizData[]|undefined>(undefined)
+    const [pageInfo, setPageInfo] = useState<PageListData>({
+      totalPage:0,
+      pageIndex:0,
+      pageSize:0,
+      data:[]
+    })
+    const [param, setParam] = useState<PageRequestParam>({
+      filter:'',
+      pageIndex: 1,
+      pageSize: 12,
+      sorting:0
+    })
     const {token} = useAuth();
     useEffect(() => {
       async function fetchQuizzes() {
-        const data = await handleGetQuizzes(token);
+        const data = await handleGetQuizzes(token,param);
         if (data) {
-          setQuizzes(data); // quizzes: AdminQuiz[]
+          setPageInfo({...data})
         }
       }
       fetchQuizzes();
-    }, []);
-
+    }, [param]);
 
   const [openMenu, setOpenMenu] = useState(false);
 
@@ -34,14 +45,29 @@ export default function QuizPage() {
     };
   }, []);
 
+      const handlePageChange = (page: number) => {
+    setParam((prev) => ({...prev, pageIndex:page, pageSize: pageInfo.pageSize}))
+  };
+
+  const handleSorting = (value: string) => {
+    setParam((prev) => ({...prev, sorting: parseInt(value)}))
+  }
+
+  const handleSearching = (value: string) => {
+    setParam((prev) => ({...prev, filter: value}))
+  }
 
   return (
     <div className="mx-auto container max-w-[1440px] font-primative">
         <div className="bg-white-300 h-full p-4">
         {
-            quizzes == undefined
+            pageInfo.data == undefined
             ? ""
-            : <UserQuizzesArea quizzes={quizzes} ></UserQuizzesArea>
+            : 
+             <div className="flex flex-col gap-10">
+              <UserQuizzesArea quizzes={pageInfo.data} sorting={param.sorting} handleSorting={handleSorting} filter={param.filter} handleSearching={handleSearching}  ></UserQuizzesArea>
+              <CustomPagination currentPage={pageInfo.pageIndex} totalPages={pageInfo.totalPage} onPageChange={handlePageChange}></CustomPagination>
+            </div>
         }
         </div>
     </div>

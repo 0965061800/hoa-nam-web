@@ -49,12 +49,13 @@ export function QuizPlayContextProvider()
             totalQuestion: quizInfo.questions.length,
             totalRightAnswer: score.totalRightAnswer
         }
+        console.log(result);
         await handleSendResultToServer(token, result)
     }
-
+    console.log(score);
     useEffect(() => {
         const count  = caculateScore(quizInfo.questions, answerOfUser);
-        setScore(count);
+        setScore({...count});
     },[answerOfUser])
 
     const getQuizData = async function (quizId: string, bearerToken: string) {

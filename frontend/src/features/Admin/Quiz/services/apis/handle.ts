@@ -1,7 +1,8 @@
 import axios from "axios";
 
 import toast from "react-hot-toast";
-import { AddQuizDto, QuestionDataDto, QuizDataDto } from "../../types/interfaces";
+import { AddQuizDto, QuestionDataDto, QuizDataDto, PageRequestParam, PageListData } from "../../types/interfaces";
+import { UpdateQuizDto } from "../../components/quizUpdate/UpdateQuizInfo";
 
 
 const apiUrl = import.meta.env.VITE_APP_BASE_URL;
@@ -45,16 +46,37 @@ export async function handleCreatedQuestion(
   }
 }
 
+export async function handleUpdatedQuiz(
+  token: string | null,
+  updateQuizDto: UpdateQuizDto,
+): Promise<void> {
+  try {
+    await axios.post(
+      `${apiUrl}/Quiz/update`,
+      { ...updateQuizDto},
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("The quiz has been updated successfully!");
+  } catch (error:any) {
+    toast.error(`Failed to update quiz!: ${error.message}`);
+  }
+}
 
 export function handleGetAdminQuizzes(
-  token: string | null
-): Promise<QuizDataDto[] | undefined> {
+  token: string | null,
+  requestParams: PageRequestParam
+): Promise<PageListData | undefined> {
   axios.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   });
   return axios
-    .get(`${apiUrl}/Quiz`, { withCredentials: true })
+    .get(`${apiUrl}/Quiz/admin`, { params: {...requestParams}, withCredentials: true })
     .then((response) => response.data)
     .catch((error) => {
       toast.error(`Failed to get admin's quizzes: ${error.message}`);
@@ -101,6 +123,26 @@ export async function handleUpdatedQuestion(
     toast.success("The question has been updated successfully!");
   } catch (error:any) {
     toast.error(`Failed to update question!: ${error.message}`);
+  }
+}
+
+export async function handleDeleteQuiz(
+  token: string | null,
+  quizId: string
+): Promise<void> {
+  try {
+    await axios.delete(
+      `${apiUrl}/Quiz/delete/${quizId}`,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("The quiz has been deleted successfully!");
+  } catch (error:any) {
+    toast.error(`Failed to delete quiz!: ${error.message}`);
   }
 }
 

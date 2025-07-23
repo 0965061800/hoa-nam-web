@@ -1,20 +1,21 @@
 import axios from "axios";
-import { AddQuizDto, AttemptRequestDto, QuestionDataDto, QuizDataDto, QuizInfoDto, UserQuizData } from "../interface";
 import toast from "react-hot-toast";
+import { AttemptRequestDto, PageListData, PageRequestParam, QuizInfoDto } from "../types/interfaces";
 
 
 const apiUrl = import.meta.env.VITE_APP_BASE_URL;
 
 
 export function handleGetQuizzes(
-  token: string | null
-): Promise<UserQuizData[] | undefined> {
+  token: string | null,
+  pageRequest:PageRequestParam
+): Promise<PageListData | undefined> {
   axios.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
     return config;
   });
   return axios
-    .get(`${apiUrl}/AttemptQuery`, { withCredentials: true })
+    .get(`${apiUrl}/AttemptQuery`, { params: {...pageRequest}, withCredentials: true})
     .then((response) => response.data)
     .catch((error) => {
       toast.error(`Failed to get quizzes: ${error.message}`);
@@ -43,11 +44,10 @@ export async function handleSendResultToServer(
   token: string | null,
   result: AttemptRequestDto
 ): Promise<void> {
-  console.log(1);
   try {
     await axios.post(
       `${apiUrl}/Attempt`,
-      {result},
+      {...result},
       {
         withCredentials: true,
         headers: {
@@ -60,3 +60,4 @@ export async function handleSendResultToServer(
     toast.error(`Failed to update question!: ${error.message}`);
   }
 }
+

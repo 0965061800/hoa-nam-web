@@ -23,7 +23,7 @@ namespace HoaNamApi.Controllers
 
 		[HttpPost]
 		[Authorize(Roles = "User")]
-		public async Task<IActionResult> UserMakeAttempt(AttemptRequestDto dto)
+		public async Task<IActionResult> UserMakeAttempt([FromBody] AttemptRequestDto dto)
 		{
 			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (accountId == null) return Unauthorized();

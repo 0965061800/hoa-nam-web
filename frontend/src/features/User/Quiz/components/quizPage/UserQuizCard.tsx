@@ -5,6 +5,7 @@ import {
   faEllipsis,
   faPenToSquare,
   faPlay,
+  faStar,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import {
@@ -24,7 +25,7 @@ interface Props {
 function UserQuizCard({ singleQuiz }: Props) {
   const navigate = useNavigate();
 
-  const { title, numberOfQuestion, numberOfAttempt, avarageSuccessRate } =
+  const { title, numberOfQuestion, numberOfAttempt, averageSuccessRate } =
     singleQuiz;
 
   function viewQuiz(quiz: UserQuizData) {
@@ -34,7 +35,7 @@ function UserQuizCard({ singleQuiz }: Props) {
   function playQuiz(quiz: UserQuizData) {
     navigate(`/user/quizzes/${quiz.quizId}/play`)
   }
-
+  console.log(singleQuiz)
   return (
     <div className="min-w-[300px] rounded-[10px] flex flex-col gap-2 border border-gray-300 bg-white p-4">
       {/* Image Container */}
@@ -58,13 +59,6 @@ function UserQuizCard({ singleQuiz }: Props) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-        {/* Quiz Icon */}
-        {/* <FontAwesomeIcon
-          className="text-white text-3xl"
-          width={120}
-          height={120}
-            icon={convertToFaIcons(icon)}
-        /> */}
       </div>
       {/* Title Area */}
       <h3 className="font-bold ">{title}</h3>
@@ -73,7 +67,7 @@ function UserQuizCard({ singleQuiz }: Props) {
       <p className="text-sm font-light">{numberOfAttempt} attempt(s)</p>
       {numberOfAttempt > 0 ? (
         <p className="text-sm font-light">
-          success rate: {avarageSuccessRate}{" "}
+          success rate: {averageSuccessRate*100} %
         </p>
       ) : (
         ""
@@ -90,7 +84,7 @@ function UserQuizCard({ singleQuiz }: Props) {
             className="text-white"
             width={15}
             height={15}
-            icon={faPenToSquare}
+            icon={faStar}
           />
         </div>
         <div

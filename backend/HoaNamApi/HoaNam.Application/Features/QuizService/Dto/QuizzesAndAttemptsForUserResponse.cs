@@ -6,7 +6,7 @@
 		public string Title { get; set; }
 		public int NumberOfQuestion { get; set; }
 		public int NumberOfAttempt { get; set; }
-		public int AverageSuccessRate { get; set; }
+		public double AverageSuccessRate { get; set; }
 	}
 
 

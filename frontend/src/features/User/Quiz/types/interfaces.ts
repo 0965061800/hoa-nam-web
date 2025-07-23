@@ -1,3 +1,17 @@
+export interface PageListData {
+    totalPage: number,
+    pageIndex: number,
+    pageSize: number,
+    data: UserQuizData[]
+}
+
+export interface PageRequestParam {
+    pageIndex: number,
+    pageSize: number,
+    sorting: number,
+    filter: string
+}
+
 export interface AddQuizDto {
     title: string
     questions: Array<AddQuizQuestionDto>
@@ -48,7 +62,7 @@ export interface UserQuizData {
     title: string,
     numberOfQuestion: number,
     numberOfAttempt: number,
-    avarageSuccessRate: number,
+    averageSuccessRate: number,
 }
 
 

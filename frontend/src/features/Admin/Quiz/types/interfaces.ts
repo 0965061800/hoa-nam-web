@@ -1,5 +1,6 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons"
 
+
 export interface AddQuizDto {
     title: string
     questions: Array<AddQuizQuestionDto>
@@ -14,6 +15,27 @@ export interface AddQuizQuestionDto {
 export interface AddQuizChoiceDto {
     content: string,
     isCorrect: boolean,
+}
+
+export interface PageRequestParam {
+    pageIndex: number,
+    pageSize: number,
+    sorting: number,
+    filter: string
+}
+
+
+export interface AdminQuizDto {
+    quizId: string,
+    title: string,
+    numberOfQuestion: number
+}
+
+export interface PageListData {
+    totalPage: number,
+    pageIndex: number,
+    pageSize: number,
+    data: AdminQuizDto[]
 }
 
 export interface QuizDataDto {

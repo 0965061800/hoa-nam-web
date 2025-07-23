@@ -1,10 +1,14 @@
 ﻿using AutoMapper;
 using HoaNam.Application.Features.QuizService.Commands;
+using HoaNam.Application.Features.QuizService.Dto;
 using HoaNam.Application.Features.QuizService.Queries;
+using HoaNam.Infrastructure.Identity;
 using HoaNamApi.Dtos.Quiz;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Data.Common;
 using System.Security.Claims;
 
 namespace HoaNamApi.Controllers
@@ -15,26 +19,15 @@ namespace HoaNamApi.Controllers
 	{
 		private readonly IMediator _mediator;
 		private readonly IMapper _mapper;
+		private readonly DbConnection _connection;
+		private readonly AppDbContext _context;
 
-		public QuizController(IMediator mediator, IMapper mapper)
+		public QuizController(IMediator mediator, IMapper mapper, AppDbContext context)
 		{
 			_mediator = mediator;
 			_mapper = mapper;
-		}
-
-		[HttpGet]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetAllQuizByAdmin()
-		{
-			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (accountId == null) return Unauthorized();
-			GetQuizzesByAdmin newRequest = new GetQuizzesByAdmin
-			{
-				adminId = new Guid(accountId),
-			};
-			var result = await _mediator.Send(newRequest);
-			if (!result.IsSuccess) return BadRequest(result.Error);
-			return Ok(result.Data);
+			_context = context;
+			_connection = context.Database.GetDbConnection();
 		}
 
 		[HttpGet("quizId={quizId}")]
@@ -82,6 +75,34 @@ namespace HoaNamApi.Controllers
 			addCommand.UserId = userId;
 			await _mediator.Send(addCommand);
 			return Ok();
+		}
+
+		[HttpDelete("delete/{quizId}")]
+		[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> DeleteQuiz([FromRoute] string quizId)
+		{
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
+			Guid userId = new Guid(accountId);
+
+			DeleteQuizCommand deleteCommand = new()
+			{
+				QuizId = new Guid(quizId)
+			};
+
+			await _mediator.Send(deleteCommand);
+			return Ok();
+		}
+
+		[Authorize(Roles = "Admin")]
+		[HttpGet("admin")]
+		public async Task<IActionResult> GetAdminQuizzes([FromQuery] FilterSortPagingRequest FSPR)
+		{
+			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (accountId == null) return Unauthorized();
+			Guid userId = new Guid(accountId);
+			var result = await _connection.GetAdminQuizzesWithFSP(userId, FSPR);
+			return Ok(result);
 		}
 	}
 }

@@ -18,6 +18,16 @@ namespace HoaNam.Infrastructure.Repositories.QuizRepository
 			await _context.Quizzes.AddAsync(newQuiz);
 		}
 
+		public async Task Delete(Guid quizId)
+		{
+			var quizDelete = await _context.Quizzes.FirstOrDefaultAsync(x => x.Id == quizId);
+			if (quizDelete != null)
+			{
+				_context.Quizzes.Remove(quizDelete);
+			}
+			else throw new Exception("this quiz_Id not exist");
+		}
+
 		public async Task<Quiz?> GetQuizAsync(Guid Id)
 		{
 			var quiz = await _context.Quizzes.Include(x => x.Questions).ThenInclude(x => x.Choices).FirstOrDefaultAsync(x => x.Id == Id);

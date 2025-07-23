@@ -20,11 +20,9 @@ function UpdateFillInBlankChoice({
       handleQuestionUpdate(singleQuestion);
   }
 
-  console.log(singleQuestion);
   
   useEffect(() => {
     if (mode == "create") {
-      console.log("run");
       const newChoice: ChoiceDataDto = {
         id: "",
         choiceContent: "",
@@ -38,9 +36,8 @@ function UpdateFillInBlankChoice({
   },[])
 
   return (
-    <div className=" flex gap-[39px] items-center mt-3">
+    <div className="flex gap-[39px] items-center mt-3">
       <div className="text-[15px]">Answer</div>
-      {/* Choices Area */}
       <textarea
         className="border border-gray-200 rounded-md p-3 ml-3 w-full h-[50px] resize-none 
             text-[13px] outline-none"
