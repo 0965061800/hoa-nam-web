@@ -14,9 +14,10 @@ namespace HoaNam.Test.Domain
 			var quizId = Guid.NewGuid();
 			var title = QuizTitle.FromString("Test Quiz");
 			var userId = Guid.NewGuid();
+			var timeToPlay = (ushort)30;
 
 			// Act
-			var quiz = new Quiz(quizId, title, userId);
+			var quiz = new Quiz(quizId, title, userId, true, timeToPlay);
 
 			// Assert
 			quiz.Id.Should().Be(quizId);
@@ -73,7 +74,7 @@ namespace HoaNam.Test.Domain
 
 		private Quiz CreateTestQuiz()
 		{
-			return new Quiz(Guid.NewGuid(), QuizTitle.FromString("Demo Quiz"), Guid.NewGuid());
+			return new Quiz(Guid.NewGuid(), QuizTitle.FromString("Demo Quiz"), Guid.NewGuid(), true, 30);
 		}
 	}
 }

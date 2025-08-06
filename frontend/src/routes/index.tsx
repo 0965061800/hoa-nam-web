@@ -17,6 +17,7 @@ import QuizPage from "@/features/User/Quiz/pages/QuizPage";
 import { QuizPlayContextProvider } from "@/features/User/Quiz/context/QuizPlayContext";
 import QuizPlayPage from "@/features/User/Quiz/pages/QuizPlayPage";
 import QuizResultPage from "@/features/User/Quiz/pages/QuizResultPage";
+import AdminLayout from "@/layout/AdminLayout";
 
 const AppRoutes = () => {
   return (
@@ -58,7 +59,7 @@ const AppRoutes = () => {
         {/* Admin Route */}
         <Route element={<PrivateRoute role="Admin" />}>
           <Route element={<RoleBasedRoute allowedRole="Admin" />}>
-            <Route path="/admin" element={<Layout></Layout>}>
+            <Route path="/admin" element={<AdminLayout></AdminLayout>}>
               <Route path="quizzes" element={<QuizViewPage></QuizViewPage>} />
               <Route path="quiz">
                 <Route

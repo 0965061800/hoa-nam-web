@@ -16,7 +16,6 @@ const QuizDetailPage = () => {
   const { quizId } = useParams();
 
   const [quiz, setQuiz] = useState<QuizDataDto | undefined>(undefined);
-
   const { token } = useAuth();
 
   async function fetchQuizzes() {
@@ -128,8 +127,11 @@ const QuizDetailPage = () => {
             />
           </div>
         </div>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-gray-500">
           Shuffled: {quiz.isShuffled ? "Yes" : "No"}
+        </p>
+        <p className="text-sm text-gray-500 mb-6">
+          Time: {Math.floor(quiz.timeToPlay/60)}:{quiz.timeToPlay % 60 > 9 ? quiz.timeToPlay % 60 : `0${quiz.timeToPlay%60}`}
         </p>
         {quiz.questions.map((question, index) => (
           <div

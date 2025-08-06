@@ -14,16 +14,19 @@ namespace HoaNam.Domain.Quiz.Entities
 		public DateTime UpdateAt { get; private set; }
 		public bool IsShuffled { get; private set; }
 		public Guid CreatedUserId { get; private set; }
+		public ushort TimeToPlay { get; private set; }
 
 		private readonly List<Question> _questions = new();
 		public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
-		public Quiz(Guid id, QuizTitle title, Guid createdUserId)
+		public Quiz(Guid id, QuizTitle title, Guid createdUserId, bool isShuffled, ushort TimeToPlay)
 		{
 			Apply(new QuizEvent.QuizCreated
 			{
 				Id = id,
 				Title = title,
-				CreatedUserId = createdUserId
+				CreatedUserId = createdUserId,
+				IsShuffled = isShuffled,
+				TimeToPlay = TimeToPlay
 			});
 		}
 
@@ -69,7 +72,11 @@ namespace HoaNam.Domain.Quiz.Entities
 			{
 				IsShuffled = value
 			});
-
+		public void ChangeTimeToPlay(ushort time) =>
+			Apply(new QuizEvent.TimeToPlayChangeEvent
+			{
+				TimeToPlay = time
+			});
 
 		protected override void When(object @event)
 		{
@@ -81,6 +88,8 @@ namespace HoaNam.Domain.Quiz.Entities
 					CreatedAt = DateTime.UtcNow;
 					UpdateAt = DateTime.UtcNow;
 					CreatedUserId = e.CreatedUserId;
+					IsShuffled = e.IsShuffled;
+					TimeToPlay = e.TimeToPlay;
 					break;
 				case QuizEvent.QuestionAddedToQuizEvent e:
 					Question newQuestion = new Question(e.QuestionId, e.Content, e.QuestionType, Id);
@@ -99,6 +108,9 @@ namespace HoaNam.Domain.Quiz.Entities
 				case QuizEvent.TitleChanged e:
 					Title = QuizTitle.FromString(e.Value);
 					UpdateAt = DateTime.UtcNow;
+					break;
+				case QuizEvent.TimeToPlayChangeEvent e:
+					TimeToPlay = e.TimeToPlay;
 					break;
 			}
 		}

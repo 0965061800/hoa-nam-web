@@ -5,6 +5,7 @@
 		public Guid Id { get; set; }
 		public string Title { get; set; } = string.Empty;
 		public bool IsShuffled { get; set; }
+		public ushort TimeToPlay { get; set; } = 0;
 		public List<QuestionResponseDto> Questions { get; set; } = new List<QuestionResponseDto>();
 	}
 

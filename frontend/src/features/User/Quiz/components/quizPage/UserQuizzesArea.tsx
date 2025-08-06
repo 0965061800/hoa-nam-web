@@ -49,21 +49,6 @@ function UserQuizzesArea({quizzes, sorting, handleSorting, handleSearching}: Pro
                         <UserQuizCard singleQuiz={singleQuiz} />
                         </div>
                     ))}
-                  <div
-                    // onClick={() => router.push('/quiz-build')}
-                    className=" cursor-pointer justify-center items-center rounded-[10px]
-                   w-[230px] flex flex-col gap-2 border border-gray-100 bg-white p-4"
-                  >
-                    {/* <Image
-                      src={'/add-quiz.png'}
-                      width={160}
-                      height={160}
-                      alt=""
-                    /> */}
-                    <span className="select-none opacity-40">
-                      Add a new Quiz
-                    </span>
-                  </div>
                 </div>
               </div>
             )}

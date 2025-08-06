@@ -7,15 +7,18 @@ namespace HoaNam.Application.Features.QuizService.Commands
 	{
 		public Guid UserId { get; set; }
 		public string Title { get; set; }
+		public bool IsShuffled { get; set; }
+		public ushort TimeToPlay { get; set; } = 0;
 		public List<NewQuizQuestionDto> Questions { get; set; }
 		public AddNewQuiz()
 		{
 
 		}
-		public AddNewQuiz(Guid userId, string title)
+		public AddNewQuiz(Guid userId, string title, ushort timeToPlay)
 		{
 			UserId = userId;
 			Title = title;
+			TimeToPlay = timeToPlay;
 			Questions = new List<NewQuizQuestionDto>();
 		}
 	}

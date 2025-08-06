@@ -60,6 +60,7 @@ export interface ChoiceDataDto {
 export interface UserQuizData {
     quizId: string,
     title: string,
+    timeToPlay:number,
     numberOfQuestion: number,
     numberOfAttempt: number,
     averageSuccessRate: number,
@@ -73,6 +74,7 @@ export interface QuizInfoDto
     quizId: string,
     title: string,
     isShuffled: boolean,
+    timeToPlay: number,
     questions: QuestionInfoDto[]
 }
 

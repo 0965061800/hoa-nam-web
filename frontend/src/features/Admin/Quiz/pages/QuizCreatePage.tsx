@@ -11,6 +11,8 @@ function QuizCreatePage() {
 
   const [newQuiz, setNewQuiz] = useState<AddQuizDto>({
         title: '',
+        isShuffled: true,
+        timeToPlay: 300,
         questions: quizQuestions,
       });
   useEffect(() => {
@@ -21,9 +23,10 @@ function QuizCreatePage() {
   }, [quizQuestions]);
 
 
-  function onChangeQuizTitle(text: string) {
-    setNewQuiz((prevQuiz) => ({ ...prevQuiz, title: text }));
+  function onChangeQuizInfo(title: string, isShuffled: boolean, timeToPlay:number) {
+    setNewQuiz((prevQuiz) => ({ ...prevQuiz, title: title, isShuffled: isShuffled, timeToPlay: timeToPlay }));
   }
+
 
 
   const quizQuestionsProps = {
@@ -36,7 +39,7 @@ function QuizCreatePage() {
     <div className=" relative mx-16 poppins">
       {/* <IconsComponents /> */}
       <QuizCreateNav newQuiz={newQuiz} />
-      <QuizCreateTitle onChangeQuizTitle={onChangeQuizTitle} />
+      <QuizCreateTitle onChangeQuizInfo={onChangeQuizInfo} />
       <QuizCreateQuestions {...quizQuestionsProps} />
     </div>
   );

@@ -10,7 +10,7 @@ import useQuizPlayContext from '../../context/QuizPlayContext';
 
 
 function QuizStartQuestions({ onUpdateTime }) {
-  const time = 30;
+  const time = 300;
   const { quizToStartObject, allQuizzes, setAllQuizzes, userObject } =
     useGlobalContextProvider();
   const { selectQuizToStart } = quizToStartObject;

@@ -22,7 +22,6 @@ function QuizPlayPage() {
   }, []);
 
   const handleTimeUp = () => setTimeUp(true)
-
   return (
     <div className="relative poppins flex flex-col px-24 mt-[35px] ">
       {quizInfo.quizId === "" ? (
@@ -37,7 +36,7 @@ function QuizPlayPage() {
         </div>
       ) : (
         <div className="mx-auto container max-w-[1440px] font-primative">
-          <QuizPlayHeader initialTime={30} onComplete={handleTimeUp} quizEnded={quizEnded} />
+          <QuizPlayHeader initialTime={quizInfo.timeToPlay} onComplete={handleTimeUp} quizEnded={quizEnded} />
           <div className="mt-10 flex items-center justify-center">
             <QuizPlayQuestions timeUp={timeUp} onQuizEnded={() => setQuizEnded(true)}/>
           </div>

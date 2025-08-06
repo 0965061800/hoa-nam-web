@@ -30,22 +30,6 @@ namespace HoaNamApi.Controllers
 			_connection = context.Database.GetDbConnection();
 		}
 
-		[HttpGet("quizId={quizId}")]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetQuizById([FromRoute] string quizId)
-		{
-			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (accountId == null) return Unauthorized();
-			GetDetailQuizByAdmin request = new GetDetailQuizByAdmin
-			{
-				QuizId = new Guid(quizId),
-				AdminId = new Guid(accountId),
-			};
-			var result = await _mediator.Send(request);
-			if (!result.IsSuccess) return BadRequest(result.Error);
-			return Ok(result.Data);
-		}
-
 
 		[HttpPost("add")]
 		[Authorize(Roles = "Admin")]
@@ -102,6 +86,14 @@ namespace HoaNamApi.Controllers
 			if (accountId == null) return Unauthorized();
 			Guid userId = new Guid(accountId);
 			var result = await _connection.GetAdminQuizzesWithFSP(userId, FSPR);
+			return Ok(result);
+		}
+
+		[Authorize(Roles = "Admin")]
+		[HttpGet("QuizDetail/{quizId}")]
+		public async Task<IActionResult> GetQuizInfo([FromRoute] string quizId)
+		{
+			var result = await _connection.GetAdminQuizDetail(new Guid(quizId));
 			return Ok(result);
 		}
 	}

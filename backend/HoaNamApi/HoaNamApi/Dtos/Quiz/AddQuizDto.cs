@@ -7,6 +7,8 @@ namespace HoaNamApi.Dtos.Quiz
 		[Required(ErrorMessage = "The quiz title must not be empty")]
 		public string Title { get; set; }
 		public List<QuestionRequestDto> Questions { get; set; }
+		public bool IsShuffled { get; set; }
+		public ushort TimeToPlay { get; set; } = 0;
 	}
 
 	public class QuestionRequestDto

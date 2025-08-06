@@ -7,6 +7,8 @@
 			public Guid Id { get; set; }
 			public string Title { get; set; }
 			public Guid CreatedUserId { get; set; }
+			public bool IsShuffled { get; set; }
+			public ushort TimeToPlay { get; set; }
 		}
 
 		public class QuestionAddedToQuizEvent
@@ -28,6 +30,11 @@
 		public class TitleChanged
 		{
 			public string Value { get; set; }
+		}
+
+		public class TimeToPlayChangeEvent
+		{
+			public ushort TimeToPlay { get; set; }
 		}
 	}
 }

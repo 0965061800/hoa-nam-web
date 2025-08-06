@@ -2,7 +2,9 @@ import { IconDefinition } from "@fortawesome/free-solid-svg-icons"
 
 
 export interface AddQuizDto {
-    title: string
+    title: string,
+    isShuffled: boolean,
+    timeToPlay:number,
     questions: Array<AddQuizQuestionDto>
 }
 
@@ -42,6 +44,7 @@ export interface QuizDataDto {
     id: string,
     title: string,
     isShuffled: boolean,
+    timeToPlay: number,
     questions: QuestionDataDto[]
 }
 

@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import ScoreComponent from "./ScoreComponent";
 import useQuizPlayContext from "../../context/QuizPlayContext";
 import { QuestionType, UserAnswer, UserChoice } from "../../types/interfaces";
+import shuffleArray from "../../services/shuffleQuestion";
 
 interface Props {
   timeUp: boolean;
@@ -14,7 +15,9 @@ interface Props {
 
 function QuizPlayQuestions({ timeUp, onQuizEnded }: Props) {
   const { quizInfo, setAnswerOfUser, postResultToServer } = useQuizPlayContext();
-  const { questions } = quizInfo;
+  //const { questions } = quizInfo;
+  const [questions, setQuestions] = useState(quizInfo.questions);
+
   const generalAnswerOfUser = useRef<UserAnswer[]>([]);
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -29,6 +32,14 @@ function QuizPlayQuestions({ timeUp, onQuizEnded }: Props) {
     setSelectedChoice([]);
   }, [currentQuestionIndex, questions]);
 
+  console.log(questions);
+  useEffect(() => {
+    if(quizInfo.isShuffled) {
+      const shuffled = shuffleArray(questions);
+      setQuestions(shuffled);
+    }
+  },[quizInfo])
+  
   function submitAnswer() {
     if (selectedChoice.length == 0) {
       toast.error("please select an answer");
@@ -47,7 +58,6 @@ function QuizPlayQuestions({ timeUp, onQuizEnded }: Props) {
 
   async function postToServer() {
     setAnswerOfUser(generalAnswerOfUser.current);
-    await postResultToServer();
   }
   function addToGeneralAnswer() {
     if (questionType.current == QuestionType.SingleChoice) {

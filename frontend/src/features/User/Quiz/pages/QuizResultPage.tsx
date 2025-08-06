@@ -54,7 +54,6 @@ const QuizResultPage = () => {
               <ul className="space-y-2">
                 {question.choices.map((choice) => {
                   const result = checkAnswer(question.questionId, choice);
-                  console.log(result);
                   return (
                     <li
                       key={choice.choiceId}

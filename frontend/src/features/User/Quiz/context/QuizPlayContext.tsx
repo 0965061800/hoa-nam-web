@@ -49,15 +49,19 @@ export function QuizPlayContextProvider()
             totalQuestion: quizInfo.questions.length,
             totalRightAnswer: score.totalRightAnswer
         }
-        console.log(result);
         await handleSendResultToServer(token, result)
     }
-    console.log(score);
+
     useEffect(() => {
         const count  = caculateScore(quizInfo.questions, answerOfUser);
         setScore({...count});
     },[answerOfUser])
 
+    useEffect(() => {
+        if (score.totalQuestion != 0) {
+            postResultToServer()
+        }
+    }, [score])
     const getQuizData = async function (quizId: string, bearerToken: string) {
         const quizInfoData = await handleGetQuizInfo(bearerToken, quizId);
         if (quizInfoData != undefined) setQuizInfo(quizInfoData);

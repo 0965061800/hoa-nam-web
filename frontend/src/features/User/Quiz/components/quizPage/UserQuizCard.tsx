@@ -35,7 +35,6 @@ function UserQuizCard({ singleQuiz }: Props) {
   function playQuiz(quiz: UserQuizData) {
     navigate(`/user/quizzes/${quiz.quizId}/play`)
   }
-  console.log(singleQuiz)
   return (
     <div className="min-w-[300px] rounded-[10px] flex flex-col gap-2 border border-gray-300 bg-white p-4">
       {/* Image Container */}
@@ -63,15 +62,18 @@ function UserQuizCard({ singleQuiz }: Props) {
       {/* Title Area */}
       <h3 className="font-bold ">{title}</h3>
       {/* Questions */}
-      <p className="text-sm font-light">{numberOfQuestion} question(s)</p>
-      <p className="text-sm font-light">{numberOfAttempt} attempt(s)</p>
-      {numberOfAttempt > 0 ? (
-        <p className="text-sm font-light">
-          success rate: {averageSuccessRate*100} %
-        </p>
-      ) : (
-        ""
-      )}
+      <div className="flex gap-10">
+        <div>
+          <p className="text-sm font-light">{numberOfQuestion} question(s)</p>
+          <p className="text-sm font-light">{numberOfAttempt} attempt(s)</p>
+        </div>
+        <div>
+          <p className="text-sm font-light">
+            success rate: {numberOfAttempt > 0 ? Math.floor(averageSuccessRate*100) : 0} %
+          </p>
+          <p className="text-sm font-light">time: {Math.floor(singleQuiz.timeToPlay/60)}:{singleQuiz.timeToPlay%60>10?singleQuiz.timeToPlay%60:`0${singleQuiz.timeToPlay%60}`}</p>
+          </div>
+        </div>
       {/* Footer Area */}
       <div className="flex gap-3 justify-end">
         <div

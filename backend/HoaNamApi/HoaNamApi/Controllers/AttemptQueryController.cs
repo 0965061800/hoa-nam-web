@@ -30,12 +30,9 @@ namespace HoaNamApi.Controllers
 			var accountId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (accountId == null) return Unauthorized();
 			Guid userId = new Guid(accountId);
-
-
 			GetListQuizzesAndAttemptsByUser request = new();
 			request.UserId = userId;
-
-			var result = await _connection.GetQuizzesWithUserAttemptWithFSP(request, require);
+			var result = await _connection.GetListQuizWithUserAttempt(request, require);
 			return Ok(result);
 		}
 
@@ -46,7 +43,5 @@ namespace HoaNamApi.Controllers
 			var result = await _connection.GetQuizInfo(new Guid(quizId));
 			return Ok(result);
 		}
-
-
 	}
 }

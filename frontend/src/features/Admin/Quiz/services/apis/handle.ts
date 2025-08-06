@@ -28,7 +28,6 @@ export async function handleCreatedQuestion(
   question: QuestionDataDto,
   quizId: string
 ): Promise<void> {
-  console.log(1);
   try {
     await axios.post(
       `${apiUrl}/Question/add`,
@@ -93,7 +92,7 @@ export function handleGetAdminQuizDetail(
     return config;
   });
   return axios
-    .get(`${apiUrl}/Quiz/quizId=${quizId}`, {
+    .get(`${apiUrl}/Quiz/QuizDetail/${quizId}`, {
       withCredentials: true,
     })
     .then((response) => response.data)

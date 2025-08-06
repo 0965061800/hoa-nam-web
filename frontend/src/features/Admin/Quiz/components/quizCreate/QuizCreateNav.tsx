@@ -30,7 +30,7 @@ function QuizCreateNav({ newQuiz }: Props) {
     setIsLoading(true);
     handleCreateQuiz(newQuiz, token);
     setIsLoading(false);
-    navigate('/quiz');
+    navigate('/admin/quizzes');
   }
 
   return (

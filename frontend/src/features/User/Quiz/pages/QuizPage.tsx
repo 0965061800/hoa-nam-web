@@ -45,7 +45,7 @@ export default function QuizPage() {
     };
   }, []);
 
-      const handlePageChange = (page: number) => {
+    const handlePageChange = (page: number) => {
     setParam((prev) => ({...prev, pageIndex:page, pageSize: pageInfo.pageSize}))
   };
 

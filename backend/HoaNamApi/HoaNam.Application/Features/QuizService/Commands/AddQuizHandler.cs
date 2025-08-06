@@ -21,7 +21,7 @@ namespace HoaNam.Application.Features.QuizService.Commands
 			bool checkUser = await _userRepo.CheckUserExist(request.UserId);
 			if (checkUser == false) throw new Exception("User does not exist");
 			QuizTitle newQuizTitle = QuizTitle.FromString(request.Title);
-			Quiz newQuiz = new Quiz(Guid.NewGuid(), newQuizTitle, request.UserId);
+			Quiz newQuiz = new Quiz(Guid.NewGuid(), newQuizTitle, request.UserId, request.IsShuffled, request.TimeToPlay);
 			foreach (var questionDto in request.Questions)
 			{
 				Guid newId = Guid.NewGuid();

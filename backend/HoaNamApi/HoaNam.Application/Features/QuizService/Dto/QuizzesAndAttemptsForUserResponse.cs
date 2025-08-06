@@ -4,6 +4,7 @@
 	{
 		public Guid QuizId { get; set; }
 		public string Title { get; set; }
+		public ushort TimeToPlay { get; set; }
 		public int NumberOfQuestion { get; set; }
 		public int NumberOfAttempt { get; set; }
 		public double AverageSuccessRate { get; set; }

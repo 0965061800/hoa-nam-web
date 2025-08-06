@@ -81,6 +81,9 @@ namespace HoaNam.Infrastructure.Migrations
                     b.Property<bool>("IsShuffled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("TimeToPlay")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -225,7 +228,7 @@ namespace HoaNam.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AccessFailedCount = 0,
                             AvatarUrl = "https://i.pravatar.cc/150?img=1",
-                            ConcurrencyStamp = "d09ff985-e9c6-4921-bb64-1471a156e77f",
+                            ConcurrencyStamp = "604a7a8a-f9eb-4894-a479-14abf1354465",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",

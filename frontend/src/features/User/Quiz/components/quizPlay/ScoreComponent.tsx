@@ -27,11 +27,8 @@ function ScoreComponent() {
     return veryHappyEmoji;
   }
 
-  console.log("emoji", emojiIconScore());
-
   function watchResult() {
-    navigate(`/user/quizzes/${quizId}/view-result`);
-    
+    navigate(`/user/quizzes/${quizId}/view-result`, { replace: true });
   }
 
   return (
@@ -47,7 +44,7 @@ function ScoreComponent() {
         </div>
         <div className="flex gap-5">
           <button
-            onClick={() => tryAgainFunction()}
+            onClick={() => navigate(0)}
             className="p-2 bg-rose-700 rounded-md text-white px-6"
           >
             Try Again
