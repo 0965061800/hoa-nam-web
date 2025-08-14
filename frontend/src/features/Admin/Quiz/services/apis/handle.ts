@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import toast from "react-hot-toast";
-import { AddQuizDto, QuestionDataDto, QuizDataDto, PageRequestParam, PageListData } from "../../types/interfaces";
+import { AddQuizDto, QuestionDataDto, QuizDataDto, PageRequestParam, PageListData, TagDtoForList, AddTagDto } from "../../types/interfaces";
 import { UpdateQuizDto } from "../../components/quizUpdate/UpdateQuizInfo";
 
 
@@ -145,3 +145,41 @@ export async function handleDeleteQuiz(
   }
 }
 
+export async function handleGetTags(
+  token: string|null
+): Promise<TagDtoForList[]> {
+  axios.interceptors.request.use((config) => {
+    config.headers.Authorization = `Bearer ${token}`;
+    return config;
+  });
+  return axios
+    .get(`${apiUrl}/Tag/get`, {
+      withCredentials: true,
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      toast.error(`Failed to get tag: ${error.message}`);
+      return undefined;
+    });
+}
+
+export async function handleCreateTag(
+  token: string | null,
+  adddTagDto: AddTagDto,
+): Promise<void> {
+  try {
+    await axios.post(
+      `${apiUrl}/Tag/add`,
+      { ...adddTagDto },
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    toast.success("Create tag successfully!");
+  } catch (error:any) {
+    toast.error(`Failed to create tag!: ${error.response.data}`);
+  }
+}

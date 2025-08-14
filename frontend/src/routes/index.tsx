@@ -18,6 +18,7 @@ import { QuizPlayContextProvider } from "@/features/User/Quiz/context/QuizPlayCo
 import QuizPlayPage from "@/features/User/Quiz/pages/QuizPlayPage";
 import QuizResultPage from "@/features/User/Quiz/pages/QuizResultPage";
 import AdminLayout from "@/layout/AdminLayout";
+import UserHomePage from "@/features/User/Quiz/pages/UserHomePage";
 
 const AppRoutes = () => {
   return (
@@ -25,8 +26,8 @@ const AppRoutes = () => {
       <Routes>
         {/* Public Route*/}
         <Route element={<PublicRoute />}>
+          <Route path="/" element={<Home />} />
           <Route element={<Layout></Layout>}>
-            <Route path="/" element={<Home />} />
             <Route path="/courses" element={<Courses></Courses>} />
             <Route
               path="courses/detail"
@@ -42,7 +43,7 @@ const AppRoutes = () => {
         <Route element={<PrivateRoute role="User" />}>
           <Route element={<RoleBasedRoute allowedRole="User" />}>
             <Route path="/user" element={<Layout></Layout>}>
-              <Route path="home" element={<Home></Home>} />
+              <Route path="home" element={<UserHomePage></UserHomePage>} />
               <Route path="quizzes">
                 <Route index element={<QuizPage />} />
 
@@ -74,26 +75,6 @@ const AppRoutes = () => {
             </Route>
           </Route>
         </Route>
-        {/* <Route
-          path="/quiz"
-          element={
-            <PublicRoute>
-              <ContextProvider>
-                <QuizPage />
-              </ContextProvider>
-            </PublicRoute>
-          }
-        /> */}
-        {/* <Route
-          path="/quiz-play"
-          element={
-            <PublicRoute>
-              <ContextProvider>
-                <QuizPlayPage />
-              </ContextProvider>
-            </PublicRoute>
-          }
-        /> */}
       </Routes>
     </AuthProvider>
   );

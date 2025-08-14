@@ -14,6 +14,7 @@ function QuizCreatePage() {
         isShuffled: true,
         timeToPlay: 300,
         questions: quizQuestions,
+        tagIds: [],
       });
   useEffect(() => {
     setNewQuiz((prevQuiz) => ({
@@ -24,9 +25,12 @@ function QuizCreatePage() {
 
 
   function onChangeQuizInfo(title: string, isShuffled: boolean, timeToPlay:number) {
-    setNewQuiz((prevQuiz) => ({ ...prevQuiz, title: title, isShuffled: isShuffled, timeToPlay: timeToPlay }));
+    setNewQuiz((prevQuiz) => ({ ...prevQuiz, title: title, isShuffled: isShuffled, timeToPlay: timeToPlay}));
   }
 
+  function handleTaggingQuiz(tagIds: string[]) {
+    setNewQuiz((prevQuiz) => ({...prevQuiz, tagIds:tagIds}))
+  }
 
 
   const quizQuestionsProps = {
@@ -35,11 +39,13 @@ function QuizCreatePage() {
   };
 
 
+
+
   return (
     <div className=" relative mx-16 poppins">
       {/* <IconsComponents /> */}
       <QuizCreateNav newQuiz={newQuiz} />
-      <QuizCreateTitle onChangeQuizInfo={onChangeQuizInfo} />
+      <QuizCreateTitle onChangeQuizInfo={onChangeQuizInfo} onTaggingQuiz={handleTaggingQuiz}/>
       <QuizCreateQuestions {...quizQuestionsProps} />
     </div>
   );

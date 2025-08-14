@@ -7,6 +7,14 @@
 		public bool IsShuffled { get; set; }
 		public ushort TimeToPlay { get; set; } = 0;
 		public List<QuestionResponseDto> Questions { get; set; } = new List<QuestionResponseDto>();
+		public List<TagResponseDto> Tags { get; set; } = new List<TagResponseDto>();
+	}
+
+	public class TagResponseDto
+	{
+		public Guid Id { get; set; }
+		public string Name { get; set; } = string.Empty;
+		public string NormalizeName { get; set; } = string.Empty;
 	}
 
 	public class QuestionResponseDto

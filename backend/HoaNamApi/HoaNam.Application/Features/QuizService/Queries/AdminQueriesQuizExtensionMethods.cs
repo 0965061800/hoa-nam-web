@@ -53,6 +53,12 @@ namespace HoaNam.Application.Features.QuizService.Queries
 					INNER JOIN Choices c ON qu.Id = c.QuestionId
 					WHERE q.Id = @QuizId";
 
+			var sqlToGetTags = @"
+					SELECT t.Id, t.Name, t.NormalizeName
+					FROM QuizTags qt
+					INNER JOIN Tags t ON qt.TagId = t.Id
+					WHERE qt.QuizId = @QuizId";
+
 			var quizLookup = new Dictionary<Guid, QuizResponseDto>();
 
 			await connection.QueryAsync<QuizResponseDto, QuestionResponseDto, ChoiceResponseDto, QuizResponseDto>(
@@ -67,6 +73,7 @@ namespace HoaNam.Application.Features.QuizService.Queries
 							Title = quiz.Title,
 							IsShuffled = quiz.IsShuffled,
 							TimeToPlay = quiz.TimeToPlay,
+							Tags = new List<TagResponseDto>(),
 							Questions = new List<QuestionResponseDto>()
 						};
 						quizLookup.Add(quizEntry.Id, quizEntry);
@@ -98,9 +105,10 @@ namespace HoaNam.Application.Features.QuizService.Queries
 				param: new { QuizId = quizId },
 				splitOn: "Id,Id"
 			);
+			var tags = (await connection.QueryAsync<TagResponseDto>(sqlToGetTags, new { QuizId = quizId })).ToList();
+			var result = quizLookup.Values.FirstOrDefault();
+			result.Tags.AddRange(tags);
 			return quizLookup.Values.FirstOrDefault();
 		}
-
-
 	}
 }

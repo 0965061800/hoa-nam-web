@@ -24,4 +24,8 @@
     <ProjectReference Include="..\HoaNam.Domain\HoaNam.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence\Entities\" />
+  </ItemGroup>
+
 </Project>

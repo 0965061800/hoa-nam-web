@@ -36,5 +36,14 @@
 		{
 			public ushort TimeToPlay { get; set; }
 		}
+
+		public class TagAdded
+		{
+			public Guid TagId { get; set; }
+		}
+		public class TagRemoved
+		{
+			public Guid TagId { get; set; }
+		}
 	}
 }

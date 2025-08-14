@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HoaNam.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250531032902_changeQuizAttempt")]
-    partial class changeQuizAttempt
+    [Migration("20250813045719_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,9 @@ namespace HoaNam.Infrastructure.Migrations
                     b.Property<bool>("IsShuffled")
                         .HasColumnType("bit");
 
+                    b.Property<int>("TimeToPlay")
+                        .HasColumnType("int");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -145,6 +148,30 @@ namespace HoaNam.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuizAttempts");
+                });
+
+            modelBuilder.Entity("HoaNam.Domain.Tag.Entities.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("HoaNam.Infrastructure.Identity.AppIdentityUser", b =>
@@ -228,7 +255,7 @@ namespace HoaNam.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AccessFailedCount = 0,
                             AvatarUrl = "https://i.pravatar.cc/150?img=1",
-                            ConcurrencyStamp = "d09ff985-e9c6-4921-bb64-1471a156e77f",
+                            ConcurrencyStamp = "918f3569-a606-46d5-bf8e-febad89e9a6c",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -241,6 +268,19 @@ namespace HoaNam.Infrastructure.Migrations
                             TwoFactorEnabled = false,
                             UserName = "admin@example.com"
                         });
+                });
+
+            modelBuilder.Entity("HoaNam.Infrastructure.Persistence.Entities.QuizTag", b =>
+                {
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("QuizId", "TagId");
+
+                    b.ToTable("QuizTags", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -421,6 +461,21 @@ namespace HoaNam.Infrastructure.Migrations
                     b.HasOne("HoaNam.Domain.QuizAttempts.Entities.QuizAttempt", null)
                         .WithMany("QuestionAttempts")
                         .HasForeignKey("AttemptId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("HoaNam.Infrastructure.Persistence.Entities.QuizTag", b =>
+                {
+                    b.HasOne("HoaNam.Domain.Quiz.Entities.Quiz", null)
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HoaNam.Domain.Tag.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

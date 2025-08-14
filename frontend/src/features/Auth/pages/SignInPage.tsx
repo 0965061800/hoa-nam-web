@@ -24,12 +24,12 @@ const SignInPage = ({ role }: Props) => {
   });
 
   const { userName, login, roles} = useAuth();
-  useEffect(() => {
-    if (userName !== undefined && userName !== null && roles?.includes(role)) {
-      navigate("/");
-    }
-  }, [userName, navigate, roles]);
-  function onSubmit(values: SignInFormType) {
+
+  async function handleLogin (user: ISuccesUser) {
+    await login(user);
+  }
+
+  async function onSubmit(values: SignInFormType) {
     axios
       .post(
         role == "User"
@@ -50,10 +50,16 @@ const SignInPage = ({ role }: Props) => {
           userId: data.userId,
         };
 
-        login(user); // now correctly passing required info
+        handleLogin(user); // now correctly passing required info
       });
   }
 
+  useEffect(() => {
+    if (userName !== undefined && userName !== null && roles?.includes(role)) {
+      navigate("/user/home");
+    }
+  }, [userName, navigate, roles]);
+  
   return (
     <div className="mx-auto container max-w-[1240px] font-primative mb-10">
       <p className="pt-10 text-center text-3xl font-bold text-primative">

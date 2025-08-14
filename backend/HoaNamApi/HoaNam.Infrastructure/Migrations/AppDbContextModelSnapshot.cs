@@ -98,6 +98,26 @@ namespace HoaNam.Infrastructure.Migrations
                     b.ToTable("Quizzes");
                 });
 
+            modelBuilder.Entity("HoaNam.Domain.Quiz.Entities.QuizTag", b =>
+                {
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("TagId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("QuizId1")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("QuizId", "TagId");
+
+                    b.HasIndex("QuizId1");
+
+                    b.HasIndex("TagId");
+
+                    b.ToTable("QuizTags", (string)null);
+                });
+
             modelBuilder.Entity("HoaNam.Domain.QuizAttempts.Entities.QuestionAttempt", b =>
                 {
                     b.Property<Guid>("Id")
@@ -145,6 +165,30 @@ namespace HoaNam.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("QuizAttempts");
+                });
+
+            modelBuilder.Entity("HoaNam.Domain.Tag.Entities.Tag", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("NormalizeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("HoaNam.Infrastructure.Identity.AppIdentityUser", b =>
@@ -228,7 +272,7 @@ namespace HoaNam.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AccessFailedCount = 0,
                             AvatarUrl = "https://i.pravatar.cc/150?img=1",
-                            ConcurrencyStamp = "604a7a8a-f9eb-4894-a479-14abf1354465",
+                            ConcurrencyStamp = "8c055a7e-58ef-4320-92ba-8de4fb6ba51e",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -416,6 +460,25 @@ namespace HoaNam.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HoaNam.Domain.Quiz.Entities.QuizTag", b =>
+                {
+                    b.HasOne("HoaNam.Domain.Quiz.Entities.Quiz", null)
+                        .WithMany()
+                        .HasForeignKey("QuizId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HoaNam.Domain.Quiz.Entities.Quiz", null)
+                        .WithMany("QuizTags")
+                        .HasForeignKey("QuizId1");
+
+                    b.HasOne("HoaNam.Domain.Tag.Entities.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HoaNam.Domain.QuizAttempts.Entities.QuestionAttempt", b =>
                 {
                     b.HasOne("HoaNam.Domain.QuizAttempts.Entities.QuizAttempt", null)
@@ -484,6 +547,8 @@ namespace HoaNam.Infrastructure.Migrations
             modelBuilder.Entity("HoaNam.Domain.Quiz.Entities.Quiz", b =>
                 {
                     b.Navigation("Questions");
+
+                    b.Navigation("QuizTags");
                 });
 
             modelBuilder.Entity("HoaNam.Domain.QuizAttempts.Entities.QuizAttempt", b =>

@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { handleUpdatedQuiz } from "../../services/apis/handle";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
+import { TagUpdate } from "./TagUpdate";
 
 interface Props {
   quiz: QuizDataDto;
@@ -20,6 +21,7 @@ export interface UpdateQuizDto {
   title: string;
   isShuffled: boolean;
   timeToPlay: number;
+  tagIds: string[];
 }
 
 const UpdateQuizInfo = ({
@@ -32,6 +34,7 @@ const UpdateQuizInfo = ({
   const [shuffleable, setShuffleable] = useState(quiz.isShuffled);
   const [minute, setMinute] = useState(Math.floor(quiz.timeToPlay/60));
   const [second, setSecond] = useState(quiz.timeToPlay%60);
+  const [tagIds, setTagIds] = useState(quiz.tags.map(x => x.id));
 
   const handleChangeMinute = (minuteInput) => {
     if (minuteInput > 240) {
@@ -60,7 +63,8 @@ const UpdateQuizInfo = ({
       id: quiz.id,
       title: title.trim(),
       isShuffled: shuffleable,
-      timeToPlay: minute*60 + second
+      timeToPlay: minute*60 + second,
+      tagIds: tagIds
     };
     await handleUpdatedQuiz(token, quizInfo);
     closePopUp();
@@ -122,6 +126,7 @@ const UpdateQuizInfo = ({
           >
             Save
           </button>
+          <TagUpdate handleTaggingQuiz={(tagIds) => setTagIds(tagIds)} tagExists={quiz.tags} ></TagUpdate>
         </div>
       </div>
     </div>

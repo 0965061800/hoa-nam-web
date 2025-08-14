@@ -1,6 +1,7 @@
 ﻿using HoaNam.Domain.Quiz.Entities;
 using HoaNam.Domain.Quiz.ValueObjects;
 using HoaNam.Domain.QuizAttempts.Entities;
+using HoaNam.Domain.Tag.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -18,11 +19,12 @@ namespace HoaNam.Infrastructure.Identity
 		public DbSet<Choice> Choices { get; set; }
 		public DbSet<QuizAttempt> QuizAttempts { get; set; }
 		public DbSet<QuestionAttempt> QuestionAttempts { get; set; }
-
+		public DbSet<Tag> Tags { get; set; }
+		internal DbSet<QuizTag> QuizTags { get; set; }
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-
+			//Identity
 			builder.Entity<AppIdentityUser>(entity =>
 			{
 				entity.HasKey(e => e.Id);
@@ -34,6 +36,7 @@ namespace HoaNam.Infrastructure.Identity
 				entity.HasKey(e => e.Id);
 			});
 
+			//Quiz
 			builder.Entity<Quiz>(entity =>
 			{
 				entity.HasKey(e => e.Id);
@@ -43,14 +46,25 @@ namespace HoaNam.Infrastructure.Identity
 
 				entity.Navigation(e => e.Questions)
 					.UsePropertyAccessMode(PropertyAccessMode.Field);
+
 				entity.Property(e => e.Title)
 				.HasConversion(
 					title => title.Value,
 					value => QuizTitle.FromString(value)
 					);
 				entity.HasOne<AppIdentityUser>().WithMany().HasForeignKey("CreatedUserId");
+
+				// Configure QuizTags relationship here if Quiz has QuizTags property
+				entity.HasMany<QuizTag>(e => e.QuizTags)
+				.WithOne()
+					.HasForeignKey(qt => qt.QuizId)
+					.HasPrincipalKey(q => q.Id)
+					.OnDelete(DeleteBehavior.Cascade);
+				entity.Navigation(e => e.QuizTags)
+					.UsePropertyAccessMode(PropertyAccessMode.Field);
 			});
 
+			//Question
 			builder.Entity<Question>(entity =>
 			{
 				entity.HasKey(e => e.Id);
@@ -63,12 +77,14 @@ namespace HoaNam.Infrastructure.Identity
 					.UsePropertyAccessMode(PropertyAccessMode.Field);
 			});
 
+			//Choice
 			builder.Entity<Choice>(entity =>
 			{
 				entity.HasKey(e => e.Id);
 				entity.Property(c => c.Id).ValueGeneratedNever();
 			});
 
+			//QuizAttempt
 			builder.Entity<QuizAttempt>(entity =>
 			{
 				entity.HasKey(e => e.Id);
@@ -86,6 +102,30 @@ namespace HoaNam.Infrastructure.Identity
 				entity.Property(p => p.Id).ValueGeneratedNever();
 			});
 
+
+			//Tag
+			builder.Entity<Tag>(entity =>
+			{
+				entity.HasKey(e => e.Id);
+				entity.Property(p => p.Id).ValueGeneratedNever();
+			});
+
+
+			builder.Entity<QuizTag>(entity =>
+			{
+				entity.ToTable("QuizTags");
+				entity.HasKey(pt => new { pt.QuizId, pt.TagId });
+				entity.HasOne<Quiz>()
+					.WithMany()
+					.HasForeignKey(pt => pt.QuizId)
+					.HasPrincipalKey(q => q.Id)
+					.OnDelete(DeleteBehavior.Cascade);
+				entity.HasOne<Tag>()
+					.WithMany()
+					.HasForeignKey(pt => pt.TagId)
+					.HasPrincipalKey(t => t.Id)
+					.OnDelete(DeleteBehavior.Cascade);
+			});
 
 			var adminRoleId = new Guid("11111111-1111-1111-1111-111111111110");
 			var adminUserId = new Guid("11111111-1111-1111-1111-111111111111");

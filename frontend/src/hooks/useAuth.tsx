@@ -1,6 +1,5 @@
 import { ISuccesUser } from "@/features/Auth/types/user";
 import { createContext, ReactNode, useContext, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
 import { useLocalStorage } from "./useLocalStorage";
 
 interface AuthContextType {
@@ -8,7 +7,7 @@ interface AuthContextType {
     token: string | null;
     roles: string | null;
     login: (user: ISuccesUser) => Promise<void>;
-    logout: () => void;
+    logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -20,19 +19,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
     const [token, setToken] = useLocalStorage("token", null);
     const [roles, setUserRoles] = useLocalStorage("roles", null);
 
-    const navigate = useNavigate();
     const login = async (user: ISuccesUser) => {
         setToken(user.token);
         setUserName(user.username)
         setUserRoles(user.roles);
-        navigate("/");
     }
 
     const logout = async () => {
         setToken(null);
         setUserName(null)
         setUserRoles(null);
-        navigate("/");
     }
 
     const value = useMemo(() => ({

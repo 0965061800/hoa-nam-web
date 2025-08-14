@@ -1,0 +1,77 @@
+
+#gradient-canvas {
+  width: 100%;
+  height: 100vh;
+  --gradient-color-1: #FFC2D1;  /* vibrant rose red */
+--gradient-color-2: #FFB3C6;  /* soft pink rose */
+--gradient-color-3: #FF8FAB;  /* light cherry blossom pink */
+--gradient-color-4: #FB6F92;  /* soft coral red */
+  z-index: -1;
+  background: linear-gradient(
+        90deg,
+        var(--gradient-color-1),
+        var(--gradient-color-2),
+        var(--gradient-color-3),
+        var(--gradient-color-4)
+      );
+  background-size: 400% 400%; /* Larger than container for animation */
+  animation: gradientAnimation 5s ease infinite; /* Adjust duration as needed */
+}
+.header-title {
+    width: 100%;
+    background: rgb(255 255 255 / 26%);
+    border-radius: 10px;
+    border: 1px solid rgb(255 255 255 / 15%);
+    position: absolute;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    font-size: 20px;
+    font-family: sans-serif;
+    padding: 10px 40px;
+}
+
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.title2 {
+    font-family: "Fascinate", system-ui;
+    color:rgb(213, 106, 129);
+    font-weight: 400;
+    font-size: 40px;
+}
+
+ .popup-button {
+    display: block;
+    width: 80%;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    cursor: pointer;
+
+    border-radius: 20px;
+    margin: 10px;
+    padding: 1em 3em;
+    background-size: 200% auto;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    transition: 0.5s;
+    
+    &:hover {
+      background-position: right center;
+    }  
+  } 
+.popup-button-1 {
+  background-image: linear-gradient(to right, #a682fa 0%, #f9bdf1 50%, #bda1fd 100%);
+}
+
+.popup-button-2 {
+  background-image: linear-gradient(to right, #6660cb 0%, #43796f 50%, #c3956b 100%);
+}

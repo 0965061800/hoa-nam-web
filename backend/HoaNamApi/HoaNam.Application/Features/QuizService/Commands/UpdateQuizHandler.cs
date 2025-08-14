@@ -22,6 +22,7 @@ namespace HoaNam.Application.Features.QuizService.Commands
 			if (quiz.Title != request.Title) quiz.ChangeTitle(request.Title);
 			if (quiz.IsShuffled != request.IsShuffled) quiz.ChangeSuffled(request.IsShuffled);
 			if (quiz.TimeToPlay != request.TimeToPlay) quiz.ChangeTimeToPlay(request.TimeToPlay);
+			quiz.UpdateTags(request.TagIds);
 
 			await _quizRepo.UpdateQuiz(quiz);
 			await _quizRepo.Save();

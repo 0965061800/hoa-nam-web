@@ -5,6 +5,7 @@ export interface AddQuizDto {
     title: string,
     isShuffled: boolean,
     timeToPlay:number,
+    tagIds: Array<string>,
     questions: Array<AddQuizQuestionDto>
 }
 
@@ -45,9 +46,15 @@ export interface QuizDataDto {
     title: string,
     isShuffled: boolean,
     timeToPlay: number,
-    questions: QuestionDataDto[]
+    questions: QuestionDataDto[],
+    tags: TagDataDto[],
 }
 
+export interface TagDataDto {
+    id: string,
+    name: string,
+    normalizeName: string
+}
 export interface QuestionDataDto {
     id: string,
     questionContent: string,
@@ -68,3 +75,12 @@ export enum QuestionType {
     Text
 }
 
+export interface TagDtoForList {
+    id: string,
+    name: string,
+    normalizeName: string
+}
+
+export interface AddTagDto {
+    name: string;
+}

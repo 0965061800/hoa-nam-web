@@ -28,9 +28,16 @@ namespace HoaNam.Infrastructure.Repositories.QuizRepository
 			else throw new Exception("this quiz_Id not exist");
 		}
 
+		public async Task<Quiz> GetById(Guid Id)
+		{
+			var result = await _context.Quizzes.FirstOrDefaultAsync(x => x.Id == Id)
+				?? throw new Exception("this quiz_Id not exist");
+			return result;
+		}
+
 		public async Task<Quiz?> GetQuizAsync(Guid Id)
 		{
-			var quiz = await _context.Quizzes.Include(x => x.Questions).ThenInclude(x => x.Choices).FirstOrDefaultAsync(x => x.Id == Id);
+			var quiz = await _context.Quizzes.Include(x => x.Questions).ThenInclude(x => x.Choices).Include(x => x.QuizTags).FirstOrDefaultAsync(x => x.Id == Id);
 			return quiz;
 		}
 

@@ -10,5 +10,6 @@ namespace HoaNam.Application.Features.QuizService.Commands
 		public bool IsShuffled { get; set; }
 		public ushort TimeToPlay { get; set; }
 		public Guid UserId { get; set; }
+		public List<Guid> TagIds { get; set; }
 	}
 }

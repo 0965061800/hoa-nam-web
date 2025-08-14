@@ -32,14 +32,13 @@ function QuizPlayQuestions({ timeUp, onQuizEnded }: Props) {
     setSelectedChoice([]);
   }, [currentQuestionIndex, questions]);
 
-  console.log(questions);
   useEffect(() => {
     if(quizInfo.isShuffled) {
       const shuffled = shuffleArray(questions);
       setQuestions(shuffled);
     }
   },[quizInfo])
-  
+
   function submitAnswer() {
     if (selectedChoice.length == 0) {
       toast.error("please select an answer");

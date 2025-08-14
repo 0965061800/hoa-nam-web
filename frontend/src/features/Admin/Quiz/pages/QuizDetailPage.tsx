@@ -11,6 +11,7 @@ import { Label } from "@/components/ui/label";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import UpdateQuizInfo from "../components/quizUpdate/UpdateQuizInfo";
+import { Badge } from "@/components/ui/badge";
 
 const QuizDetailPage = () => {
   const { quizId } = useParams();
@@ -130,9 +131,16 @@ const QuizDetailPage = () => {
         <p className="text-sm text-gray-500">
           Shuffled: {quiz.isShuffled ? "Yes" : "No"}
         </p>
-        <p className="text-sm text-gray-500 mb-6">
+        <p className="text-sm text-gray-500 mb-3">
           Time: {Math.floor(quiz.timeToPlay/60)}:{quiz.timeToPlay % 60 > 9 ? quiz.timeToPlay % 60 : `0${quiz.timeToPlay%60}`}
         </p>
+        <div className="mb-6 flex gap-3">
+          {quiz.tags.map((tag) => (
+            <Badge variant={"secondary"} key={tag.id} className="border border-indigo-600 ">
+              #{tag.name}
+            </Badge>
+          ))}
+        </div>
         {quiz.questions.map((question, index) => (
           <div
             key={question.id}

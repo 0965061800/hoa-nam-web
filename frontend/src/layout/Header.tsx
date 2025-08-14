@@ -31,6 +31,10 @@ const Header = () => {
     };
   }, []);
 
+  async function handleLogout () {
+    await logout();
+    navigate("/");
+  }
 
   return (
     <div className={`header fixed top-0 w-full z-50 flex items-center justify-between bg-white ${scrolled ? "border-rose-100 border-b-2 border-solid shadow-md" :"" }`}>
@@ -97,7 +101,7 @@ const Header = () => {
                   <div className="grid gap-2">
                     <Button
                       className="w-fit mx-auto bg-white text-black hover:text-white"
-                      onClick={logout}
+                      onClick={() => handleLogout()}
                     >
                       Logout
                     </Button>

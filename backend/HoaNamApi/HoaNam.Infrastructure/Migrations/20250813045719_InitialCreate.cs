@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HoaNam.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Create_Database : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -51,6 +51,37 @@ namespace HoaNam.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuizAttempts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlayerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuizId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttemptTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalQuestion = table.Column<int>(type: "int", nullable: false),
+                    TotalRightAnswer = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuizAttempts", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Tags",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NormalizeName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tags", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -168,7 +199,8 @@ namespace HoaNam.Infrastructure.Migrations
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdateAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsShuffled = table.Column<bool>(type: "bit", nullable: false),
-                    CreatedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    CreatedUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TimeToPlay = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -177,6 +209,27 @@ namespace HoaNam.Infrastructure.Migrations
                         name: "FK_Quizzes_AspNetUsers_CreatedUserId",
                         column: x => x.CreatedUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuestionAttempts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttemptId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    QuestionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CorrectChoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PickedChoiceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuestionAttempts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_QuestionAttempts_QuizAttempts_AttemptId",
+                        column: x => x.AttemptId,
+                        principalTable: "QuizAttempts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -197,6 +250,30 @@ namespace HoaNam.Infrastructure.Migrations
                         name: "FK_Questions_Quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "Quizzes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "QuizTags",
+                columns: table => new
+                {
+                    QuizId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TagId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_QuizTags", x => new { x.QuizId, x.TagId });
+                    table.ForeignKey(
+                        name: "FK_QuizTags_Quizzes_QuizId",
+                        column: x => x.QuizId,
+                        principalTable: "Quizzes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_QuizTags_Tags_QuizId",
+                        column: x => x.QuizId,
+                        principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -229,7 +306,7 @@ namespace HoaNam.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "AvatarUrl", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), 0, "https://i.pravatar.cc/150?img=1", "513b458d-a1d7-4008-84c4-9af9d15d6707", "admin@example.com", true, "Admin", "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEFtOQ+zCShSNGZ8tBuHEPSfpUlchH2qxDmvONh7r1UKa8tH8o4nG+EKg0AK0ruCHzQ==", null, false, null, false, "admin@example.com" });
+                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), 0, "https://i.pravatar.cc/150?img=1", "918f3569-a606-46d5-bf8e-febad89e9a6c", "admin@example.com", true, "Admin", "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEFtOQ+zCShSNGZ8tBuHEPSfpUlchH2qxDmvONh7r1UKa8tH8o4nG+EKg0AK0ruCHzQ==", null, false, null, false, "admin@example.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -281,6 +358,11 @@ namespace HoaNam.Infrastructure.Migrations
                 column: "QuestionId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_QuestionAttempts_AttemptId",
+                table: "QuestionAttempts",
+                column: "AttemptId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Questions_QuizId",
                 table: "Questions",
                 column: "QuizId");
@@ -313,10 +395,22 @@ namespace HoaNam.Infrastructure.Migrations
                 name: "Choices");
 
             migrationBuilder.DropTable(
+                name: "QuestionAttempts");
+
+            migrationBuilder.DropTable(
+                name: "QuizTags");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Questions");
+
+            migrationBuilder.DropTable(
+                name: "QuizAttempts");
+
+            migrationBuilder.DropTable(
+                name: "Tags");
 
             migrationBuilder.DropTable(
                 name: "Quizzes");

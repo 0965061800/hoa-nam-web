@@ -2,6 +2,7 @@
 using HoaNam.Application.Interfaces.IRepositories;
 using HoaNam.Domain.Quiz.Entities;
 using HoaNam.Domain.Quiz.ValueObjects;
+using HoaNam.Domain.Services;
 using HoaNam.Domain.Services.IRepository;
 using MediatR;
 
@@ -11,10 +12,12 @@ namespace HoaNam.Application.Features.QuizService.Commands
 	{
 		private readonly IUserRepository _userRepo;
 		private readonly IQuizRepository _quizRepo;
-		public AddQuizHandler(IUserRepository userRepo, IQuizRepository quizRepo)
+		private readonly ITagRepository _tagRepo;
+		public AddQuizHandler(IUserRepository userRepo, IQuizRepository quizRepo, ITagRepository tagRepo)
 		{
 			_userRepo = userRepo;
 			_quizRepo = quizRepo;
+			_tagRepo = tagRepo;
 		}
 		public async Task<ApiResponse<Unit>> Handle(AddNewQuiz request, CancellationToken cancellationToken)
 		{
@@ -34,6 +37,10 @@ namespace HoaNam.Application.Features.QuizService.Commands
 				}
 				newQuiz.AddChoicesForQuestion(newId, choices);
 			}
+
+			var domainService = new QuizTaggingService(_quizRepo, _tagRepo);
+
+			await domainService.TaggingTheNewQuiz(newQuiz, request.TagIds);
 
 			await _quizRepo.AddNewQuiz(newQuiz);
 

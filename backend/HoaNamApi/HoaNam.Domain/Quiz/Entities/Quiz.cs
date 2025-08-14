@@ -16,8 +16,14 @@ namespace HoaNam.Domain.Quiz.Entities
 		public Guid CreatedUserId { get; private set; }
 		public ushort TimeToPlay { get; private set; }
 
+
+		//Navigation properties
 		private readonly List<Question> _questions = new();
 		public IReadOnlyCollection<Question> Questions => _questions.AsReadOnly();
+
+		private readonly List<QuizTag> _quizTags = new();
+		public IReadOnlyCollection<QuizTag> QuizTags => _quizTags.AsReadOnly();
+
 		public Quiz(Guid id, QuizTitle title, Guid createdUserId, bool isShuffled, ushort TimeToPlay)
 		{
 			Apply(new QuizEvent.QuizCreated
@@ -78,6 +84,29 @@ namespace HoaNam.Domain.Quiz.Entities
 				TimeToPlay = time
 			});
 
+		public void AddTag(Guid tagId) => Apply(new QuizEvent.TagAdded
+		{
+			TagId = tagId
+		});
+
+		public void RemoveTag(Guid tagId) => Apply(new QuizEvent.TagRemoved
+		{
+			TagId = tagId
+		});
+
+		public void UpdateTags(List<Guid> tagIds)
+		{
+			foreach (Guid tagId in tagIds)
+			{
+				if (!_quizTags.Exists(x => x.TagId == tagId)) AddTag(tagId);
+			}
+			List<Guid> tagExistIds = _quizTags.Select(x => x.TagId).ToList();
+			foreach (var id in tagExistIds)
+			{
+				if (!tagIds.Exists(x => x == id)) RemoveTag(id);
+			}
+
+		}
 		protected override void When(object @event)
 		{
 			switch (@event)
@@ -111,6 +140,14 @@ namespace HoaNam.Domain.Quiz.Entities
 					break;
 				case QuizEvent.TimeToPlayChangeEvent e:
 					TimeToPlay = e.TimeToPlay;
+					break;
+				case QuizEvent.TagAdded e:
+					QuizTag newQuizTag = new QuizTag(Id, e.TagId);
+					_quizTags.Add(newQuizTag);
+					break;
+				case QuizEvent.TagRemoved e:
+					var tagRemoved = _quizTags.Find(x => x.TagId == e.TagId);
+					_quizTags.Remove(tagRemoved);
 					break;
 			}
 		}

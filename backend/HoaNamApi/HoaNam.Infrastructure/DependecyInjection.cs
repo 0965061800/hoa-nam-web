@@ -6,6 +6,7 @@ using HoaNam.Infrastructure.Auth;
 using HoaNam.Infrastructure.Identity;
 using HoaNam.Infrastructure.Repositories;
 using HoaNam.Infrastructure.Repositories.QuizRepository;
+using HoaNam.Infrastructure.Repositories.TagRepository;
 using HoaNam.Infrastructure.Repositories.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -64,6 +65,7 @@ namespace HoaNam.Infrastructure
 			services.AddScoped<IQuizQueryRepository, QuizQueryRepository>();
 			services.AddScoped<IQuizRepository, QuizRepository>();
 			services.AddScoped<IAttemptRepository, AttemptRepository>();
+			services.AddScoped<ITagRepository, TagCommandRepository>();
 			return services;
 		}
 	}

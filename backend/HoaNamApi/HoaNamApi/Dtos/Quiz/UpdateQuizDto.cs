@@ -11,5 +11,6 @@ namespace HoaNamApi.Dtos.Quiz
 		public string Title { get; set; } = string.Empty;
 		public bool IsShuffled { get; set; }
 		public ushort TimeToPlay { get; set; }
+		public List<Guid> TagIds { get; set; } = new();
 	}
 }

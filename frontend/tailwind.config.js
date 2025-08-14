@@ -65,7 +65,10 @@ export default {
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
   			}
-  		}
+  		},
+		animation: {
+        'slow-spin': 'spin 5s linear infinite', // Custom spin animation with 3-second duration
+      },
   	}
   },
   plugins: [require("tailwindcss-animate")],
