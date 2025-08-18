@@ -57,8 +57,7 @@ namespace HoaNam.Infrastructure.Identity
 				// Configure QuizTags relationship here if Quiz has QuizTags property
 				entity.HasMany<QuizTag>(e => e.QuizTags)
 				.WithOne()
-					.HasForeignKey(qt => qt.QuizId)
-					.HasPrincipalKey(q => q.Id)
+					.HasForeignKey("QuizId")
 					.OnDelete(DeleteBehavior.Cascade);
 				entity.Navigation(e => e.QuizTags)
 					.UsePropertyAccessMode(PropertyAccessMode.Field);
@@ -115,11 +114,11 @@ namespace HoaNam.Infrastructure.Identity
 			{
 				entity.ToTable("QuizTags");
 				entity.HasKey(pt => new { pt.QuizId, pt.TagId });
-				entity.HasOne<Quiz>()
-					.WithMany()
-					.HasForeignKey(pt => pt.QuizId)
-					.HasPrincipalKey(q => q.Id)
-					.OnDelete(DeleteBehavior.Cascade);
+				//entity.HasOne<Quiz>()
+				//	.WithMany()
+				//	.HasForeignKey(pt => pt.QuizId)
+				//	.HasPrincipalKey(q => q.Id)
+				//	.OnDelete(DeleteBehavior.Cascade);
 				entity.HasOne<Tag>()
 					.WithMany()
 					.HasForeignKey(pt => pt.TagId)

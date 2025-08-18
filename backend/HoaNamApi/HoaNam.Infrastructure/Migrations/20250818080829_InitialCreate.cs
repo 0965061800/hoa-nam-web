@@ -271,8 +271,8 @@ namespace HoaNam.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_QuizTags_Tags_QuizId",
-                        column: x => x.QuizId,
+                        name: "FK_QuizTags_Tags_TagId",
+                        column: x => x.TagId,
                         principalTable: "Tags",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -306,7 +306,7 @@ namespace HoaNam.Infrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "AvatarUrl", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), 0, "https://i.pravatar.cc/150?img=1", "918f3569-a606-46d5-bf8e-febad89e9a6c", "admin@example.com", true, "Admin", "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEFtOQ+zCShSNGZ8tBuHEPSfpUlchH2qxDmvONh7r1UKa8tH8o4nG+EKg0AK0ruCHzQ==", null, false, null, false, "admin@example.com" });
+                values: new object[] { new Guid("11111111-1111-1111-1111-111111111111"), 0, "https://i.pravatar.cc/150?img=1", "027bcb08-83cc-48e1-b561-a76b583d16a7", "admin@example.com", true, "Admin", "User", false, null, "ADMIN@EXAMPLE.COM", "ADMIN@EXAMPLE.COM", "AQAAAAIAAYagAAAAEFtOQ+zCShSNGZ8tBuHEPSfpUlchH2qxDmvONh7r1UKa8tH8o4nG+EKg0AK0ruCHzQ==", null, false, null, false, "admin@example.com" });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
@@ -366,6 +366,11 @@ namespace HoaNam.Infrastructure.Migrations
                 name: "IX_Questions_QuizId",
                 table: "Questions",
                 column: "QuizId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_QuizTags_TagId",
+                table: "QuizTags",
+                column: "TagId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Quizzes_CreatedUserId",

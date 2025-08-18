@@ -106,12 +106,7 @@ namespace HoaNam.Infrastructure.Migrations
                     b.Property<Guid>("TagId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("QuizId1")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("QuizId", "TagId");
-
-                    b.HasIndex("QuizId1");
 
                     b.HasIndex("TagId");
 
@@ -272,7 +267,7 @@ namespace HoaNam.Infrastructure.Migrations
                             Id = new Guid("11111111-1111-1111-1111-111111111111"),
                             AccessFailedCount = 0,
                             AvatarUrl = "https://i.pravatar.cc/150?img=1",
-                            ConcurrencyStamp = "8c055a7e-58ef-4320-92ba-8de4fb6ba51e",
+                            ConcurrencyStamp = "027bcb08-83cc-48e1-b561-a76b583d16a7",
                             Email = "admin@example.com",
                             EmailConfirmed = true,
                             FirstName = "Admin",
@@ -463,14 +458,10 @@ namespace HoaNam.Infrastructure.Migrations
             modelBuilder.Entity("HoaNam.Domain.Quiz.Entities.QuizTag", b =>
                 {
                     b.HasOne("HoaNam.Domain.Quiz.Entities.Quiz", null)
-                        .WithMany()
+                        .WithMany("QuizTags")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("HoaNam.Domain.Quiz.Entities.Quiz", null)
-                        .WithMany("QuizTags")
-                        .HasForeignKey("QuizId1");
 
                     b.HasOne("HoaNam.Domain.Tag.Entities.Tag", null)
                         .WithMany()
