@@ -17,7 +17,8 @@ export default function QuizPage() {
       filter:'',
       pageIndex: 1,
       pageSize: 12,
-      sorting:0
+      sorting:0,
+      tagIds:[]
     })
     const {token} = useAuth();
     useEffect(() => {
@@ -57,6 +58,10 @@ export default function QuizPage() {
     setParam((prev) => ({...prev, filter: value}))
   }
 
+  const handleTagging = (tagIds: string[]) => {
+    setParam((prev) => ({...prev, tagIds: tagIds}))
+  }
+
   return (
     <div className="mx-auto container max-w-[1440px] font-primative">
         <div className="bg-white-300 h-full p-4">
@@ -65,7 +70,7 @@ export default function QuizPage() {
             ? ""
             : 
              <div className="flex flex-col gap-10">
-              <UserQuizzesArea quizzes={pageInfo.data} sorting={param.sorting} handleSorting={handleSorting} filter={param.filter} handleSearching={handleSearching}  ></UserQuizzesArea>
+              <UserQuizzesArea quizzes={pageInfo.data} sorting={param.sorting} handleSorting={handleSorting} filter={param.filter} handleSearching={handleSearching} handleTagging={handleTagging} ></UserQuizzesArea>
               <CustomPagination currentPage={pageInfo.pageIndex} totalPages={pageInfo.totalPage} onPageChange={handlePageChange}></CustomPagination>
             </div>
         }

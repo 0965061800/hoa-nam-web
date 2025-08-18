@@ -1,5 +1,6 @@
 import axios from "axios";
 import toast from "react-hot-toast";
+import qs from 'qs';
 import { AttemptRequestDto, PageListData, PageRequestParam, QuizInfoDto } from "../types/interfaces";
 
 
@@ -15,7 +16,9 @@ export function handleGetQuizzes(
     return config;
   });
   return axios
-    .get(`${apiUrl}/AttemptQuery`, { params: {...pageRequest}, withCredentials: true})
+    .get(`${apiUrl}/AttemptQuery`, { params: {...pageRequest},paramsSerializer: params => {
+    return qs.stringify(params)
+  }, withCredentials: true})
     .then((response) => response.data)
     .catch((error) => {
       toast.error(`Failed to get quizzes: ${error.message}`);

@@ -30,7 +30,6 @@ namespace HoaNamApi.Controllers
 		}
 
 		[HttpGet("get")]
-		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> GetAllTags()
 		{
 			HashSet<TagDtoForListing> tags = await _connection.GetAllTag();

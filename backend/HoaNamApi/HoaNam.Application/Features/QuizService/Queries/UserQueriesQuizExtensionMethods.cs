@@ -35,15 +35,27 @@ namespace HoaNam.Application.Features.QuizService.Queries
 							WHERE PlayerId = @UserId
 							GROUP BY Id, QuizId
 						) qat ON q.Id = qat.QuizId
-						WHERE q.Title LIKE '%' + @Filter + '%'
+						LEFT JOIN QuizTags qt ON qt.QuizId = q.Id
+						WHERE q.Title LIKE '%' + @Filter + '%' AND (@IsEmpty = 1 OR qt.TagId IN @TagIds)
 						GROUP BY q.Id, q.Title, q.CreatedAt, q.TimeToPlay
 						ORDER BY 
 							CASE WHEN @Sorting = 0 THEN q.CreatedAt ELSE NULL END,
 							CASE WHEN @Sorting = 1 THEN q.Title ELSE NULL END,
 							CASE WHEN @Sorting = 2 THEN q.Id ELSE NULL END
 						OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY ;";
-
-			List<QuizzesAndAttemptsForUserResponse> quizzes = (await connection.QueryAsync<QuizzesAndAttemptsForUserResponse>(sql, new { UserId = param.UserId, Filter = FSPR.Filter ?? "", Sorting = FSPR.Sorting, Offset = offset, PageSize = FSPR.PageSize })).ToList();
+			List<QuizzesAndAttemptsForUserResponse> quizzes = (await connection.QueryAsync<QuizzesAndAttemptsForUserResponse>(sql, new { UserId = param.UserId, Filter = FSPR.Filter ?? "", Sorting = FSPR.Sorting, Offset = offset, PageSize = FSPR.PageSize, IsEmpty = !FSPR.TagIds.Any(), TagIds = FSPR.TagIds })).ToList();
+			var sqlGetAllTagNameOfQuiz = @"SELECT
+					qt.QuizId, t.Name
+					FROM QuizTags qt
+					LEFT JOIN Tags t ON qt.TagId = t.Id
+					WHERE qt.QuizId IN @QuizIds
+				";
+			List<TagNamesOfQuiz> tagNames = (await connection.QueryAsync<TagNamesOfQuiz>(sqlGetAllTagNameOfQuiz, new { QuizIds = quizzes.Select(q => q.QuizId) })).ToList();
+			foreach (var quiz in quizzes)
+			{
+				quiz.TagNames = tagNames.Where(t => t.QuizId == quiz.QuizId).Select(t => t.Name).ToList();
+			}
+			// Calculate total page and set it to the result
 			PageListResponse<QuizzesAndAttemptsForUserResponse> result = new PageListResponse<QuizzesAndAttemptsForUserResponse>();
 			result.Data = quizzes;
 			result.TotalPage = totalPage;
@@ -51,6 +63,8 @@ namespace HoaNam.Application.Features.QuizService.Queries
 			result.PageIndex = FSPR.PageIndex;
 			return result;
 		}
+
+
 
 		public static async Task<QuizInfoDto?> GetQuizInfo(this DbConnection connection, Guid quizId)
 		{

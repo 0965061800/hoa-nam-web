@@ -48,7 +48,9 @@ namespace HoaNamApi.Controllers
 			var command = _mapper.Map<SignUpRequest>(dto);
 			command.Role = "User";
 			var result = await _mediator.Send(command);
-			return Ok(result);
+			if (result.IsSuccess)
+				return Ok(result);
+			return BadRequest(result.Error);
 		}
 
 		[HttpPost("signin")]

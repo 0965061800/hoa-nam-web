@@ -3,7 +3,7 @@ using MediatR;
 
 namespace HoaNam.Application.Features.AuthService.SignUp
 {
-	public class SignUpRequest : IRequest<UnitValue>
+	public class SignUpRequest : IRequest<ApiResponse<UnitValue>>
 	{
 		public string Username { get; set; }
 		public string Password { get; set; }

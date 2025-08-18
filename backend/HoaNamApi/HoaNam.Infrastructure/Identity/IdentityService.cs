@@ -19,9 +19,16 @@ namespace HoaNam.Infrastructure.Identity
 		{
 			var user = new AppIdentityUser { Id = Guid.NewGuid(), UserName = username, Email = "" };
 			var result = await _userManager.CreateAsync(user, password);
-			var createdUser = await _userManager.FindByNameAsync(username);
-			if (result.Succeeded) await _userManager.AddToRoleAsync(createdUser, role);
-			return Result<UnitValue>.Success(UnitValue.Value);
+			if (result.Succeeded)
+			{
+				var createdUser = await _userManager.FindByNameAsync(username);
+				if (result.Succeeded) await _userManager.AddToRoleAsync(createdUser, role);
+				return Result<UnitValue>.Success(UnitValue.Value);
+			}
+			else
+			{
+				return Result<UnitValue>.Fail(string.Join(", ", result.Errors.Select(x => x.Description)));
+			}
 		}
 
 		public async Task<Result<LoggedInUserDto>> CheckingSignInUser(string username, string password)

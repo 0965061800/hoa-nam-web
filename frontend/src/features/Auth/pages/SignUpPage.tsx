@@ -16,7 +16,7 @@ interface Props {
   role: string;
 }
 
-const SignInPage = ({ role }: Props) => {
+const SignUpPage = ({ role }: Props) => {
   const navigate = useNavigate();
   const { userName, roles } = useAuth();
   useEffect(() => {
@@ -40,7 +40,12 @@ const SignInPage = ({ role }: Props) => {
         }
       )
       .then((response) => {
+        if (role == "User") navigate("/signin");
+        if (role == "Admin") navigate("/admin/signin");
         toast.success("Đăng ký thành công");
+      })
+      .catch((error) => {
+        toast.error(`Đăng ký thất bại: ${error.response?.data}`);
       });
   }
 
@@ -89,4 +94,4 @@ const SignInPage = ({ role }: Props) => {
   );
 };
 
-export default SignInPage;
+export default SignUpPage;

@@ -6,5 +6,6 @@
 		public int PageSize { get; set; } = 12;
 		public Sorting Sorting { get; set; }
 		public string? Filter { get; set; }
+		public List<Guid> TagIds { get; set; } = new();
 	}
 }

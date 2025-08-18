@@ -4,7 +4,7 @@ using MediatR;
 
 namespace HoaNam.Application.Features.AuthService.SignUp
 {
-	public class SignUpHandler : IRequestHandler<SignUpRequest, UnitValue>
+	public class SignUpHandler : IRequestHandler<SignUpRequest, ApiResponse<UnitValue>>
 	{
 		private readonly IIdentityService _identityService;
 		public SignUpHandler(IIdentityService identityService)
@@ -12,10 +12,14 @@ namespace HoaNam.Application.Features.AuthService.SignUp
 			_identityService = identityService;
 		}
 
-		public async Task<UnitValue> Handle(SignUpRequest request, CancellationToken cancellationToken)
+		public async Task<ApiResponse<UnitValue>> Handle(SignUpRequest request, CancellationToken cancellationToken)
 		{
-			await _identityService.SignUp(request.Username, request.Password, request.Role);
-			return UnitValue.Value;
+			var result = await _identityService.SignUp(request.Username, request.Password, request.Role);
+			if (result.IsSuccess)
+			{
+				return ApiResponse<UnitValue>.Success(UnitValue.Value);
+			}
+			return ApiResponse<UnitValue>.Fail(result.Error ?? "");
 		}
 	}
 }

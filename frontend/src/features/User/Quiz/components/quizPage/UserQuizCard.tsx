@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { UserQuizData } from "../../types/interfaces";
+import { Badge } from "@/components/ui/badge";
 
 interface Props {
   singleQuiz: UserQuizData;
@@ -33,10 +34,10 @@ function UserQuizCard({ singleQuiz }: Props) {
   }
 
   function playQuiz(quiz: UserQuizData) {
-    navigate(`/user/quizzes/${quiz.quizId}/play`)
+    navigate(`/user/quizzes/${quiz.quizId}/play`);
   }
   return (
-    <div className="min-w-[300px] rounded-[10px] flex flex-col gap-2 border border-gray-300 bg-white p-4">
+    <div className="min-w-[300px] w-1/4 rounded-[10px] flex flex-col items-stretch relative gap-2 border border-gray-300 bg-white p-4 pb-10">
       {/* Image Container */}
       <div className="relative bg-rose-300 w-full aspect-[5/4] flex justify-center items-center  rounded-md ">
         {/* More Options Icon */}
@@ -69,13 +70,30 @@ function UserQuizCard({ singleQuiz }: Props) {
         </div>
         <div>
           <p className="text-sm font-light">
-            success rate: {numberOfAttempt > 0 ? Math.floor(averageSuccessRate*100) : 0} %
+            success rate:{" "}
+            {numberOfAttempt > 0 ? Math.floor(averageSuccessRate * 100) : 0} %
           </p>
-          <p className="text-sm font-light">time: {Math.floor(singleQuiz.timeToPlay/60)}:{singleQuiz.timeToPlay%60>10?singleQuiz.timeToPlay%60:`0${singleQuiz.timeToPlay%60}`}</p>
-          </div>
+          <p className="text-sm font-light">
+            time: {Math.floor(singleQuiz.timeToPlay / 60)}:
+            {singleQuiz.timeToPlay % 60 > 10
+              ? singleQuiz.timeToPlay % 60
+              : `0${singleQuiz.timeToPlay % 60}`}
+          </p>
         </div>
+      </div>
+      <div className="w-full">
+        {singleQuiz.tagNames.map((tag) => (
+          <Badge
+            variant={"secondary"}
+            key={tag}
+            className="border border-indigo-600 mr-1 mb-1"
+          >
+            #{tag}
+          </Badge>
+        ))}
+      </div>
       {/* Footer Area */}
-      <div className="flex gap-3 justify-end">
+      <div className="absolute bottom-5 right-5 flex gap-3 justify-end">
         <div
           onClick={() => {
             viewQuiz(singleQuiz);

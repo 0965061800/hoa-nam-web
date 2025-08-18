@@ -9,7 +9,8 @@ export interface PageRequestParam {
     pageIndex: number,
     pageSize: number,
     sorting: number,
-    filter: string
+    filter: string,
+    tagIds: string[]
 }
 
 export interface AddQuizDto {
@@ -64,6 +65,7 @@ export interface UserQuizData {
     numberOfQuestion: number,
     numberOfAttempt: number,
     averageSuccessRate: number,
+    tagNames: string[];
 }
 
 

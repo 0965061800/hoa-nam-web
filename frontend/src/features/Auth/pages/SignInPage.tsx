@@ -9,6 +9,7 @@ import axios from "axios";
 import { useAuth } from "@/hooks/useAuth";
 import { ISuccesUser } from "../types/user";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const apiUrl = import.meta.env.VITE_APP_BASE_URL;
 
@@ -49,14 +50,20 @@ const SignInPage = ({ role }: Props) => {
           roles: data.roles,
           userId: data.userId,
         };
-
+        if (!user.roles?.includes(role)) {
+          toast.error(`Bạn không có quyền truy cập vào trang này. Vui lòng đăng nhập với vai trò ${role}.`);
+          return;
+        };
         handleLogin(user); // now correctly passing required info
       });
   }
 
   useEffect(() => {
+    
     if (userName !== undefined && userName !== null && roles?.includes(role)) {
-      navigate("/user/home");
+      console.log("trigger");
+      if (role === "User") navigate("/user/home");
+      if (role === "Admin") navigate("/admin/quizzes");
     }
   }, [userName, navigate, roles]);
   
